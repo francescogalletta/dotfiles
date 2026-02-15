@@ -1,0 +1,31 @@
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$python\
+$character"""
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+format = "[$branch]($style) "
+style = "bold purple"
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = "bold red"
+
+[nodejs]
+format = "[$symbol($version)]($style) "
+symbol = "node "
+
+[python]
+format = "[$symbol($version)]($style) "
+symbol = "py "
+
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[>](bold red)"

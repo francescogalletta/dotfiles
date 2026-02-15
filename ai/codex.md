@@ -1,0 +1,1 @@
+# Codex CLI — Global Instructions

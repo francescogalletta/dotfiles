@@ -1,0 +1,23 @@
+[init]
+	defaultBranch = main
+
+[core]
+	editor = code --wait
+
+[alias]
+	s = status
+	co = checkout
+	br = branch
+	ci = commit
+	lg = log --oneline --graph --decorate --all
+	d = diff
+	ds = diff --staged
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+[user]
+	name = francescogalletta
+	email = francesco@galletta.xyz

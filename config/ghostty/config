@@ -1,0 +1,22 @@
+font-family = JetBrains Mono
+font-size = 14
+
+theme = catppuccin-mocha
+
+window-padding-x = 12
+window-padding-y = 8
+
+window-decoration = false
+macos-titlebar-style = hidden
+
+# Option key as Alt — enables Option+Left/Right (word jump), Option+Backspace (delete word)
+macos-option-as-alt = true
+
+# Links — Cmd+click any URL to open in browser
+link-url = true
+
+# Scrolling
+mouse-scroll-multiplier = 2
+
+# Window behavior
+confirm-close-surface = false
