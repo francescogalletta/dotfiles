@@ -10,7 +10,7 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | [Ghostty](https://ghostty.org) | GPU-accelerated terminal emulator |
 | [Starship](https://starship.rs) | Fast, customizable cross-shell prompt |
 | [eza](https://eza.rocks) | Modern replacement for `ls` with icons and colors |
-| [bat](https://github.com/sharkdup/bat) | `cat` with syntax highlighting and line numbers |
+| [bat](https://github.com/sharkdp/bat) | `cat` with syntax highlighting and line numbers |
 | [fzf](https://github.com/junegunn/fzf) | Fuzzy finder — Ctrl+R history search, file search |
 | [ripgrep](https://github.com/BurntSushi/ripgrep) | Fast recursive code search (`rg`) |
 | [jq](https://jqlang.github.io/jq/) | Command-line JSON processor |
@@ -48,7 +48,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 4. Installs Ghostty via `brew install --cask`
 5. Installs Node.js LTS via nvm
 6. Installs Python via uv
-7. Symlinks config files (zshrc, gitconfig, ghostty, starship, CLAUDE.md)
+7. Symlinks config files (zshrc, gitconfig, ghostty, starship, CLAUDE.md, Claude skills/settings)
 8. Prompts for git name/email (if not configured)
 9. Generates an ed25519 SSH key (if none exists)
 10. Authenticates with GitHub via `gh auth login`
@@ -67,6 +67,11 @@ Progress is shown with an animated spinner and progress bar. Failures capture th
 ├── DESIGN.md                   # Architecture decision records
 ├── zshrc                       # Zsh config → ~/.zshrc
 ├── gitconfig                   # Git config → ~/.gitconfig
+├── claude/
+│   ├── settings.json           # Claude Code settings → ~/.claude/settings.json
+│   └── skills/                 # Claude Code skills → ~/.claude/skills/
+│       ├── project-new/        #   /project-new — scaffold a new project
+│       └── project-resume/     #   /project-resume — resume an existing project
 └── config/
     ├── ghostty/
     │   └── config              # Ghostty config → ~/.config/ghostty/config
@@ -75,9 +80,15 @@ Progress is shown with an animated spinner and progress bar. Failures capture th
 
 ### AI agent config
 
-`CLAUDE.md` lives in the repo root and is symlinked to `~/CLAUDE.md`, just like any other dotfile. Edits flow both ways — change the live file or the repo file, same result.
+All Claude Code config lives in this repo and is symlinked to its expected location:
 
-This approach is agent-agnostic. Adding support for another AI agent means adding another config file and symlink — no special build step or concatenation needed.
+| Repo path | Symlink target | Purpose |
+|-----------|---------------|---------|
+| `CLAUDE.md` | `~/CLAUDE.md` | Global instructions (tone, tools, conventions) |
+| `claude/settings.json` | `~/.claude/settings.json` | Permissions, status line |
+| `claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`) |
+
+Edits flow both ways — change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
 
 ## Post-install
 

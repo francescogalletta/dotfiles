@@ -10,18 +10,22 @@ Portable, reproducible macOS dev environment.
 - [x] Git config (gitconfig, SSH key, gh auth)
 - [x] Terminal config (Ghostty, Starship)
 
-### Phase 2: AI Tooling ← current
+### Phase 2: AI Tooling ✅
 - [x] Claude Code optional install
 - [x] Global CLAUDE.md with environment prefs
 - [x] Simplify AI config: symlink approach, remove Codex
-- [ ] Claude skills: project-new, project-resume
+- [x] Claude skills: project-new, project-resume
 - [x] Project docs (PROJECT.md, DESIGN.md)
 
-### Phase 3: Polish
-- [ ] README refresh after restructure
+### Phase 3: Polish ← current
+- [x] README refresh after restructure
 - [ ] Test full clean install on fresh machine
 
 ## Changelog
+
+### 2026-02-16 (session 2)
+- Verified `project-new` and `project-resume` skills, symlinked `~/.claude/skills` and `settings.json` to dotfiles repo
+- README refresh: added `claude/` directory to file structure, documented skills and settings symlinks, fixed bat link typo
 
 ### 2026-02-16
 - Replaced `ai/` concatenation approach with symlinked `CLAUDE.md` at repo root
