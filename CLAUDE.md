@@ -44,3 +44,12 @@ Read it at the start of each session. Keep `PROJECT.md` and `DESIGN.md` updated 
 - After completing a task: check it off, append a changelog entry to PROJECT.md
 - After a design/architecture decision: append an ADR to DESIGN.md (create if needed)
 - Don't rewrite unchanged sections. Match existing style.
+
+**CRITICAL: Update docs BEFORE committing.**
+When asked to commit changes:
+1. Update PROJECT.md changelog (and DESIGN.md if applicable)
+2. Stage all changes including updated docs
+3. Commit everything together
+4. Then push
+
+Never commit code first and update docs after — the changelog must be in the same commit as the changes it documents.

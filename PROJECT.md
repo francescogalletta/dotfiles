@@ -24,6 +24,11 @@ Portable, reproducible macOS dev environment.
 
 ## Changelog
 
+### 2026-02-16 (session 4)
+- Added sync.sh and links.sh documentation to README
+- Fixed project-resume skill: simplified git commands, prevent parallel tool call errors
+- Added CLAUDE.md guidance: update project docs before committing, not after
+
 ### 2026-02-16 (session 2)
 - Verified `project-new` and `project-resume` skills, symlinked `~/.claude/skills` and `settings.json` to dotfiles repo
 - README refresh: added `claude/` directory to file structure, documented skills and settings symlinks, fixed bat link typo
