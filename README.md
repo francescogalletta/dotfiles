@@ -56,6 +56,26 @@ The script is idempotent — safe to run multiple times. Existing config files a
 
 Progress is shown with an animated spinner and progress bar. Failures capture the last 5 lines of output so you can see what broke without digging through logs.
 
+## Other scripts
+
+### `sync.sh` — Symlink doctor
+
+Detects and repairs broken or missing symlinks. Run this if:
+- An app overwrites a symlinked config with a regular file (Ghostty does this on config reset)
+- You manually deleted a symlink and want to restore it
+- You want to verify all dotfiles are properly linked
+
+```bash
+cd ~/dotfiles
+./sync.sh
+```
+
+Output shows which links are OK (✓) and which were fixed or created (🔗). Existing files are backed up to `*.bak` before relinking.
+
+### `links.sh` — Symlink definitions
+
+Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the mapping of repo files to their target locations. Not meant to be run directly — edit this file to add or remove symlinks.
+
 ## File structure
 
 ```

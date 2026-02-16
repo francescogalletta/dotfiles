@@ -11,17 +11,18 @@ You are helping the user resume work on an existing project. **Read first, write
 
 ## Phase 1: Read Project State
 
-Read these files (note any that are missing):
+**Step 1:** Read project files (note any that are missing):
 - `PROJECT.md`
 - `DESIGN.md`
 - `.claude/CLAUDE.md`
 
-Run these commands:
-- `git status`
-- `git log --oneline -20`
-- `git branch -vv`
-- `git remote -v`
-- If a remote exists: `git fetch && git status`
+**Step 2:** Check git state with: `git fetch 2>/dev/null; git status`
+- Fetch silently updates from remote (no-op if no remote)
+- Status shows branch, ahead/behind, and uncommitted changes
+
+**Step 3:** Get recent commits: `git log --oneline -10`
+
+IMPORTANT: Do NOT run file reads and git commands in parallel. Run file reads first, then git commands.
 
 ## Phase 2: Present Briefing
 
