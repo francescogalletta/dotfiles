@@ -31,7 +31,6 @@ echo -e "  🐙 GitHub CLI auth         login via gh"
 echo ""
 echo -e "  ${dim}Optional (you'll be asked):${reset}"
 echo -e "  🤖 Claude Code             Anthropic's coding agent"
-echo -e "  🧠 Codex CLI               OpenAI's coding agent"
 echo -e "  ☁️  Google Drive            desktop sync client"
 echo ""
 echo -e "  ${dim}Logs are written to ~/dotfiles/.install.log${reset}"
@@ -111,6 +110,7 @@ count  # link: zshrc
 count  # link: gitconfig
 count  # link: ghostty
 count  # link: starship
+count  # link: CLAUDE.md
 count  # Git identity
 count  # SSH key
 count  # GitHub CLI auth
@@ -206,6 +206,8 @@ advance "🔗 Linking ghostty config..."
 link_file "$DOTFILES/config/ghostty/config"   "$HOME/.config/ghostty/config"  "ghostty"
 advance "🔗 Linking starship config..."
 link_file "$DOTFILES/config/starship.toml"    "$HOME/.config/starship.toml"   "starship"
+advance "🔗 Linking CLAUDE.md..."
+link_file "$DOTFILES/CLAUDE.md"               "$HOME/CLAUDE.md"               "CLAUDE.md"
 
 # ─── 7. 🔑 Git identity ───────────────────────────────
 advance "🔑 Configuring Git identity..."
@@ -264,13 +266,11 @@ ask_yes_no() {
 }
 
 ask_yes_no "🤖 Install Claude Code (Anthropic)?" INSTALL_CLAUDE
-ask_yes_no "🧠 Install Codex CLI (OpenAI)?"      INSTALL_CODEX
 ask_yes_no "☁️  Install Google Drive?"              INSTALL_GDRIVE
 echo ""
 
 # Add optional steps to total
-if [ "$INSTALL_CLAUDE" = true ]; then count; count; fi
-if [ "$INSTALL_CODEX" = true ];  then count; count; fi
+if [ "$INSTALL_CLAUDE" = true ]; then count; fi
 if [ "$INSTALL_GDRIVE" = true ]; then count; fi
 
 # ─── 11. 🤖 Claude Code (optional) ────────────────────
@@ -285,52 +285,11 @@ if [ "$INSTALL_CLAUDE" = true ]; then
   else
     skip "🤖 Claude Code"
   fi
-
-  advance "🤖 Configuring Claude Code..."
-  printf "\r${clear_line}"
-  printf "  Apply default AI config? [Y/n] "
-  read -r apply_config
-  if [[ ! "$apply_config" =~ ^[nN] ]]; then
-    cat "$DOTFILES/ai/claude.md" "$DOTFILES/ai/common.md" > "$HOME/CLAUDE.md"
-    pass "🤖 Claude config applied"
-  else
-    echo -e "  ${dim}Tip: copy dotfiles/ai/ contents to ~/CLAUDE.md later${reset}"
-    skip "🤖 Claude config"
-  fi
 else
   RESULTS+=("  ⏭️  🤖 Claude Code ${dim}(not selected)${reset}")
 fi
 
-# ─── 12. 🧠 Codex CLI (optional) ──────────────────────
-if [ "$INSTALL_CODEX" = true ]; then
-  advance "🧠 Installing Codex CLI..."
-  if ! command -v codex &>/dev/null; then
-    if run_logged "Codex CLI" npm i -g @openai/codex; then
-      pass "🧠 Codex CLI"
-    else
-      fail "🧠 Codex CLI" "$LAST_ERROR"
-    fi
-  else
-    skip "🧠 Codex CLI"
-  fi
-
-  advance "🧠 Configuring Codex CLI..."
-  printf "\r${clear_line}"
-  printf "  Apply default AI config? [Y/n] "
-  read -r apply_config
-  if [[ ! "$apply_config" =~ ^[nN] ]]; then
-    mkdir -p "$HOME/.codex"
-    cat "$DOTFILES/ai/codex.md" "$DOTFILES/ai/common.md" > "$HOME/.codex/AGENTS.md"
-    pass "🧠 Codex config applied"
-  else
-    echo -e "  ${dim}Tip: copy dotfiles/ai/ contents to ~/.codex/AGENTS.md later${reset}"
-    skip "🧠 Codex config"
-  fi
-else
-  RESULTS+=("  ⏭️  🧠 Codex CLI ${dim}(not selected)${reset}")
-fi
-
-# ─── 13. ☁️ Google Drive (optional) ────────────────────
+# ─── 12. ☁️ Google Drive (optional) ────────────────────
 if [ "$INSTALL_GDRIVE" = true ]; then
   advance "☁️  Installing Google Drive..."
   if ! brew list --cask google-drive &>/dev/null; then

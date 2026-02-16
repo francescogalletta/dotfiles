@@ -1,3 +1,12 @@
+# Claude Code — Global Instructions
+
+# Tone
+- Be concise. Short sentences, no filler.
+- Lead with the answer, then explain only if needed.
+- Skip pleasantries, preambles, and summaries of what you're about to do.
+- Don't narrate your actions — just do them.
+- Code over prose when code is clearer.
+
 # Environment
 - macOS, Ghostty terminal, zsh with Starship prompt
 - Editor: VS Code (`code --wait`)
@@ -27,3 +36,11 @@
 - `o` / `finder` → `open .`
 - `mkcd <dir>` → mkdir + cd
 - `fcd` → fzf directory jumper
+
+# Project Documentation
+
+If `PROJECT.md` exists in the working directory, this is a managed project.
+Read it at the start of each session. Keep `PROJECT.md` and `DESIGN.md` updated as you work:
+- After completing a task: check it off, append a changelog entry to PROJECT.md
+- After a design/architecture decision: append an ADR to DESIGN.md (create if needed)
+- Don't rewrite unchanged sections. Match existing style.

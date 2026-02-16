@@ -49,10 +49,6 @@ source <(fzf --zsh)
 if command -v claude &>/dev/null; then
   eval "$(claude completion zsh 2>/dev/null)"
 fi
-if command -v codex &>/dev/null; then
-  eval "$(codex completion zsh 2>/dev/null)"
-fi
-
 # ---------------------
 # nvm (lazy-loaded for fast shell startup)
 # ---------------------

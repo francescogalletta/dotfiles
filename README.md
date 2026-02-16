@@ -23,7 +23,6 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | Tool | Purpose |
 |------|---------|
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | Anthropic's AI coding agent |
-| [Codex CLI](https://github.com/openai/codex) | OpenAI's AI coding agent |
 | [Google Drive](https://www.google.com/drive/download/) | Desktop sync client |
 
 ## Prerequisites
@@ -49,11 +48,11 @@ The script is idempotent — safe to run multiple times. Existing config files a
 4. Installs Ghostty via `brew install --cask`
 5. Installs Node.js LTS via nvm
 6. Installs Python via uv
-7. Symlinks config files (zshrc, gitconfig, ghostty, starship)
+7. Symlinks config files (zshrc, gitconfig, ghostty, starship, CLAUDE.md)
 8. Prompts for git name/email (if not configured)
 9. Generates an ed25519 SSH key (if none exists)
 10. Authenticates with GitHub via `gh auth login`
-11. Prompts for optional installs (Claude Code, Codex CLI, Google Drive)
+11. Prompts for optional installs (Claude Code, Google Drive)
 
 Progress is shown with an animated spinner and progress bar. Failures capture the last 5 lines of output so you can see what broke without digging through logs.
 
@@ -63,27 +62,22 @@ Progress is shown with an animated spinner and progress bar. Failures capture th
 ~/dotfiles/
 ├── install.sh                  # Bootstrap script
 ├── README.md                   # This file
+├── CLAUDE.md                   # Claude Code global config → ~/CLAUDE.md
+├── PROJECT.md                  # Project phases, tasks, changelog
+├── DESIGN.md                   # Architecture decision records
 ├── zshrc                       # Zsh config → ~/.zshrc
 ├── gitconfig                   # Git config → ~/.gitconfig
-├── ai/                         # AI coding tool configs (shared source of truth)
-│   ├── common.md               # Environment prefs shared by all AI tools
-│   ├── claude.md               # Claude Code header
-│   └── codex.md                # Codex CLI header
 └── config/
     ├── ghostty/
     │   └── config              # Ghostty config → ~/.config/ghostty/config
     └── starship.toml           # Starship prompt → ~/.config/starship.toml
 ```
 
-### Why `ai/`?
+### AI agent config
 
-Both Claude Code and Codex CLI read markdown files to learn your environment preferences (CLI aliases, preferred tools, runtime managers, etc.). Rather than maintaining two copies that drift apart, `ai/common.md` holds the shared preferences and each tool gets a short header file (`claude.md`, `codex.md`).
+`CLAUDE.md` lives in the repo root and is symlinked to `~/CLAUDE.md`, just like any other dotfile. Edits flow both ways — change the live file or the repo file, same result.
 
-During install, the script assembles them:
-- `~/CLAUDE.md` = `ai/claude.md` + `ai/common.md`
-- `~/.codex/AGENTS.md` = `ai/codex.md` + `ai/common.md`
-
-Edit `common.md` once, re-run install, and both tools stay in sync.
+This approach is agent-agnostic. Adding support for another AI agent means adding another config file and symlink — no special build step or concatenation needed.
 
 ## Post-install
 
