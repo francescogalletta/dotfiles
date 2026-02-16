@@ -48,7 +48,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 4. Installs Ghostty via `brew install --cask`
 5. Installs Node.js LTS via nvm
 6. Installs Python via uv
-7. Symlinks config files (zshrc, gitconfig, ghostty, starship, CLAUDE.md, Claude skills/settings)
+7. Symlinks config files (zshrc, gitconfig, ghostty, starship, CLAUDE.md, Claude skills/settings/statusline)
 8. Prompts for git name/email (if not configured)
 9. Generates an ed25519 SSH key (if none exists)
 10. Authenticates with GitHub via `gh auth login`
@@ -89,6 +89,7 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 ├── gitconfig                   # Git config → ~/.gitconfig
 ├── claude/
 │   ├── settings.json           # Claude Code settings → ~/.claude/settings.json
+│   ├── statusline.sh           # Claude Code statusline → ~/.claude/statusline.sh
 │   └── skills/                 # Claude Code skills → ~/.claude/skills/
 │       ├── project-new/        #   /project-new — scaffold a new project
 │       └── project-resume/     #   /project-resume — resume an existing project
@@ -105,7 +106,8 @@ All Claude Code config lives in this repo and is symlinked to its expected locat
 | Repo path | Symlink target | Purpose |
 |-----------|---------------|---------|
 | `CLAUDE.md` | `~/CLAUDE.md` | Global instructions (tone, tools, conventions) |
-| `claude/settings.json` | `~/.claude/settings.json` | Permissions, status line |
+| `claude/settings.json` | `~/.claude/settings.json` | Permissions, statusline command |
+| `claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (shows dir • branch) |
 | `claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`) |
 
 Edits flow both ways — change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.

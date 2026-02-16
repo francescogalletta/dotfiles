@@ -37,6 +37,12 @@
 - `mkcd <dir>` → mkdir + cd
 - `fcd` → fzf directory jumper
 
+## Directory Navigation
+- `personal_drive` → Personal Google Drive
+- `monzo_drive` → Monzo Google Drive
+- `analytics` → Monzo analytics repo
+- `wearedev` → Monzo wearedev repo
+
 # Project Documentation
 
 If `PROJECT.md` exists in the working directory, this is a managed project.

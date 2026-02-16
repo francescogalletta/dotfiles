@@ -12,4 +12,5 @@ LINKS=(
   "CLAUDE.md:$HOME/CLAUDE.md:CLAUDE.md"
   "claude/skills:$HOME/.claude/skills:claude/skills"
   "claude/settings.json:$HOME/.claude/settings.json:claude/settings"
+  "claude/statusline.sh:$HOME/.claude/statusline.sh:claude/statusline"
 )

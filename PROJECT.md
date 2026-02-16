@@ -24,6 +24,13 @@ Portable, reproducible macOS dev environment.
 
 ## Changelog
 
+### 2026-02-16 (session 5)
+- Made directory navigation aliases conditional: only create if directory exists (works across personal/work machines)
+- Made Claude Code statusline portable: moved statusline.sh to repo, use $HOME instead of hardcoded username
+- Added statusline.sh to links.sh for automatic symlinking
+- Documented directory navigation aliases in CLAUDE.md
+- Updated README with statusline.sh in file structure and symlink table
+
 ### 2026-02-16 (session 4)
 - Added sync.sh and links.sh documentation to README
 - Fixed project-resume skill: simplified git commands, prevent parallel tool call errors

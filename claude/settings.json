@@ -27,6 +27,6 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "/bin/bash /Users/francesco/.claude/statusline-command.sh"
+    "command": "/bin/bash $HOME/.claude/statusline.sh"
   }
 }
