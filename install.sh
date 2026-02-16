@@ -111,6 +111,8 @@ count  # link: gitconfig
 count  # link: ghostty
 count  # link: starship
 count  # link: CLAUDE.md
+count  # link: claude/skills
+count  # link: claude/settings
 count  # Git identity
 count  # SSH key
 count  # GitHub CLI auth
@@ -187,7 +189,7 @@ link_file() {
   local src="$1" dst="$2" name="$3"
   if [ -L "$dst" ]; then
     rm "$dst"
-  elif [ -f "$dst" ]; then
+  elif [ -e "$dst" ]; then
     mv "$dst" "${dst}.bak"
   fi
   mkdir -p "$(dirname "$dst")"
@@ -208,6 +210,10 @@ advance "🔗 Linking starship config..."
 link_file "$DOTFILES/config/starship.toml"    "$HOME/.config/starship.toml"   "starship"
 advance "🔗 Linking CLAUDE.md..."
 link_file "$DOTFILES/CLAUDE.md"               "$HOME/CLAUDE.md"               "CLAUDE.md"
+advance "🔗 Linking Claude skills..."
+link_file "$DOTFILES/claude/skills"            "$HOME/.claude/skills"          "claude/skills"
+advance "🔗 Linking Claude settings..."
+link_file "$DOTFILES/claude/settings.json"     "$HOME/.claude/settings.json"   "claude/settings"
 
 # ─── 7. 🔑 Git identity ───────────────────────────────
 advance "🔑 Configuring Git identity..."

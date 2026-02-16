@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(gh:*)",
+      "Bash(uv:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(eza:*)",
+      "Bash(bat:*)",
+      "Bash(fd:*)",
+      "Bash(fzf:*)",
+      "Bash(rg:*)",
+      "Bash(chmod:*)",
+      "Bash(ln:*)",
+      "Bash(ls:*)",
+      "Bash(env:*)",
+      "Bash(code:*)",
+      "Bash(python:*)",
+      "WebSearch",
+      "WebFetch"
+    ],
+    "deny": [
+      "Bash(rm -rf *)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "/bin/bash /Users/francesco/.claude/statusline-command.sh"
+  }
+}
