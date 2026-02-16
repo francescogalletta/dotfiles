@@ -19,6 +19,7 @@ Portable, reproducible macOS dev environment.
 
 ### Phase 3: Polish ← current
 - [x] README refresh after restructure
+- [x] `sync.sh` — symlink doctor for drift detection/repair
 - [ ] Test full clean install on fresh machine
 
 ## Changelog
@@ -32,6 +33,12 @@ Portable, reproducible macOS dev environment.
 - Removed Codex CLI support (install, config, shell completions)
 - Added `PROJECT.md` and `DESIGN.md` for managed project documentation
 - Updated `CLAUDE.md` with session-start detection for managed projects
+
+### 2026-02-16 (session 3)
+- Added `sync.sh` — lightweight symlink doctor that detects/repairs broken links
+- Extracted shared link map into `links.sh`, sourced by both `install.sh` and `sync.sh`
+- Merged Ghostty config drift: theme → Selenized Light, window-decoration → auto
+- Relinked `~/.config/ghostty/config` back to repo via `sync.sh`
 
 ## Open Questions
 None.

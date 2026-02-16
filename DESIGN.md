@@ -24,3 +24,8 @@
 **Date:** 2026-02-16
 **Decision:** Managed projects use `PROJECT.md` (phases, tasks, changelog) and `DESIGN.md` (ADRs, architecture) at repo root. `PROJECT.md` presence signals a managed project to AI agents.
 **Reason:** Gives agents fast context on project state without reading entire codebases. Append-only changelog and ADRs prevent information loss across sessions.
+
+## ADR-006: Sync script for symlink repair
+**Date:** 2026-02-16
+**Decision:** Added `sync.sh` — a standalone symlink doctor that checks each link and repairs broken ones. Symlink definitions are in a shared `links.sh` sourced by both `install.sh` and `sync.sh`.
+**Reason:** Apps like Ghostty can overwrite symlinks with regular files during updates or config resets, causing silent config drift. `install.sh` only runs once; `sync.sh` can be run anytime to detect and fix this. The shared link map (`links.sh`) prevents the two scripts from diverging.

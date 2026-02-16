@@ -1,12 +1,12 @@
 font-family = JetBrains Mono
 font-size = 14
 
-theme = catppuccin-mocha
+theme = Selenized Light
 
 window-padding-x = 12
 window-padding-y = 8
 
-window-decoration = false
+window-decoration = auto
 macos-titlebar-style = hidden
 
 # Option key as Alt — enables Option+Left/Right (word jump), Option+Backspace (delete word)

@@ -106,13 +106,8 @@ for pkg in "${PACKAGES[@]}"; do count; done
 count  # Ghostty
 count  # Node.js
 count  # Python
-count  # link: zshrc
-count  # link: gitconfig
-count  # link: ghostty
-count  # link: starship
-count  # link: CLAUDE.md
-count  # link: claude/skills
-count  # link: claude/settings
+source "$DOTFILES/links.sh"
+for entry in "${LINKS[@]}"; do count; done  # symlinks
 count  # Git identity
 count  # SSH key
 count  # GitHub CLI auth
@@ -200,20 +195,11 @@ link_file() {
   fi
 }
 
-advance "🔗 Linking zshrc..."
-link_file "$DOTFILES/zshrc"                   "$HOME/.zshrc"                  "zshrc"
-advance "🔗 Linking gitconfig..."
-link_file "$DOTFILES/gitconfig"               "$HOME/.gitconfig"              "gitconfig"
-advance "🔗 Linking ghostty config..."
-link_file "$DOTFILES/config/ghostty/config"   "$HOME/.config/ghostty/config"  "ghostty"
-advance "🔗 Linking starship config..."
-link_file "$DOTFILES/config/starship.toml"    "$HOME/.config/starship.toml"   "starship"
-advance "🔗 Linking CLAUDE.md..."
-link_file "$DOTFILES/CLAUDE.md"               "$HOME/CLAUDE.md"               "CLAUDE.md"
-advance "🔗 Linking Claude skills..."
-link_file "$DOTFILES/claude/skills"            "$HOME/.claude/skills"          "claude/skills"
-advance "🔗 Linking Claude settings..."
-link_file "$DOTFILES/claude/settings.json"     "$HOME/.claude/settings.json"   "claude/settings"
+for entry in "${LINKS[@]}"; do
+  IFS=: read -r rel dst label <<< "$entry"
+  advance "🔗 Linking $label..."
+  link_file "$DOTFILES/$rel" "$dst" "$label"
+done
 
 # ─── 7. 🔑 Git identity ───────────────────────────────
 advance "🔑 Configuring Git identity..."
