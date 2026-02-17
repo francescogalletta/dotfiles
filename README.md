@@ -87,13 +87,13 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 ├── DESIGN.md                   # Architecture decision records
 ├── zshrc                       # Zsh config → ~/.zshrc
 ├── gitconfig                   # Git config → ~/.gitconfig
-├── claude/
-│   ├── settings.json           # Claude Code settings → ~/.claude/settings.json
-│   ├── statusline.sh           # Claude Code statusline → ~/.claude/statusline.sh
-│   └── skills/                 # Claude Code skills → ~/.claude/skills/
-│       ├── project-new/        #   /project-new — scaffold a new project
-│       └── project-resume/     #   /project-resume — resume an existing project
 └── config/
+    ├── claude/
+    │   ├── settings.json       # Claude Code settings → ~/.claude/settings.json
+    │   ├── statusline.sh       # Claude Code statusline → ~/.claude/statusline.sh
+    │   └── skills/             # Claude Code skills → ~/.claude/skills/
+    │       ├── project-new/    #   /project-new — scaffold a new project
+    │       └── project-resume/ #   /project-resume — resume an existing project
     ├── ghostty/
     │   └── config              # Ghostty config → ~/.config/ghostty/config
     └── starship.toml           # Starship prompt → ~/.config/starship.toml
@@ -106,9 +106,9 @@ All Claude Code config lives in this repo and is symlinked to its expected locat
 | Repo path | Symlink target | Purpose |
 |-----------|---------------|---------|
 | `CLAUDE.md` | `~/CLAUDE.md` | Global instructions (tone, tools, conventions) |
-| `claude/settings.json` | `~/.claude/settings.json` | Permissions, statusline command |
-| `claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (shows dir • branch) |
-| `claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`) |
+| `config/claude/settings.json` | `~/.claude/settings.json` | Permissions, statusline command |
+| `config/claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (shows dir • branch) |
+| `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`) |
 
 Edits flow both ways — change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
 

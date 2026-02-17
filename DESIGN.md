@@ -29,3 +29,8 @@
 **Date:** 2026-02-16
 **Decision:** Added `sync.sh` — a standalone symlink doctor that checks each link and repairs broken ones. Symlink definitions are in a shared `links.sh` sourced by both `install.sh` and `sync.sh`.
 **Reason:** Apps like Ghostty can overwrite symlinks with regular files during updates or config resets, causing silent config drift. `install.sh` only runs once; `sync.sh` can be run anytime to detect and fix this. The shared link map (`links.sh`) prevents the two scripts from diverging.
+
+## ADR-007: Config directory organization
+**Date:** 2026-02-17
+**Decision:** All tool-specific configs live in `config/{tool}/` subdirectories, regardless of deployment target. Traditional dotfiles (zshrc, gitconfig) and global files (CLAUDE.md) remain at root.
+**Reason:** Visual consistency in repo structure. Easier to find all tool configs in one place. Symlink targets can differ (`~/.config/`, `~/.claude/`, etc.) but source organization is uniform.
