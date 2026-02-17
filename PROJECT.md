@@ -29,6 +29,8 @@ Portable, reproducible macOS dev environment.
 - Updated links.sh, README file structure and symlink table
 - Symlink targets unchanged (~/.claude/* remains the same)
 - Enhanced statusline to match Starship prompt: smart directory truncation, colored git branch (purple), git status indicator (red *)
+- Updated README to reflect new statusline functionality
+- Added ADR-007 documenting config directory organization principle
 
 ### 2026-02-16 (session 5)
 - Made directory navigation aliases conditional: only create if directory exists (works across personal/work machines)

@@ -90,7 +90,7 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 └── config/
     ├── claude/
     │   ├── settings.json       # Claude Code settings → ~/.claude/settings.json
-    │   ├── statusline.sh       # Claude Code statusline → ~/.claude/statusline.sh
+    │   ├── statusline.sh       # Claude Code statusline (matches Starship prompt) → ~/.claude/statusline.sh
     │   └── skills/             # Claude Code skills → ~/.claude/skills/
     │       ├── project-new/    #   /project-new — scaffold a new project
     │       └── project-resume/ #   /project-resume — resume an existing project
@@ -107,7 +107,7 @@ All Claude Code config lives in this repo and is symlinked to its expected locat
 |-----------|---------------|---------|
 | `CLAUDE.md` | `~/CLAUDE.md` | Global instructions (tone, tools, conventions) |
 | `config/claude/settings.json` | `~/.claude/settings.json` | Permissions, statusline command |
-| `config/claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (shows dir • branch) |
+| `config/claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (directory, git branch, git status) |
 | `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`) |
 
 Edits flow both ways — change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
