@@ -88,7 +88,7 @@ alias lt="eza --icons --tree --level=2"
 alias cat="bat"
 
 # Directory shortcuts (conditional on existence)
-[[ -d ~/francesco.paolo.galletta@gmail.com\ -\ Google\ Drive ]] && alias personal_drive="cd ~/francesco.paolo.galletta@gmail.com\ -\ Google\ Drive"
+[[ -d ~/francesco.paolo.galletta@gmail.com\ -\ Google\ Drive ]] && alias personal_drive="cd ~/francesco.paolo.galletta@gmail.com\ -\ Google\ Drive/My\ Drive"
 [[ -d ~/francescogalletta@monzo.com\ -\ Google\ Drive ]] && alias monzo_drive="cd ~/francescogalletta@monzo.com\ -\ Google\ Drive"
 [[ -d ~/src/github.com/monzo/analytics ]] && alias analytics="cd ~/src/github.com/monzo/analytics"
 [[ -d ~/src/github.com/monzo/wearedev ]] && alias wearedev="cd ~/src/github.com/monzo/wearedev"
