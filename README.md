@@ -42,19 +42,21 @@ The script is idempotent — safe to run multiple times. Existing config files a
 
 ## What `install.sh` does
 
-1. Prints a welcome banner listing all install steps
-2. Installs Homebrew (if missing)
-3. Installs all CLI tools via `brew install` (skips already-installed)
+1. Listing all install steps
+2. Installs Homebrew
+3. Installs all CLI tools via `brew install` (skipping already installed)
 4. Installs Ghostty via `brew install --cask`
 5. Installs Node.js LTS via nvm
 6. Installs Python via uv
 7. Symlinks config files (zshrc, gitconfig, ghostty, starship, CLAUDE.md, Claude skills/settings/statusline)
-8. Prompts for git name/email (if not configured)
-9. Generates an ed25519 SSH key (if none exists)
+8. Prompts for git name/email
+9. Generates an ed25519 SSH key
 10. Authenticates with GitHub via `gh auth login`
 11. Prompts for optional installs (Claude Code, Google Drive)
 
-Progress is shown with an animated spinner and progress bar. Failures capture the last 5 lines of output so you can see what broke without digging through logs.
+Doesn't replace any configuration already in place.
+
+Failures capture the last 5 lines of output so you can see what broke without digging through logs.
 
 ## Other scripts
 
@@ -81,13 +83,13 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 ```
 ~/dotfiles/
 ├── install.sh                  # Bootstrap script
-├── README.md                   # This file
+├── README.md                   
 ├── CLAUDE.md                   # Claude Code global config → ~/CLAUDE.md
-├── PROJECT.md                  # Project phases, tasks, changelog
-├── DESIGN.md                   # Architecture decision records
+├── PROJECT.md                  # [Meta], this project's phases and planning
+├── DESIGN.md                   # [Meta] Architecture decision records
 ├── zshrc                       # Zsh config → ~/.zshrc
 ├── gitconfig                   # Git config → ~/.gitconfig
-└── config/
+└── config/                     # Configs for each tooling
     ├── claude/
     │   ├── settings.json       # Claude Code settings → ~/.claude/settings.json
     │   ├── statusline.sh       # Claude Code statusline (matches Starship prompt) → ~/.claude/statusline.sh
@@ -111,8 +113,3 @@ All Claude Code config lives in this repo and is symlinked to its expected locat
 | `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`) |
 
 Edits flow both ways — change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
-
-## Post-install
-
-- Open a new Ghostty window to load the new shell config
-- Verify: `node --version`, `python3 --version`, `gh auth status`
