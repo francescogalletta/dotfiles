@@ -1,75 +1,102 @@
 ---
 name: project-resume
-description: Resume work on an existing project by reading docs, summarizing state, and picking next task
+description: Orient any agent (human or sub-agent) at session start — read VCS + docs, present briefing, propose next actions, wait for confirmation before starting work
 user-invocable: true
-disable-model-invocation: true
 ---
 
 # /project-resume
 
-You are helping the user resume work on an existing project. **Read first, write only after user confirms direction.**
+**Read first. Do NOT begin work or modify any files until the user (or orchestrating agent) confirms a task.**
 
-## Phase 1: Read Project State
+## Step 1 — Ground truth from VCS
 
-**Step 1:** Read project files (note any that are missing):
-- `PROJECT.md`
-- `DESIGN.md`
-- `.claude/CLAUDE.md`
-
-**Step 2:** Check git state with: `git fetch 2>/dev/null; git status`
-- Fetch silently updates from remote (no-op if no remote)
-- Status shows branch, ahead/behind, and uncommitted changes
-
-**Step 3:** Get recent commits: `git log --oneline -10`
-
-IMPORTANT: Do NOT run file reads and git commands in parallel. Run file reads first, then git commands.
-
-## Phase 2: Present Briefing
-
-Summarize what you found in this format:
+Run sequentially (each informs the next):
 
 ```
-## Project: <name>
-<description>
+git log --oneline -10
+git status --short
+```
+
+Note: branch name, remote tracking status (ahead/behind/no remote), uncommitted files.
+
+## Step 2 — Read project docs
+
+Read in this order (note any that are missing):
+
+1. `CLAUDE.md`
+2. `PRD.md`
+3. `TASKS.md`
+
+## Step 3 — Read handoff note (if present)
+
+Read `.claude/session-current.md` if it exists. Skip gracefully if absent.
+
+## Step 4 — Present briefing
+
+Synthesise everything into this format:
+
+```
+## <Project name>
+<one-line description from PRD>
 
 ### Repository
-**Branch:** <current branch>
-**Remote:** <remote status — ahead/behind/up-to-date/no remote>
-**Uncommitted:** <list or "Working tree clean">
+Branch: <name>
+Remote: <ahead N / behind N / up-to-date / no remote>
+Uncommitted: <list files, or "clean">
 
-### Current Phase
-Phase N: <name> — <progress summary>
-
-### Recent Activity
-<group last few commits by theme, e.g. "Set up auth (3 commits)", not raw git log>
-
-### Task Status
-**Done:** N tasks
-**In Progress:** <list any>
-**Next Up:** <list top 2-3 unchecked tasks>
+### Tasks
+Done: N
+In Progress: <[T###] title @owner, or "none">
+Next pending: <top 2–3 [T###] titles>
 
 ### Open Questions
-<list from PROJECT.md, or "None">
+<from TASKS.md, or "none">
+
+### Last Session
+<summary from .claude/session-current.md, or "no handoff note found">
 ```
 
-## Phase 3: Suggest Actions & Ask Direction
+Flag any git housekeeping needed before work begins:
+- Behind remote → suggest pull
+- Ahead of remote → suggest push
+- Uncommitted changes → ask: commit, stash, or ignore?
 
-Before asking what to work on, suggest any git housekeeping:
-- If behind remote: suggest pulling
-- If ahead of remote: suggest pushing
-- If uncommitted changes: note them and ask if they should be committed or stashed
-- If no remote: suggest creating one with `gh repo create`
+## Step 5 — Propose next actions
 
-Then suggest the top 2-3 tasks from the next-up list.
+Suggest the top 2–3 concrete next actions by task ID, e.g.:
+
+> Suggested next:
+> 1. [T002] Set up database schema
+> 2. [T003] Implement auth endpoints
+> 3. Pull latest from remote (currently 2 commits behind)
 
 Ask: "What do you want to work on?"
 
-Let the user pick a suggested action, a task, or specify something else.
+**Wait for selection. Do NOT begin work until confirmed.**
 
-## Phase 4: Update Docs
+## Step 6 — Claim task and begin
 
-Only after the user confirms what to work on:
-- Mark the chosen task as in-progress in `PROJECT.md` (prefix with `~` or note it)
-- Do NOT modify any other docs at this point
+On selection:
 
-Then begin working on the chosen task.
+1. In `TASKS.md`: move the task line to the **In Progress** section, set status to `` `in_progress` ``, add `@<owner>` (use your agent name or `@claude` if solo)
+2. In `tasks/T###.md`: update **Status** and **Owner** fields
+3. Begin work
+
+### session-current.md convention
+
+At the end of any significant work session, write (overwrite) `.claude/session-current.md`:
+
+```markdown
+# Session Note — <date>
+
+## Completed
+- [T###] <what was done>
+
+## In Flight
+- [T###] <what was started but not finished>
+
+## Blockers / Open Questions
+- ...
+```
+
+This file is gitignored (local only). `/project-resume` reads it on next session start.

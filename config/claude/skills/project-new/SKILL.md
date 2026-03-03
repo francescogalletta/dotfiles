@@ -1,119 +1,49 @@
 ---
 name: project-new
-description: Scaffold a new project with structured planning conversation, docs, and git init
+description: Start a new multi-agent project — discover requirements conversationally, draft PRD.md + TASKS.md, then scaffold on confirmation
 user-invocable: true
-argument-hint: "[name] [description]"
 disable-model-invocation: true
 ---
 
-# /project-new [name] [description]
+# /project-new
 
-You are guiding the user through creating a new project. **Do NOT create any files until explicitly told to proceed.** Conversation first, files second.
+**Do NOT create any files until the user explicitly confirms the PRD and task plan.** Two phases: Explore, then Crystallise.
 
-## Input
+## Phase 1 — Explore
 
-- `name`: project directory name (kebab-case)
-- `description`: one-line project description
+Ask for the project name if not provided (no description arg — let the user explain freely).
 
-If either is missing, ask for it before continuing.
+Then have an open-ended discovery conversation. Ask one or a few questions at a time and wait for answers. Cover:
 
-## Phase 1: Gather Context (3 rounds — wait for answers between each)
+- What problem does this solve? Who is it for?
+- What does success look like? Any hard constraints?
+- Must-have requirements vs nice-to-haves; explicit non-goals
+- Language / framework preferences; infrastructure or external service constraints
 
-**Round 1 — Goals:**
-- What problem does this solve?
-- Who is it for?
-- What does "done" look like?
+Adapt questions to what the user says — don't mechanically run through a fixed list. Probe gaps. When you have a thorough picture, say:
 
-**Round 2 — Requirements:**
-- What are the must-have features?
-- What are the nice-to-haves?
-- Any explicit non-goals?
+> "I have enough to write the PRD — want me to go ahead?"
 
-**Round 3 — Tech Choices:**
-- Language / framework preferences?
-- Any infrastructure constraints?
-- External services or APIs involved?
+**Do NOT proceed until the user says yes.**
 
-After each round, wait for the user to respond before asking the next round.
+## Phase 2 — Crystallise
 
-## Phase 2: Confirm
+Show the PRD.md and TASKS.md drafts inline in chat for review. Iterate until the user approves.
 
-Summarize everything gathered in this format:
-
-```
-## Project: <name>
-<description>
-
-### Goals
-- ...
-
-### Requirements
-**Must have:** ...
-**Should have:** ...
-**Nice to have:** ...
-
-### Non-goals
-- ...
-
-### Tech Stack
-| Component | Choice | Rationale |
-|-----------|--------|-----------|
-| ... | ... | ... |
-
-### Phased Plan
-- Phase 1: ...
-- Phase 2: ...
-- Phase 3: ...
-```
-
-Ask: "Does this look right? Any changes before I create the project?"
-
-**Do NOT proceed until the user confirms.**
-
-## Phase 3: Scaffold
-
-Only after confirmation, create the project:
-
-1. `mkdir -p ~/projects/<name>/.claude`
-2. `cd ~/projects/<name> && git init`
-3. Write `.claude/CLAUDE.md` (see template below)
-4. Write `PROJECT.md` at project root (see template below)
-5. Write `DESIGN.md` at project root (see template below)
-6. Write `.gitignore` (see template below)
-7. `git add -A && git commit -m "Initial project scaffold"`
-
-### Template: `.claude/CLAUDE.md`
+### PRD.md draft format
 
 ```markdown
-# <Name>
+# <Name> — PRD
 
-<description>
+<one-line description>
 
-## Session Start
+## Problem
+...
 
-- Read `PROJECT.md` for current state, tasks, and plan
-- Read `DESIGN.md` for architecture decisions
-- Run `git log --oneline -10` to see recent activity
+## Audience
+...
 
-## Rules
-
-- Follow the global `~/CLAUDE.md` as baseline — this file adds project-specific rules
-- Update `PROJECT.md` when the plan changes or tasks are completed
-- Add entries to `DESIGN.md` when making architecture or design decisions
-- Track task status with checkboxes in PROJECT.md
-- Commit frequently with clear messages
-```
-
-### Template: `PROJECT.md`
-
-Populate from the conversation. Use this structure:
-
-```markdown
-# <Name>
-
-<description>
-
-## Goals
+## Success Criteria
 - ...
 
 ## Non-Goals
@@ -134,45 +64,105 @@ Populate from the conversation. Use this structure:
 
 | Component | Choice | Rationale |
 |-----------|--------|-----------|
-| ... | ... | ... |
+```
 
-## Plan
+### TASKS.md draft format
 
-### Phase 1: <name>
-- ...
+A lightweight index — one line per task, all detail goes in the task file. Derive tasks from the requirements; group into phases; assign IDs starting at T001.
 
-### Phase 2: <name>
-- ...
+```markdown
+# Tasks — <Name>
 
-## Tasks
+## In Progress
+<!-- agents move tasks here when claiming them -->
 
-### Phase 1
-- [ ] Task 1
-- [ ] Task 2
+## Phase 1: <name>
+- [ ] [T001] First task — `pending` → [tasks/T001.md](tasks/T001.md)
+- [ ] [T002] Second task — `pending` → [tasks/T002.md](tasks/T002.md)
 
 ## Open Questions
 - ...
 
 ## Changelog
-- YYYY-MM-DD: Project created
+- 2026-03-03: Project created
 ```
 
-### Template: `DESIGN.md`
+Task line format: `- [ ] [T###] One-line description — \`status\` [@owner] [blockedBy:T###] → [tasks/T###.md](tasks/T###.md)`
+
+Ask: "Does this look right? Any changes before I scaffold the project?"
+
+**Do NOT scaffold until the user confirms.**
+
+## Phase 3 — Scaffold
+
+After confirmation, create all files in order:
+
+1. `mkdir -p ~/projects/<name>/.claude/agents ~/projects/<name>/.claude/skills ~/projects/<name>/.claude/rules ~/projects/<name>/tasks`
+2. `cd ~/projects/<name> && git init`
+3. Write `CLAUDE.md` (see template)
+4. Write `PRD.md` — use the approved draft
+5. Write `TASKS.md` — use the approved draft
+6. Write one `tasks/T###.md` per task (see template)
+7. Write `CLAUDE.local.md` (see template)
+8. Write `.gitignore` (see template)
+9. `git add -A && git commit -m "Initial project scaffold"`
+
+### Template: `CLAUDE.md` (≤60 lines)
 
 ```markdown
-# Design Decisions — <Name>
+# <Name>
 
-Architecture Decision Records for the project. Append entries as decisions are made.
+<one-line description>
 
----
+## Context
+@PRD.md
+@TASKS.md
 
-*No decisions recorded yet.*
+## Session Rules
+- Follow global ~/CLAUDE.md as baseline
+- Read PRD.md for intent; read TASKS.md for current state
+- Run `git log --oneline -10` to see recent activity
+- Claim tasks in TASKS.md (set status + @owner) before starting
+- Mark done + update changelog when completing
+- Commit frequently with clear messages
+```
 
-<!-- ADR format:
-## YYYY-MM-DD: <Title>
-**Decision:** What was decided
-**Reason:** Why
--->
+### Template: `tasks/T###.md`
+
+Generate one file per task using details from the conversation:
+
+```markdown
+# [T###] <Task title>
+
+**Phase:** Phase 1: <name>
+**Status:** `pending`
+**Owner:** —
+**BlockedBy:** —
+**Blocks:** —
+
+## Goal
+What this task achieves and why it matters.
+
+## Acceptance Criteria
+- [ ] Specific, verifiable outcome 1
+- [ ] Specific, verifiable outcome 2
+
+## Context
+Relevant background, constraints, decisions from the PRD.
+
+## Notes
+<!-- Agents append dated notes here when context is clarified or decisions are made. Never edit prior notes — only append. -->
+
+## References
+- PRD.md — relevant section
+```
+
+### Template: `CLAUDE.local.md`
+
+```markdown
+# Local Overrides — <Name>
+
+Personal notes and overrides not committed to the repo.
 ```
 
 ### Template: `.gitignore`
@@ -189,9 +179,11 @@ build/
 __pycache__/
 *.pyc
 .venv/
+CLAUDE.local.md
+.claude/session-current.md
 ```
 
-## Phase 4: Summary
+## Phase 4 — Summary
 
 After scaffolding, print:
 
@@ -199,13 +191,17 @@ After scaffolding, print:
 Project created at ~/projects/<name>/
 
 Files:
-  .claude/CLAUDE.md    — project-specific rules (complements ~/CLAUDE.md)
-  PROJECT.md           — goals, plan, and task tracking
-  DESIGN.md            — architecture decisions (grows over time)
-  .gitignore           — sensible defaults
+  CLAUDE.md                    — agent context (≤60 lines, @imports PRD + TASKS)
+  PRD.md                       — problem, requirements, tech stack
+  TASKS.md                     — task index (one line per task)
+  tasks/T001.md … T###.md      — per-task detail files
+  .claude/agents/              — ready for sub-agent definitions
+  .claude/skills/              — ready for project slash commands
+  .claude/rules/               — ready for topic-scoped rules
+  CLAUDE.local.md              — personal overrides (gitignored)
+  .gitignore
 
-Next steps:
+Next:
   cd ~/projects/<name>
-  Pick a task from Phase 1 in PROJECT.md
-  Use /project-resume to catch up in future sessions
+  /project-resume              — to orient any agent (including you) at session start
 ```
