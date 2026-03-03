@@ -110,6 +110,13 @@ alias finder="open ."
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" || return; }
 
 # ---------------------
+# Bell on slow command completion (>=10s) — Ghostty shows a system notification
+# ---------------------
+_cmd_start_time=0
+preexec() { _cmd_start_time=$SECONDS }
+precmd() { [[ $(( SECONDS - _cmd_start_time )) -ge 10 ]] && echo -n "\a"; _cmd_start_time=$SECONDS }
+
+# ---------------------
 # Plugins (must be near end of file)
 # ---------------------
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh

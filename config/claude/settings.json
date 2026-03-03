@@ -28,5 +28,6 @@
   "statusLine": {
     "type": "command",
     "command": "/bin/bash $HOME/.claude/statusline.sh"
-  }
+  },
+  "notifications": true
 }
