@@ -29,5 +29,8 @@
     "type": "command",
     "command": "/bin/bash $HOME/.claude/statusline.sh"
   },
-  "notifications": true
+  "notifications": true,
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true
+  }
 }
