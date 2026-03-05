@@ -21,5 +21,3 @@ mouse-scroll-multiplier = 2
 # Window behavior
 confirm-close-surface = false
 
-# Notifications — alert when bell is received (e.g. long command finishes)
-bell = system
