@@ -26,6 +26,9 @@ Read in this order (note any that are missing):
 1. `CLAUDE.md`
 2. `PRD.md`
 3. `TASKS.md`
+4. `DESIGN.md` (skip silently if absent)
+
+If `TASKS.md` is missing entirely, suggest running `/project-new` to set up the project structure.
 
 ## Step 3 — Read handoff note (if present)
 
@@ -45,12 +48,15 @@ Remote: <ahead N / behind N / up-to-date / no remote>
 Uncommitted: <list files, or "clean">
 
 ### Tasks
-Done: N
+Done: <count of [x] lines in TASKS.md>
 In Progress: <[T###] title @owner, or "none">
 Next pending: <top 2–3 [T###] titles>
 
 ### Open Questions
 <from TASKS.md, or "none">
+
+### Key Design Decisions
+<1–2 most recent entries from DESIGN.md, or "none recorded">
 
 ### Last Session
 <summary from .claude/session-current.md, or "no handoff note found">
@@ -81,6 +87,8 @@ On selection:
 1. In `TASKS.md`: move the task line to the **In Progress** section, set status to `` `in_progress` ``, add `@<owner>` (use your agent name or `@claude` if solo)
 2. In `tasks/T###.md`: update **Status** and **Owner** fields
 3. Begin work
+
+When the task is complete, use `/ship` to commit and push.
 
 ### session-current.md convention
 

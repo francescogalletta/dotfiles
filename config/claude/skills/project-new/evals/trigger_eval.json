@@ -1,0 +1,82 @@
+[
+  {
+    "query": "i want to start a new project, it's a slack bot that summarizes standup notes",
+    "should_trigger": true
+  },
+  {
+    "query": "let's kick off the meal planner app we discussed. python backend, react frontend",
+    "should_trigger": true
+  },
+  {
+    "query": "/project-new — building an internal dashboard for my team to track deploys",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to build a CLI tool that syncs notion pages to markdown files. can you help me structure this properly?",
+    "should_trigger": true
+  },
+  {
+    "query": "starting a new side project today — a habit tracker with daily reminders. iOS app.",
+    "should_trigger": true
+  },
+  {
+    "query": "ok let's finally start that web scraper project. typescript, playwright, postgres",
+    "should_trigger": true
+  },
+  {
+    "query": "can you scaffold a new project for me? it's a personal finance tracker, i want to use supabase",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to create a chrome extension that highlights TODO comments in github PRs. help me plan it out",
+    "should_trigger": true
+  },
+  {
+    "query": "new project time — building a job application tracker. just for myself, nothing fancy",
+    "should_trigger": true
+  },
+  {
+    "query": "we need to start a new microservice for handling webhooks from stripe. node + express. let's get organised",
+    "should_trigger": false
+  },
+  {
+    "query": "can you add a new feature to this project? need to add oauth to the login page",
+    "should_trigger": false
+  },
+  {
+    "query": "I already have a repo set up at ~/projects/myapp, just help me implement the auth module",
+    "should_trigger": false
+  },
+  {
+    "query": "what tasks should I work on next?",
+    "should_trigger": false
+  },
+  {
+    "query": "create a new python script that parses CSV files and outputs JSON",
+    "should_trigger": false
+  },
+  {
+    "query": "write me a PRD for a mobile app idea I have",
+    "should_trigger": false
+  },
+  {
+    "query": "I want to refactor this codebase to use typescript — where should I start?",
+    "should_trigger": false
+  },
+  {
+    "query": "let's continue working on the dashboard project we started last week",
+    "should_trigger": false
+  },
+  {
+    "query": "new file: create a utils.ts with helper functions for date formatting",
+    "should_trigger": false
+  },
+  {
+    "query": "can you create a new branch for the auth feature and set up the folder structure?",
+    "should_trigger": false
+  },
+  {
+    "query": "help me design the database schema for a multi-tenant SaaS app i'm building",
+    "should_trigger": false
+  }
+]

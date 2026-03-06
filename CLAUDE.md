@@ -45,17 +45,9 @@
 
 # Project Documentation
 
-If `PROJECT.md` exists in the working directory, this is a managed project.
-Read it at the start of each session. Keep `PROJECT.md` and `DESIGN.md` updated as you work:
-- After completing a task: check it off, append a changelog entry to PROJECT.md
-- After a design/architecture decision: append an ADR to DESIGN.md (create if needed)
-- Don't rewrite unchanged sections. Match existing style.
+Managed projects are scaffolded with `/project-new` and use `PRD.md` + `TASKS.md` + `DESIGN.md`.
 
-**CRITICAL: Update docs BEFORE committing.**
-When asked to commit changes:
-1. Update PROJECT.md changelog (and DESIGN.md if applicable)
-2. Stage all changes including updated docs
-3. Commit everything together
-4. Then push
-
-Never commit code first and update docs after — the changelog must be in the same commit as the changes it documents.
+- Run `/project-resume` at session start to orient yourself
+- Use `/ship` when committing and pushing work
+- After a design/architecture decision: append an entry to `DESIGN.md` (append-only, never edit past entries)
+- After completing a task: mark it done in `TASKS.md` and append a changelog entry

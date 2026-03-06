@@ -1,13 +1,13 @@
 ---
 name: project-new
-description: Start a new multi-agent project — discover requirements conversationally, draft PRD.md + TASKS.md, then scaffold on confirmation
+description: Use whenever a user wants to start a brand-new project, app, tool, service, or side project — even if they just say "I want to build X", "let's kick off Y", or "new project: Z". Handles the full workflow: structured discovery conversation, PRD.md + TASKS.md drafts for review, then scaffolds a complete project directory with git, per-task files, and agent-ready config. Trigger on any fresh project start, not just explicit /project-new invocations.
 user-invocable: true
 disable-model-invocation: true
 ---
 
 # /project-new
 
-**Do NOT create any files until the user explicitly confirms the PRD and task plan.** Two phases: Explore, then Crystallise.
+**Do NOT create any files until the user explicitly confirms the PRD and task plan.**
 
 ## Phase 1 — Explore
 
@@ -28,7 +28,9 @@ Adapt questions to what the user says — don't mechanically run through a fixed
 
 ## Phase 2 — Crystallise
 
-Show the PRD.md and TASKS.md drafts inline in chat for review. Iterate until the user approves.
+Show the PRD.md and TASKS.md drafts inline in chat. Then ask: "What would you like to change?" Keep iterating until the user signals they're happy (e.g. "looks good", "go ahead", "ship it").
+
+**Do NOT scaffold until the user confirms.**
 
 ### PRD.md draft format
 
@@ -89,13 +91,11 @@ A lightweight index — one line per task, all detail goes in the task file. Der
 
 Task line format: `- [ ] [T###] One-line description — \`status\` [@owner] [blockedBy:T###] → [tasks/T###.md](tasks/T###.md)`
 
-Ask: "Does this look right? Any changes before I scaffold the project?"
-
-**Do NOT scaffold until the user confirms.**
-
 ## Phase 3 — Scaffold
 
-After confirmation, create all files in order:
+Default location: `~/projects/<name>`. If the user has mentioned a different location during the conversation, use that instead — otherwise proceed with the default.
+
+Create all files in order:
 
 1. `mkdir -p ~/projects/<name>/.claude/agents ~/projects/<name>/.claude/skills ~/projects/<name>/.claude/rules ~/projects/<name>/tasks`
 2. `cd ~/projects/<name> && git init`
@@ -103,9 +103,10 @@ After confirmation, create all files in order:
 4. Write `PRD.md` — use the approved draft
 5. Write `TASKS.md` — use the approved draft
 6. Write one `tasks/T###.md` per task (see template)
-7. Write `CLAUDE.local.md` (see template)
-8. Write `.gitignore` (see template)
-9. `git add -A && git commit -m "Initial project scaffold"`
+7. Write `DESIGN.md` (see template)
+8. Write `CLAUDE.local.md` (see template)
+9. Write `.gitignore` (see template)
+10. `git add -A && git commit -m "Initial project scaffold"`
 
 ### Template: `CLAUDE.md` (≤60 lines)
 
@@ -121,10 +122,11 @@ After confirmation, create all files in order:
 ## Session Rules
 - Follow global ~/CLAUDE.md as baseline
 - Read PRD.md for intent; read TASKS.md for current state
+- Run `/project-resume` at session start to orient yourself
 - Run `git log --oneline -10` to see recent activity
 - Claim tasks in TASKS.md (set status + @owner) before starting
 - Mark done + update changelog when completing
-- Commit frequently with clear messages
+- Use `/ship` when committing and pushing work
 ```
 
 ### Template: `tasks/T###.md`
@@ -139,6 +141,7 @@ Generate one file per task using details from the conversation:
 **Owner:** —
 **BlockedBy:** —
 **Blocks:** —
+**Validation:** <what the user needs to approve, or "none — agent can proceed autonomously">
 
 ## Goal
 What this task achieves and why it matters.
@@ -150,11 +153,25 @@ What this task achieves and why it matters.
 ## Context
 Relevant background, constraints, decisions from the PRD.
 
+## Decisions
+<!-- Append dated notes when significant choices are made during this task. Never edit prior entries — only append. -->
+
 ## Notes
-<!-- Agents append dated notes here when context is clarified or decisions are made. Never edit prior notes — only append. -->
+<!-- Append dated notes when context is clarified. Never edit prior entries — only append. -->
 
 ## References
 - PRD.md — relevant section
+```
+
+### Template: `DESIGN.md`
+
+```markdown
+# Design — <Name>
+
+Architecture decisions and technical choices. Append-only — never edit past entries.
+
+<!-- Format: ## [T###] Decision title — YYYY-MM-DD
+Briefly state: what was decided, why, and what alternatives were rejected. -->
 ```
 
 ### Template: `CLAUDE.local.md`
@@ -191,10 +208,11 @@ After scaffolding, print:
 Project created at ~/projects/<name>/
 
 Files:
-  CLAUDE.md                    — agent context (≤60 lines, @imports PRD + TASKS)
+  CLAUDE.md                    — agent context (@imports PRD + TASKS)
   PRD.md                       — problem, requirements, tech stack
   TASKS.md                     — task index (one line per task)
   tasks/T001.md … T###.md      — per-task detail files
+  DESIGN.md                    — architecture decision log (append-only)
   .claude/agents/              — ready for sub-agent definitions
   .claude/skills/              — ready for project slash commands
   .claude/rules/               — ready for topic-scoped rules
