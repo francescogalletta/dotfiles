@@ -43,6 +43,10 @@
 - `analytics` → Monzo analytics repo
 - `wearedev` → Monzo wearedev repo
 
+# Dotfiles
+
+System config is managed through `~/dotfiles` and symlinked into place. When changing any config (Claude settings, shell, editor, etc.), prefer editing the source in `~/dotfiles/` rather than the symlink target. After making changes, prompt to ship them.
+
 # Project Documentation
 
 Managed projects are scaffolded with `/project-new` and use `PRD.md` + `TASKS.md` + `DESIGN.md`.
