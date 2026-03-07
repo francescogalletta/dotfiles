@@ -19,7 +19,10 @@
       "Bash(code:*)",
       "Bash(python:*)",
       "WebSearch",
-      "WebFetch"
+      "WebFetch",
+      "Read(/Users/francesco/*)",
+      "Glob(/Users/francesco/*)",
+      "Grep(/Users/francesco/*)"
     ],
     "deny": [
       "Bash(rm -rf *)"
