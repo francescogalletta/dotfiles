@@ -21,3 +21,6 @@ mouse-scroll-multiplier = 2
 # Window behavior
 confirm-close-surface = false
 
+# Notifications
+bell-notify = true
+
