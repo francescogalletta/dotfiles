@@ -20,9 +20,9 @@
       "Bash(python:*)",
       "WebSearch",
       "WebFetch",
-      "Read(/Users/francesco/*)",
-      "Glob(/Users/francesco/*)",
-      "Grep(/Users/francesco/*)"
+      "Read(/Users/*/*)",
+      "Glob(/Users/*/*)",
+      "Grep(/Users/*/*)"
     ],
     "deny": [
       "Bash(rm -rf *)"

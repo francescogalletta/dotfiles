@@ -45,13 +45,13 @@ The script is idempotent — safe to run multiple times. Existing config files a
 1. Listing all install steps
 2. Installs Homebrew
 3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty)
-5. Installs Node.js LTS via nvm
-6. Installs Python via uv
-7. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, cursor, CLAUDE.md, Claude skills/settings/statusline)
-8. Prompts for git name/email
-9. Generates an ed25519 SSH key
-10. Authenticates with GitHub via `gh auth login`
-11. Prompts for optional installs (Claude Code, Google Drive)
+4. Installs Node.js LTS via nvm
+5. Installs Python via uv
+6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, cursor, CLAUDE.md, Claude skills/settings/statusline)
+7. Prompts for git name/email
+8. Generates an ed25519 SSH key
+9. Authenticates with GitHub via `gh auth login`
+10. Prompts for optional installs (Claude Code, Google Drive)
 
 Doesn't replace any configuration already in place.
 
@@ -96,7 +96,8 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │   ├── statusline.sh       # Claude Code statusline (matches Starship prompt) → ~/.claude/statusline.sh
     │   └── skills/             # Claude Code skills → ~/.claude/skills/
     │       ├── project-new/    #   /project-new — scaffold a new project
-    │       └── project-resume/ #   /project-resume — resume an existing project
+    │       ├── project-resume/ #   /project-resume — resume an existing project
+    │       └── ship/           #   /ship — commit and push
     ├── cursor/
     │   ├── settings.json       # Cursor settings → ~/Library/.../Cursor/User/settings.json
     │   └── keybindings.json    # Cursor keybindings → ~/Library/.../Cursor/User/keybindings.json
