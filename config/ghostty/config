@@ -21,6 +21,6 @@ mouse-scroll-multiplier = 2
 # Window behavior
 confirm-close-surface = false
 
-# Notifications
-bell-notify = true
+# Notifications — enable system bell (e.g. dock bounce on macOS)
+bell-features = system
 
