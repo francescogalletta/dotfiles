@@ -34,3 +34,13 @@
 **Date:** 2026-02-17
 **Decision:** All tool-specific configs live in `config/{tool}/` subdirectories, regardless of deployment target. Traditional dotfiles (zshrc, gitconfig) and global files (CLAUDE.md) remain at root.
 **Reason:** Visual consistency in repo structure. Easier to find all tool configs in one place. Symlink targets can differ (`~/.config/`, `~/.claude/`, etc.) but source organization is uniform.
+
+## ADR-008: Brewfile for package management
+**Date:** 2026-03-10
+**Decision:** Moved the hardcoded package list from `install.sh` into a declarative `Brewfile` at repo root. `install.sh` now uses `brew bundle install` instead of a per-package loop.
+**Reason:** Easier to diff, declarative, and `brew bundle dump` can capture what's actually installed. The Brewfile only includes packages the dotfiles manage — work-specific tools are left out.
+
+## ADR-009: Cursor and global gitignore managed as dotfiles
+**Date:** 2026-03-10
+**Decision:** Added Cursor (editor) settings/keybindings and a global gitignore (`~/.config/git/ignore`) to the repo, symlinked like other configs. Also added `.zprofile` for brew shellenv.
+**Reason:** Completes the managed config set — editor, git hygiene, and shell profile were the main gaps. `code` command resolves to Cursor (VS Code fork), so config lives in `config/cursor/`.

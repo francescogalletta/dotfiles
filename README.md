@@ -44,11 +44,10 @@ The script is idempotent — safe to run multiple times. Existing config files a
 
 1. Listing all install steps
 2. Installs Homebrew
-3. Installs all CLI tools via `brew install` (skipping already installed)
-4. Installs Ghostty via `brew install --cask`
+3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty)
 5. Installs Node.js LTS via nvm
 6. Installs Python via uv
-7. Symlinks config files (zshrc, gitconfig, ghostty, starship, CLAUDE.md, Claude skills/settings/statusline)
+7. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, cursor, CLAUDE.md, Claude skills/settings/statusline)
 8. Prompts for git name/email
 9. Generates an ed25519 SSH key
 10. Authenticates with GitHub via `gh auth login`
@@ -83,11 +82,13 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 ```
 ~/dotfiles/
 ├── install.sh                  # Bootstrap script
-├── README.md                   
+├── Brewfile                    # Homebrew package manifest (used by install.sh)
+├── README.md
 ├── CLAUDE.md                   # Claude Code global config → ~/CLAUDE.md
 ├── PROJECT.md                  # [Meta], this project's phases and planning
 ├── DESIGN.md                   # [Meta] Architecture decision records
 ├── zshrc                       # Zsh config → ~/.zshrc
+├── zprofile                    # Zsh profile → ~/.zprofile
 ├── gitconfig                   # Git config → ~/.gitconfig
 └── config/                     # Configs for each tooling
     ├── claude/
@@ -96,8 +97,13 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │   └── skills/             # Claude Code skills → ~/.claude/skills/
     │       ├── project-new/    #   /project-new — scaffold a new project
     │       └── project-resume/ #   /project-resume — resume an existing project
+    ├── cursor/
+    │   ├── settings.json       # Cursor settings → ~/Library/.../Cursor/User/settings.json
+    │   └── keybindings.json    # Cursor keybindings → ~/Library/.../Cursor/User/keybindings.json
     ├── ghostty/
     │   └── config              # Ghostty config → ~/.config/ghostty/config
+    ├── git/
+    │   └── ignore              # Global gitignore → ~/.config/git/ignore
     └── starship.toml           # Starship prompt → ~/.config/starship.toml
 ```
 

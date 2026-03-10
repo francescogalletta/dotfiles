@@ -6,9 +6,13 @@ DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 
 LINKS=(
   "zshrc:$HOME/.zshrc:zshrc"
+  "zprofile:$HOME/.zprofile:zprofile"
   "gitconfig:$HOME/.gitconfig:gitconfig"
+  "config/git/ignore:$HOME/.config/git/ignore:git/ignore"
   "config/ghostty/config:$HOME/.config/ghostty/config:ghostty"
   "config/starship.toml:$HOME/.config/starship.toml:starship"
+  "config/cursor/settings.json:$HOME/Library/Application Support/Cursor/User/settings.json:cursor/settings"
+  "config/cursor/keybindings.json:$HOME/Library/Application Support/Cursor/User/keybindings.json:cursor/keybindings"
   "CLAUDE.md:$HOME/CLAUDE.md:CLAUDE.md"
   "config/claude/skills:$HOME/.claude/skills:claude/skills"
   "config/claude/settings.json:$HOME/.claude/settings.json:claude/settings"

@@ -20,6 +20,9 @@ Portable, reproducible macOS dev environment.
 ### Phase 3: Polish ← current
 - [x] README refresh after restructure
 - [x] `sync.sh` — symlink doctor for drift detection/repair
+- [x] Brewfile for declarative package management
+- [x] Manage Cursor settings, global gitignore, zprofile
+- [x] Clean up `.bak` artifacts from config reorg
 - [ ] Test full clean install on fresh machine
 
 ## Changelog
@@ -59,6 +62,18 @@ Portable, reproducible macOS dev environment.
 - Extracted shared link map into `links.sh`, sourced by both `install.sh` and `sync.sh`
 - Merged Ghostty config drift: theme → Selenized Light, window-decoration → auto
 - Relinked `~/.config/ghostty/config` back to repo via `sync.sh`
+
+### 2026-03-10 (session 7)
+- Added `Brewfile` — declarative package manifest, replaces hardcoded list in install.sh
+- Added `config/cursor/` — Cursor editor settings.json and keybindings.json (symlinked to ~/Library/Application Support/Cursor/User/)
+- Added `config/git/ignore` — global gitignore (.DS_Store, .env, editor swap files)
+- Added `zprofile` — managed .zprofile with brew shellenv (fixed duplicate eval)
+- Updated `install.sh` to use `brew bundle install` instead of per-package loop
+- Updated `links.sh` with 4 new symlinks (zprofile, git/ignore, cursor/settings, cursor/keybindings)
+- Updated `gitconfig` with `core.excludesFile` pointing to managed gitignore
+- Updated `test.sh` with validation for new files
+- Cleaned up `.bak` artifacts from config reorganization
+- Added ADR-008 (Brewfile) and ADR-009 (Cursor + gitignore)
 
 ## Open Questions
 None.

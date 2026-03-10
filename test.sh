@@ -32,12 +32,15 @@ echo ""
 
 # ─── Shell syntax ───────────────────────────────────────
 check "zsh -n zshrc"      zsh -n "$DOTFILES/zshrc"
+check "zsh -n zprofile"   zsh -n "$DOTFILES/zprofile"
 check "zsh -n install.sh" zsh -n "$DOTFILES/install.sh"
 check "zsh -n sync.sh"    zsh -n "$DOTFILES/sync.sh"
 check "zsh -n links.sh"   zsh -n "$DOTFILES/links.sh"
 
 # ─── JSON ───────────────────────────────────────────────
-check "claude/settings.json" jq empty "$DOTFILES/config/claude/settings.json"
+check "claude/settings.json"    jq empty "$DOTFILES/config/claude/settings.json"
+check "cursor/settings.json"    jq empty "$DOTFILES/config/cursor/settings.json"
+check "cursor/keybindings.json" jq empty "$DOTFILES/config/cursor/keybindings.json"
 
 # ─── Starship TOML ──────────────────────────────────────
 if command -v starship &>/dev/null; then

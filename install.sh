@@ -21,11 +21,9 @@ echo -e "  ${bold}dotfiles installer${reset}"
 echo -e "  ${dim}─────────────────────────────────${reset}"
 echo -e "  This script sets up a fresh Mac:"
 echo ""
-echo -e "  📦 Homebrew + CLI tools    eza, bat, fzf, ripgrep, jq, gh, nvm, uv"
-echo -e "  👻 Ghostty terminal        GPU-accelerated terminal emulator"
-echo -e "  ⭐ Starship prompt         cross-shell prompt"
+echo -e "  📦 Homebrew + Brewfile     CLI tools, Ghostty, prompt"
 echo -e "  🟢 Node.js + Python        via nvm & uv"
-echo -e "  🔗 Symlinks                zshrc, gitconfig, ghostty, starship, claude, CLAUDE.md"
+echo -e "  🔗 Symlinks                shell, git, terminal, editor, AI agent"
 echo -e "  🔑 Git identity + SSH      name, email, ed25519 key"
 echo -e "  🐙 GitHub CLI auth         login via gh"
 echo ""
@@ -99,11 +97,8 @@ run_logged() {
 }
 
 # ─── Count core steps ───────────────────────────────────
-PACKAGES=(starship eza bat fzf ripgrep jq gh nvm uv zsh-autosuggestions zsh-syntax-highlighting)
-
 count  # Homebrew
-for pkg in "${PACKAGES[@]}"; do count; done
-count  # Ghostty
+count  # Brewfile
 count  # Node.js
 count  # Python
 source "$DOTFILES/links.sh"
@@ -126,33 +121,15 @@ else
   skip "🍺 Homebrew"
 fi
 
-# ─── 2. 📦 Brew packages ───────────────────────────────
-for pkg in "${PACKAGES[@]}"; do
-  advance "📦 brew install $pkg..."
-  if ! brew list "$pkg" &>/dev/null; then
-    if run_logged "brew: $pkg" brew install "$pkg"; then
-      pass "📦 brew: $pkg"
-    else
-      fail "📦 brew: $pkg" "$LAST_ERROR"
-    fi
-  else
-    skip "📦 brew: $pkg"
-  fi
-done
-
-# ─── 3. 👻 Ghostty ─────────────────────────────────────
-advance "👻 Installing Ghostty..."
-if ! brew list --cask ghostty &>/dev/null; then
-  if run_logged "Ghostty" brew install --cask ghostty; then
-    pass "👻 Ghostty"
-  else
-    fail "👻 Ghostty" "$LAST_ERROR"
-  fi
+# ─── 2. 📦 Brewfile packages ───────────────────────────
+advance "📦 Installing Brewfile packages..."
+if run_logged "Brewfile" brew bundle install --file="$DOTFILES/Brewfile" --no-lock; then
+  pass "📦 Brewfile packages"
 else
-  skip "👻 Ghostty"
+  fail "📦 Brewfile packages" "$LAST_ERROR"
 fi
 
-# ─── 4. 🟢 Node.js via nvm ─────────────────────────────
+# ─── 3. 🟢 Node.js via nvm ─────────────────────────────
 advance "🟢 Installing Node.js LTS..."
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
@@ -167,7 +144,7 @@ else
   skip "🟢 Node.js $(node --version)"
 fi
 
-# ─── 5. 🐍 Python via uv ──────────────────────────────
+# ─── 4. 🐍 Python via uv ──────────────────────────────
 advance "🐍 Installing Python..."
 if ! uv python list --only-installed 2>/dev/null | grep -q cpython; then
   if run_logged "Python" uv python install; then
@@ -179,7 +156,7 @@ else
   skip "🐍 Python (uv)"
 fi
 
-# ─── 6. 🔗 Symlinks ───────────────────────────────────
+# ─── 5. 🔗 Symlinks ───────────────────────────────────
 link_file() {
   local src="$1" dst="$2" name="$3"
   if [ -L "$dst" ]; then
@@ -201,7 +178,7 @@ for entry in "${LINKS[@]}"; do
   link_file "$DOTFILES/$rel" "$dst" "$label"
 done
 
-# ─── 7. 🔑 Git identity ───────────────────────────────
+# ─── 6. 🔑 Git identity ───────────────────────────────
 advance "🔑 Configuring Git identity..."
 if [ -z "$(git config --global user.name 2>/dev/null)" ]; then
   printf "\r${clear_line}"
@@ -215,7 +192,7 @@ if [ -z "$(git config --global user.email 2>/dev/null)" ]; then
 fi
 pass "🔑 Git: $(git config --global user.name) <$(git config --global user.email)>"
 
-# ─── 8. 🔐 SSH key ────────────────────────────────────
+# ─── 7. 🔐 SSH key ────────────────────────────────────
 advance "🔐 Setting up SSH key..."
 SSH_KEY="$HOME/.ssh/id_ed25519"
 if [ ! -f "$SSH_KEY" ]; then
@@ -230,7 +207,7 @@ else
   skip "🔐 SSH key"
 fi
 
-# ─── 9. 🐙 GitHub CLI auth ────────────────────────────
+# ─── 8. 🐙 GitHub CLI auth ────────────────────────────
 advance "🐙 Authenticating with GitHub..."
 if ! gh auth status &>/dev/null; then
   printf "\r${clear_line}"
@@ -243,7 +220,7 @@ else
   skip "🐙 GitHub CLI"
 fi
 
-# ─── 10. Optional extras prompt ───────────────────────
+# ─── 9. Optional extras prompt ────────────────────────
 printf "\r${clear_line}\n"
 echo -e "  ${bold}Optional extras:${reset}\n"
 
@@ -265,7 +242,7 @@ echo ""
 if [ "$INSTALL_CLAUDE" = true ]; then count; fi
 if [ "$INSTALL_GDRIVE" = true ]; then count; fi
 
-# ─── 11. 🤖 Claude Code (optional) ────────────────────
+# ─── 10. 🤖 Claude Code (optional) ───────────────────
 if [ "$INSTALL_CLAUDE" = true ]; then
   advance "🤖 Installing Claude Code..."
   if ! command -v claude &>/dev/null; then
@@ -281,7 +258,7 @@ else
   RESULTS+=("  ⏭️  🤖 Claude Code ${dim}(not selected)${reset}")
 fi
 
-# ─── 12. ☁️ Google Drive (optional) ────────────────────
+# ─── 11. ☁️ Google Drive (optional) ───────────────────
 if [ "$INSTALL_GDRIVE" = true ]; then
   advance "☁️  Installing Google Drive..."
   if ! brew list --cask google-drive &>/dev/null; then

@@ -1,0 +1,9 @@
+{
+    "window.commandCenter": true,
+    "workbench.colorTheme": "Solarized Light",
+    "window.newWindowProfile": "Default",
+    "claudeCode.preferredLocation": "panel",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "editor.accessibilitySupport": "off",
+    "git.blame.statusBarItem.enabled": true
+}
