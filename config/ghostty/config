@@ -24,3 +24,6 @@ confirm-close-surface = false
 # Notifications — enable system bell (e.g. dock bounce on macOS)
 bell-features = system
 
+# Keybindings
+keybind = super+k=toggle_command_palette
+
