@@ -11,6 +11,9 @@ brew "yq"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
+# Docker
+cask "docker"
+
 # Terminal
 cask "cmux"
 cask "ghostty"
