@@ -89,5 +89,13 @@ Portable, reproducible macOS dev environment.
 - Updated README with Warp docs, file structure, and manual settings section
 - Added ADR-010 (Warp config management) and ADR-011 (Transparent macOS theme)
 
+### 2026-03-13 (session 9)
+- Added cmux terminal preferences management (plist export/import via `defaults`)
+- Added cmux preferences import step to `install.sh`
+- Switched Ghostty theme from Transparent macOS to catppuccin-mocha, opacity 85% → 80%
+- Added Ghostty tab navigation keybindings (Alt+Shift+Left/Right)
+- Updated README with cmux documentation and renumbered install steps
+- Added ADR-012 (cmux plist import approach)
+
 ## Open Questions
 None.

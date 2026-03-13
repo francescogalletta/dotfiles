@@ -1,8 +1,8 @@
 font-family = JetBrains Mono
 font-size = 14
 
-theme = Transparent macOS
-background-opacity = 0.85
+theme = catppuccin-mocha
+background-opacity = 0.80
 background-blur = true
 
 window-padding-x = 12
@@ -28,4 +28,6 @@ bell-features = system
 
 # Keybindings
 keybind = super+k=toggle_command_palette
+keybind = alt+shift+left=previous_tab
+keybind = alt+shift+right=next_tab
 

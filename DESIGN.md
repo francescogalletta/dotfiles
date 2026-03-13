@@ -54,3 +54,8 @@
 **Date:** 2026-03-13
 **Decision:** Created a shared "Transparent macOS" color theme for both Ghostty and Warp terminals. Uses Apple HIG system palette, 85% background opacity with blur for a frosted glass effect.
 **Reason:** Consistent visual identity across terminals. Apple system colors ensure the theme feels native on macOS. The theme is defined once conceptually (same hex values) but formatted per terminal's config syntax (key=value for Ghostty, YAML for Warp).
+
+## ADR-012: cmux preferences via plist import
+**Date:** 2026-03-13
+**Decision:** cmux preferences (keybindings, sidebar layout) are stored as a macOS plist in `config/cmux/` and restored via `defaults import` during install, rather than symlinked.
+**Reason:** cmux stores preferences in macOS defaults (a binary plist database), not a file that can be reliably symlinked. `defaults import/export` is the standard mechanism for persisting and restoring these settings across machines.

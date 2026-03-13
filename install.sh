@@ -135,6 +135,16 @@ if [ -d "/Applications/Warp.app" ]; then
   echo -e "\n  ${cyan}🖥️  Warp detected${reset} — log in to your Warp account to sync settings.\n"
 fi
 
+# ─── 2c. 🖥️ cmux preferences ────────────────────────
+CMUX_PLIST="$DOTFILES/config/cmux/com.cmuxterm.app.plist"
+if [ -f "$CMUX_PLIST" ]; then
+  if defaults import com.cmuxterm.app "$CMUX_PLIST" >> "$LOGFILE" 2>&1; then
+    pass "🖥️  cmux preferences"
+  else
+    fail "🖥️  cmux preferences" "defaults import failed"
+  fi
+fi
+
 # ─── 3. 🟢 Node.js via nvm ─────────────────────────────
 advance "🟢 Installing Node.js LTS..."
 export NVM_DIR="$HOME/.nvm"
