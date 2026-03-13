@@ -22,7 +22,7 @@ echo -e "  ${dim}─────────────────────
 echo -e "  This script sets up a fresh Mac:"
 echo ""
 echo -e "  📦 Homebrew + Brewfile     CLI tools, cmux, Ghostty, Warp, prompt"
-echo -e "  🟢 Node.js + Python        via nvm & uv"
+echo -e "  🟢 Node.js                 via nvm"
 echo -e "  🔗 Symlinks                shell, git, terminal, editor, AI agent"
 echo -e "  🔑 Git identity + SSH      name, email, ed25519 key"
 echo -e "  🐙 GitHub CLI auth         login via gh"
@@ -100,7 +100,6 @@ run_logged() {
 count  # Homebrew
 count  # Brewfile
 count  # Node.js
-count  # Python
 source "$DOTFILES/links.sh"
 for entry in "${LINKS[@]}"; do count; done  # symlinks
 count  # Git identity
@@ -160,19 +159,7 @@ else
   skip "🟢 Node.js $(node --version)"
 fi
 
-# ─── 4. 🐍 Python via uv ──────────────────────────────
-advance "🐍 Installing Python..."
-if ! uv python list --only-installed 2>/dev/null | grep -q cpython; then
-  if run_logged "Python" uv python install; then
-    pass "🐍 Python (uv)"
-  else
-    fail "🐍 Python (uv)" "$LAST_ERROR"
-  fi
-else
-  skip "🐍 Python (uv)"
-fi
-
-# ─── 5. 🔗 Symlinks ───────────────────────────────────
+# ─── 4. 🔗 Symlinks ───────────────────────────────────
 link_file() {
   local src="$1" dst="$2" name="$3"
   if [ -L "$dst" ]; then

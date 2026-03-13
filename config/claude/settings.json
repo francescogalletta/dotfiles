@@ -44,5 +44,6 @@
       }
     }
   },
-  "notifications": true
+  "notifications": true,
+  "voiceEnabled": true
 }
