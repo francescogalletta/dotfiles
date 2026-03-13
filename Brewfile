@@ -13,5 +13,6 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # Terminal
+cask "cmux"
 cask "ghostty"
 cask "warp"

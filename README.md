@@ -7,6 +7,7 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | Tool | Purpose |
 |------|---------|
 | [Homebrew](https://brew.sh) | macOS package manager |
+| [cmux](https://www.cmux.dev) | Terminal for multitasking — built on Ghostty, designed for AI agents |
 | [Ghostty](https://ghostty.org) | GPU-accelerated terminal emulator |
 | [Warp](https://www.warp.dev) | AI-powered terminal with IDE features |
 | [Starship](https://starship.rs) | Fast, customizable cross-shell prompt |
@@ -46,7 +47,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 
 1. Listing all install steps
 2. Installs Homebrew
-3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp)
+3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + cmux + Ghostty + Warp)
 4. Installs Node.js LTS via nvm
 5. Installs Python via uv
 6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, ghostty/themes, starship, warp/themes, warp/keybindings, cursor, CLAUDE.md, Claude skills/settings/statusline)
