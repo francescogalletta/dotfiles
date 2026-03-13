@@ -8,8 +8,10 @@ brew "nvm"
 brew "ripgrep"
 brew "starship"
 brew "uv"
+brew "yq"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # Terminal
 cask "ghostty"
+cask "warp"

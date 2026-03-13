@@ -1,7 +1,9 @@
 font-family = JetBrains Mono
 font-size = 14
 
-theme = Selenized Light
+theme = Transparent macOS
+background-opacity = 0.85
+background-blur = true
 
 window-padding-x = 12
 window-padding-y = 8

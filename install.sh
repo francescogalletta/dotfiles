@@ -21,7 +21,7 @@ echo -e "  ${bold}dotfiles installer${reset}"
 echo -e "  ${dim}─────────────────────────────────${reset}"
 echo -e "  This script sets up a fresh Mac:"
 echo ""
-echo -e "  📦 Homebrew + Brewfile     CLI tools, Ghostty, prompt"
+echo -e "  📦 Homebrew + Brewfile     CLI tools, Ghostty, Warp, prompt"
 echo -e "  🟢 Node.js + Python        via nvm & uv"
 echo -e "  🔗 Symlinks                shell, git, terminal, editor, AI agent"
 echo -e "  🔑 Git identity + SSH      name, email, ed25519 key"
@@ -123,10 +123,16 @@ fi
 
 # ─── 2. 📦 Brewfile packages ───────────────────────────
 advance "📦 Installing Brewfile packages..."
-if run_logged "Brewfile" brew bundle install --file="$DOTFILES/Brewfile" --no-lock; then
+if run_logged "Brewfile" brew bundle install --file="$DOTFILES/Brewfile"; then
   pass "📦 Brewfile packages"
 else
   fail "📦 Brewfile packages" "$LAST_ERROR"
+fi
+
+# ─── 2b. 🖥️ Warp settings sync ──────────────────────
+if [ -d "/Applications/Warp.app" ]; then
+  printf "\r${clear_line}"
+  echo -e "\n  ${cyan}🖥️  Warp detected${reset} — log in to your Warp account to sync settings.\n"
 fi
 
 # ─── 3. 🟢 Node.js via nvm ─────────────────────────────
@@ -302,6 +308,6 @@ if [ "$fail_count" -gt 0 ]; then
   echo ""
   exit 1
 else
-  echo -e "  ${green}All good! Open a new Ghostty window to see changes.${reset}"
+  echo -e "  ${green}All good! Open a new Ghostty or Warp window to see changes.${reset}"
   echo ""
 fi

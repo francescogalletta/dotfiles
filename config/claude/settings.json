@@ -32,8 +32,17 @@
     "type": "command",
     "command": "/bin/bash $HOME/.claude/statusline.sh"
   },
-  "notifications": true,
   "enabledPlugins": {
-    "skill-creator@claude-plugins-official": true
-  }
+    "skill-creator@claude-plugins-official": true,
+    "cli-anything@cli-anything": true
+  },
+  "extraKnownMarketplaces": {
+    "cli-anything": {
+      "source": {
+        "source": "github",
+        "repo": "HKUDS/CLI-Anything"
+      }
+    }
+  },
+  "notifications": true
 }

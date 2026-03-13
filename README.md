@@ -8,12 +8,14 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 |------|---------|
 | [Homebrew](https://brew.sh) | macOS package manager |
 | [Ghostty](https://ghostty.org) | GPU-accelerated terminal emulator |
+| [Warp](https://www.warp.dev) | AI-powered terminal with IDE features |
 | [Starship](https://starship.rs) | Fast, customizable cross-shell prompt |
 | [eza](https://eza.rocks) | Modern replacement for `ls` with icons and colors |
 | [bat](https://github.com/sharkdp/bat) | `cat` with syntax highlighting and line numbers |
 | [fzf](https://github.com/junegunn/fzf) | Fuzzy finder — Ctrl+R history search, file search |
 | [ripgrep](https://github.com/BurntSushi/ripgrep) | Fast recursive code search (`rg`) |
 | [jq](https://jqlang.github.io/jq/) | Command-line JSON processor |
+| [yq](https://github.com/mikefarah/yq) | Command-line YAML processor |
 | [gh](https://cli.github.com) | GitHub CLI — PRs, issues, auth from the terminal |
 | [nvm](https://github.com/nvm-sh/nvm) | Node.js version manager |
 | [uv](https://docs.astral.sh/uv/) | Fast Python package and project manager |
@@ -44,10 +46,10 @@ The script is idempotent — safe to run multiple times. Existing config files a
 
 1. Listing all install steps
 2. Installs Homebrew
-3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty)
+3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp)
 4. Installs Node.js LTS via nvm
 5. Installs Python via uv
-6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, cursor, CLAUDE.md, Claude skills/settings/statusline)
+6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, ghostty/themes, starship, warp/themes, warp/keybindings, cursor, CLAUDE.md, Claude skills/settings/statusline)
 7. Prompts for git name/email
 8. Generates an ed25519 SSH key
 9. Authenticates with GitHub via `gh auth login`
@@ -102,11 +104,21 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │   ├── settings.json       # Cursor settings → ~/Library/.../Cursor/User/settings.json
     │   └── keybindings.json    # Cursor keybindings → ~/Library/.../Cursor/User/keybindings.json
     ├── ghostty/
-    │   └── config              # Ghostty config → ~/.config/ghostty/config
+    │   ├── config              # Ghostty config → ~/.config/ghostty/config
+    │   └── themes/             # Custom themes → ~/.config/ghostty/themes/
+    │       └── Transparent macOS
     ├── git/
     │   └── ignore              # Global gitignore → ~/.config/git/ignore
-    └── starship.toml           # Starship prompt → ~/.config/starship.toml
+    ├── starship.toml           # Starship prompt → ~/.config/starship.toml
+    └── warp/
+        ├── keybindings.yaml    # Warp keybindings → ~/.warp/keybindings.yaml
+        └── themes/             # Custom themes → ~/.warp/themes/
+            └── Transparent macOS.yaml
 ```
+
+### Warp settings
+
+Warp settings (font, opacity, theme selection) sync via your Warp account. Log in after install to restore them. The custom theme and keybindings are managed as dotfiles and symlinked into `~/.warp/`.
 
 ### AI agent config
 

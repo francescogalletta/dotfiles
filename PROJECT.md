@@ -75,5 +75,19 @@ Portable, reproducible macOS dev environment.
 - Cleaned up `.bak` artifacts from config reorganization
 - Added ADR-008 (Brewfile) and ADR-009 (Cursor + gitignore)
 
+### 2026-03-13 (session 8)
+- Added Warp terminal as a second managed terminal alongside Ghostty
+- Created "Transparent macOS" theme for both Ghostty and Warp (Apple HIG system colors, frosted glass effect)
+- Updated Ghostty config: theme → Transparent macOS, 85% opacity with blur
+- Created `config/warp/` with theme YAML and keybindings (CMD+K → command palette)
+- Created `config/ghostty/themes/` with custom Ghostty theme file
+- Added `cask "warp"` and `brew "yq"` to Brewfile
+- Updated `links.sh` with 3 new symlinks (ghostty/themes, warp/themes, warp/keybindings)
+- Added Warp account sync nudge in `install.sh` (shown when Warp is detected)
+- Added Warp YAML validation to `test.sh` (theme syntax + required keys, keybindings syntax)
+- Added `yq` to CI workflow
+- Updated README with Warp docs, file structure, and manual settings section
+- Added ADR-010 (Warp config management) and ADR-011 (Transparent macOS theme)
+
 ## Open Questions
 None.

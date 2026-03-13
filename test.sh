@@ -57,6 +57,34 @@ else
   echo -e "  ${dim}⏭️   ghostty config  (ghostty not found)${reset}"
 fi
 
+# ─── Warp theme YAML ──────────────────────────────────
+if command -v yq &>/dev/null; then
+  for theme_file in "$DOTFILES"/config/warp/themes/*.yaml; do
+    [ -f "$theme_file" ] || continue
+    name=$(basename "$theme_file")
+    check "warp/themes/$name (syntax)" yq eval '.' "$theme_file"
+    # Validate required keys
+    check "warp/themes/$name (keys)" bash -c "
+      for key in accent background foreground details; do
+        val=\$(yq eval \".\$key\" \"$theme_file\")
+        if [ \"\$val\" = \"null\" ]; then
+          echo \"missing required key: \$key\"
+          exit 1
+        fi
+      done
+    "
+  done
+else
+  echo -e "  ${dim}⏭️   warp theme YAML  (yq not found)${reset}"
+fi
+
+# ─── Warp keybindings YAML ─────────────────────────────
+if command -v yq &>/dev/null; then
+  check "warp/keybindings.yaml" yq eval '.' "$DOTFILES/config/warp/keybindings.yaml"
+else
+  echo -e "  ${dim}⏭️   warp keybindings YAML  (yq not found)${reset}"
+fi
+
 # ─── Summary ────────────────────────────────────────────
 echo ""
 echo -e "  ${dim}─────────────────────────────────${reset}"

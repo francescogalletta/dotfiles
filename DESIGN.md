@@ -44,3 +44,13 @@
 **Date:** 2026-03-10
 **Decision:** Added Cursor (editor) settings/keybindings and a global gitignore (`~/.config/git/ignore`) to the repo, symlinked like other configs. Also added `.zprofile` for brew shellenv.
 **Reason:** Completes the managed config set — editor, git hygiene, and shell profile were the main gaps. `code` command resolves to Cursor (VS Code fork), so config lives in `config/cursor/`.
+
+## ADR-010: Warp config management
+**Date:** 2026-03-13
+**Decision:** Manage Warp's file-based configs (custom themes, keybindings) as YAML dotfiles in `config/warp/`, symlinked to `~/.warp/`. Non-file settings (font, opacity, theme selection) sync via Warp's built-in account cloud sync.
+**Reason:** Warp stores some preferences in its own database rather than in files. We manage what we can (themes, keybindings) as dotfiles and rely on Warp's cloud sync for the rest. The install script nudges the user to log in if Warp is detected.
+
+## ADR-011: Transparent macOS theme
+**Date:** 2026-03-13
+**Decision:** Created a shared "Transparent macOS" color theme for both Ghostty and Warp terminals. Uses Apple HIG system palette, 85% background opacity with blur for a frosted glass effect.
+**Reason:** Consistent visual identity across terminals. Apple system colors ensure the theme feels native on macOS. The theme is defined once conceptually (same hex values) but formatted per terminal's config syntax (key=value for Ghostty, YAML for Warp).
