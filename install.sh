@@ -139,6 +139,8 @@ CMUX_PLIST="$DOTFILES/config/cmux/com.cmuxterm.app.plist"
 if [ -f "$CMUX_PLIST" ]; then
   if defaults import com.cmuxterm.app "$CMUX_PLIST" >> "$LOGFILE" 2>&1; then
     pass "🖥️  cmux preferences"
+    printf "\r${clear_line}"
+    echo -e "\n  ${cyan}🖥️  cmux detected${reset} — restart cmux to apply preferences (shortcuts, etc).\n"
   else
     fail "🖥️  cmux preferences" "defaults import failed"
   fi
