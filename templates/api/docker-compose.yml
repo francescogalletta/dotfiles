@@ -1,0 +1,33 @@
+services:
+  app:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-}
+    env_file:
+      - path: .env
+        required: false
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - __pycache__
+
+  # Uncomment to add Postgres
+  # db:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB:-app}
+  #     POSTGRES_USER: ${POSTGRES_USER:-app}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+  #   volumes:
+  #     - db_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# volumes:
+#   db_data:

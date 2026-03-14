@@ -279,6 +279,9 @@ else
   RESULTS+=("  ⏭️  ☁️  Google Drive ${dim}(not selected)${reset}")
 fi
 
+# ─── 12. 📁 Projects directory ────────────────────────
+mkdir -p "$HOME/projects"
+
 # ─── Summary ──────────────────────────────────────────
 printf "\r${clear_line}"
 echo ""

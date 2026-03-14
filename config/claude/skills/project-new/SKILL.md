@@ -13,12 +13,27 @@ disable-model-invocation: true
 
 Ask for the project name if not provided (no description arg — let the user explain freely).
 
+Then ask what archetype fits best — show this menu:
+
+```
+Which archetype fits best?
+
+  data    — Python + Jupyter + Streamlit (+ optional Postgres)
+  web     — FastAPI backend + Next.js frontend
+  api     — FastAPI standalone REST API
+  cli     — Python + Typer CLI tool
+  agent   — Python + Anthropic SDK (AI/agentic workflows)
+  none    — skip template, scaffold docs only
+```
+
+Wait for the user to pick one.
+
 Then have an open-ended discovery conversation. Ask one or a few questions at a time and wait for answers. Cover:
 
 - What problem does this solve? Who is it for?
 - What does success look like? Any hard constraints?
 - Must-have requirements vs nice-to-haves; explicit non-goals
-- Language / framework preferences; infrastructure or external service constraints
+- Any additional services, integrations, or external dependencies
 
 Adapt questions to what the user says — don't mechanically run through a fixed list. Probe gaps. When you have a thorough picture, say:
 
@@ -98,15 +113,18 @@ Default location: `~/projects/<name>`. If the user has mentioned a different loc
 Create all files in order:
 
 1. `mkdir -p ~/projects/<name>/.claude/agents ~/projects/<name>/.claude/skills ~/projects/<name>/.claude/rules ~/projects/<name>/tasks`
-2. `cd ~/projects/<name> && git init`
-3. Write `CLAUDE.md` (see template)
-4. Write `PRD.md` — use the approved draft
-5. Write `TASKS.md` — use the approved draft
-6. Write one `tasks/T###.md` per task (see template)
-7. Write `DESIGN.md` (see template)
-8. Write `CLAUDE.local.md` (see template)
-9. Write `.gitignore` (see template)
-10. `git add -A && git commit -m "Initial project scaffold"`
+2. **If archetype is not `none`**: copy template files from `~/dotfiles/templates/<archetype>/` into `~/projects/<name>/`. Use `cp -r ~/dotfiles/templates/<archetype>/. ~/projects/<name>/` — this copies all files including hidden ones.
+3. `cd ~/projects/<name> && git init`
+4. Write `CLAUDE.md` (see template)
+5. Write `PRD.md` — use the approved draft
+6. Write `TASKS.md` — use the approved draft
+7. Write one `tasks/T###.md` per task (see template)
+8. Write `DESIGN.md` (see template)
+9. Write `CLAUDE.local.md` (see template)
+10. If no `.gitignore` exists yet (i.e. archetype was `none`), write the default `.gitignore`
+11. `git add -A && git commit -m "Initial project scaffold"`
+
+After scaffolding, ask: "Want me to run `make dev` to verify it starts?" If yes, run `cd ~/projects/<name> && make dev` and confirm it comes up.
 
 ### Template: `CLAUDE.md` (≤60 lines)
 
@@ -119,6 +137,9 @@ Create all files in order:
 @PRD.md
 @TASKS.md
 
+## Stack
+<archetype> template — see README.md for how to run.
+
 ## Session Rules
 - Follow global ~/CLAUDE.md as baseline
 - Read PRD.md for intent; read TASKS.md for current state
@@ -127,6 +148,7 @@ Create all files in order:
 - Claim tasks in TASKS.md (set status + @owner) before starting
 - Mark done + update changelog when completing
 - Use `/ship` when committing and pushing work
+- Standard Makefile targets: `make dev`, `make test`, `make shell`, `make logs`, `make stop`
 ```
 
 ### Template: `tasks/T###.md`
@@ -182,7 +204,7 @@ Briefly state: what was decided, why, and what alternatives were rejected. -->
 Personal notes and overrides not committed to the repo.
 ```
 
-### Template: `.gitignore`
+### Template: `.gitignore` (used only when archetype is `none`)
 
 ```
 node_modules/
@@ -198,6 +220,7 @@ __pycache__/
 .venv/
 CLAUDE.local.md
 .claude/session-current.md
+.platform
 ```
 
 ## Phase 4 — Summary
@@ -206,6 +229,8 @@ After scaffolding, print:
 
 ```
 Project created at ~/projects/<name>/
+
+Archetype: <archetype>
 
 Files:
   CLAUDE.md                    — agent context (@imports PRD + TASKS)
@@ -217,9 +242,11 @@ Files:
   .claude/skills/              — ready for project slash commands
   .claude/rules/               — ready for topic-scoped rules
   CLAUDE.local.md              — personal overrides (gitignored)
-  .gitignore
+  <template files>             — docker-compose.yml, Makefile, README.md, etc.
 
 Next:
   cd ~/projects/<name>
-  /project-resume              — to orient any agent (including you) at session start
+  make dev                     — start services
+  /project-resume              — orient any agent at session start
+  /graduate                    — when ready to deploy
 ```

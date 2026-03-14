@@ -14,6 +14,10 @@ brew "zsh-syntax-highlighting"
 # Docker
 cask "docker"
 
+# Deployment
+brew "flyctl"
+cask "google-cloud-sdk"
+
 # Terminal
 cask "cmux"
 cask "ghostty"

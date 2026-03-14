@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    # CLI tools run interactively — override entrypoint when running
+    # docker compose run --rm app python -m app.main --help
+    entrypoint: ["python", "-m", "app.main"]
+    volumes:
+      - .:/app
+    env_file:
+      - path: .env
+        required: false

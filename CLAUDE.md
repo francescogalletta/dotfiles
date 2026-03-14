@@ -55,3 +55,24 @@ Managed projects are scaffolded with `/project-new` and use `PRD.md` + `TASKS.md
 - Use `/ship` when committing and pushing work
 - After a design/architecture decision: append an entry to `DESIGN.md` (append-only, never edit past entries)
 - After completing a task: mark it done in `TASKS.md` and append a changelog entry
+
+# Architecture & Stack Decisions
+
+When discussing architecture or stack choices, always present 2–3 concrete options with a trade-off table before recommending one:
+
+```
+| Option | Pros | Cons | Best when |
+```
+
+Then state your recommendation and why. Don't skip straight to the answer — the table is the answer.
+
+# Prototyping
+
+New projects live at `~/projects/<name>/` (each its own git repo).
+Templates are at `~/dotfiles/templates/<archetype>/`.
+Standard Makefile targets on every project: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`.
+
+- `/project-new` — scaffold a new project from a template archetype
+- `/graduate` — deploy a prototype to Fly.io or GCP Cloud Run
+- `/learn` — end-of-session review; propose improvements to CLAUDE.md, templates, skills
+- `/explain` — explain a file, diff, or concept with trade-offs and next steps
