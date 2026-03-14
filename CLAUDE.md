@@ -66,6 +66,17 @@ When discussing architecture or stack choices, always present 2–3 concrete opt
 
 Then state your recommendation and why. Don't skip straight to the answer — the table is the answer.
 
+# Agent Behaviour — Non-Negotiable
+
+**Run tests yourself. Fix failures yourself. Never hand broken code to the user.**
+
+1. After every code change, run the project's test command (typically `make test-local`) using the Bash tool.
+2. If tests fail, read the output, diagnose the cause, fix it, and run again.
+3. Repeat until the full suite is green.
+4. Only then commit and report back.
+
+Never ask the user to run tests, copy-paste errors, or diagnose failures. You have a Bash tool — use it.
+
 # Prototyping
 
 New projects live at `~/projects/<name>/` (each its own git repo).
