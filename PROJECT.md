@@ -17,13 +17,23 @@ Portable, reproducible macOS dev environment.
 - [x] Claude skills: project-new, project-resume
 - [x] Project docs (PROJECT.md, DESIGN.md)
 
-### Phase 3: Polish ← current
+### Phase 3: Polish ✅
 - [x] README refresh after restructure
 - [x] `sync.sh` — symlink doctor for drift detection/repair
 - [x] Brewfile for declarative package management
 - [x] Manage Cursor settings, global gitignore, zprofile
 - [x] Clean up `.bak` artifacts from config reorg
 - [ ] Test full clean install on fresh machine
+
+### Phase 4: Prototyping Fast-Path ✅
+- [x] Project templates: `data`, `web`, `api`, `cli`, `agent` archetypes
+- [x] Updated `/project-new` — archetype selection + template copy
+- [x] New skill `/graduate` — deploy to Fly.io or GCP Cloud Run
+- [x] New skill `/learn` — end-of-session self-improvement loop
+- [x] New skill `/explain` — educational mode with trade-off tables
+- [x] `CLAUDE.md` — trade-off table convention + prototyping section
+- [x] Brewfile — added `flyctl` and `google-cloud-sdk`
+- [x] `install.sh` — creates `~/projects/` on fresh install
 
 ## Changelog
 
@@ -96,6 +106,17 @@ Portable, reproducible macOS dev environment.
 - Added Ghostty tab navigation keybindings (Alt+Shift+Left/Right)
 - Updated README with cmux documentation and renumbered install steps
 - Added ADR-012 (cmux plist import approach)
+
+### 2026-03-14 (session 10)
+- Added `templates/` with 5 archetypes: `data`, `web`, `api`, `cli`, `agent`
+- Each template ships `docker-compose.yml`, `Makefile`, `Dockerfile`, starter code, `.env.example`, `.gitignore`, `deploy/` configs
+- Updated `/project-new` skill: archetype menu, template copy step, optional `make dev` verify
+- Created `/graduate` skill: platform selection (Fly.io / GCP / Railway), deploy config generation, CI/CD setup
+- Created `/learn` skill: end-of-session review → proposes targeted improvements to CLAUDE.md, templates, skills
+- Created `/explain` skill: explains any file, diff, or concept with trade-off table and next steps
+- Added trade-off table convention and prototyping section to global `CLAUDE.md`
+- Added `flyctl` and `google-cloud-sdk` to Brewfile
+- Added `mkdir -p ~/projects` to `install.sh`
 
 ## Open Questions
 None.

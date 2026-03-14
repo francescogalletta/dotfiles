@@ -55,6 +55,11 @@
 **Decision:** Created a shared "Transparent macOS" color theme for both Ghostty and Warp terminals. Uses Apple HIG system palette, 85% background opacity with blur for a frosted glass effect.
 **Reason:** Consistent visual identity across terminals. Apple system colors ensure the theme feels native on macOS. The theme is defined once conceptually (same hex values) but formatted per terminal's config syntax (key=value for Ghostty, YAML for Warp).
 
+## ADR-013: Prototyping fast-path via templates + skills
+**Date:** 2026-03-14
+**Decision:** Added `templates/` directory with one subdirectory per archetype (`data`, `web`, `api`, `cli`, `agent`). Each template is a complete Docker-based project with `docker-compose.yml`, `Makefile`, and starter code. `/project-new` was updated to copy the chosen template into `~/projects/<name>/`. Three new skills added: `/graduate` (deployment), `/learn` (self-improvement loop), `/explain` (educational mode).
+**Reason:** The gap between "new idea" and "running project" required too many manual decisions. Templates encode the stack choices so Claude has an opinionated starting point and knows how to run, test, and debug any project via standard Makefile targets. Docker is the abstraction — the same image runs locally and in production, making `/graduate` (deploy) a thin wrapper around the platform CLI.
+
 ## ADR-012: cmux preferences via plist import
 **Date:** 2026-03-13
 **Decision:** cmux preferences (keybindings, sidebar layout) are stored as a macOS plist in `config/cmux/` and restored via `defaults import` during install, rather than symlinked.
