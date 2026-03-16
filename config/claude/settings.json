@@ -44,6 +44,20 @@
       }
     }
   },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f TASKS.md && echo 'This is a managed project. Run /project-resume to orient yourself before doing any work.'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
   "voiceEnabled": true,
   "notifications": true
 }
