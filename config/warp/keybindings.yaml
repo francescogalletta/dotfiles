@@ -1,2 +1,5 @@
 ---
-"workspace:toggle_command_palette": cmd-k
+# Unified shortcut scheme — Cmd+Shift+P for palette, Alt+Shift for tabs
+"workspace:toggle_command_palette": cmd-shift-p
+"workspace:activate_prev_tab": alt-shift-left
+"workspace:activate_next_tab": alt-shift-right

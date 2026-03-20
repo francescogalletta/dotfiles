@@ -10,5 +10,42 @@
             "text": "\u001b\r"
         },
         "when": "terminalFocus"
+    },
+    {
+        "key": "alt+shift+left",
+        "command": "workbench.action.previousEditor"
+    },
+    {
+        "key": "alt+shift+right",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "workbench.action.splitEditorRight"
+    },
+    {
+        "key": "ctrl+shift+d",
+        "command": "workbench.action.splitEditorDown"
+    },
+    {
+        "key": "ctrl+shift+w",
+        "command": "workbench.action.terminal.kill",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "ctrl+alt+left",
+        "command": "workbench.action.focusLeftGroup"
+    },
+    {
+        "key": "ctrl+alt+right",
+        "command": "workbench.action.focusRightGroup"
+    },
+    {
+        "key": "ctrl+alt+up",
+        "command": "workbench.action.focusAboveGroup"
+    },
+    {
+        "key": "ctrl+alt+down",
+        "command": "workbench.action.focusBelowGroup"
     }
 ]
