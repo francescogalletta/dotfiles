@@ -140,3 +140,10 @@ precmd() { [[ $(( SECONDS - _cmd_start_time )) -ge 10 ]] && echo -n "\a"; _cmd_s
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+
+# bun completions
+[ -s "/Users/francesco/.bun/_bun" ] && source "/Users/francesco/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

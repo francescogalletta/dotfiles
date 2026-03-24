@@ -28,22 +28,6 @@
       "Bash(rm -rf *)"
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "/bin/bash $HOME/.claude/statusline.sh"
-  },
-  "enabledPlugins": {
-    "skill-creator@claude-plugins-official": true,
-    "cli-anything@cli-anything": true
-  },
-  "extraKnownMarketplaces": {
-    "cli-anything": {
-      "source": {
-        "source": "github",
-        "repo": "HKUDS/CLI-Anything"
-      }
-    }
-  },
   "hooks": {
     "SessionStart": [
       {
@@ -57,6 +41,23 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "/bin/bash $HOME/.claude/statusline.sh"
+  },
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true,
+    "cli-anything@cli-anything": true,
+    "discord@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "cli-anything": {
+      "source": {
+        "source": "github",
+        "repo": "HKUDS/CLI-Anything"
+      }
+    }
   },
   "voiceEnabled": true,
   "notifications": true
