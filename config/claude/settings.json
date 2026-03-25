@@ -35,7 +35,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f TASKS.md && echo 'This is a managed project. Run /project-resume to orient yourself before doing any work.'",
+            "command": "test -f TASKS.md && echo 'This is a managed project. Run /project-resume to orient yourself before doing any work.' || echo 'No TASKS.md found — this does not appear to be a managed project.'",
             "timeout": 5
           }
         ]
