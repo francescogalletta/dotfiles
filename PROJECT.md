@@ -118,5 +118,12 @@ Portable, reproducible macOS dev environment.
 - Added `flyctl` and `google-cloud-sdk` to Brewfile
 - Added `mkdir -p ~/projects` to `install.sh`
 
+## Changelog
+
+### 2026-03-27 (session 11)
+- Explored terminal email via himalaya — evaluated OAuth2 setup (Cargo build, Google Cloud credentials, Proton Bridge)
+- Reverted: himalaya, rustup, and proton-mail-bridge were too convoluted for interactive use
+- No net changes to dotfiles from this session
+
 ## Open Questions
 None.

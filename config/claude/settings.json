@@ -48,17 +48,9 @@
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
-    "cli-anything@cli-anything": true,
     "discord@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
-    "cli-anything": {
-      "source": {
-        "source": "github",
-        "repo": "HKUDS/CLI-Anything"
-      }
-    }
-  },
+  "extraKnownMarketplaces": {},
   "voiceEnabled": true,
   "notifications": true
 }
