@@ -1,71 +1,80 @@
 #!/usr/bin/env bash
 
-# Read JSON input from Claude
+# Claude Code status line — rich session info
+# Receives JSON via stdin with model, context, cost, rate limits, and workspace data.
+
 input=$(cat)
+jq_get() { echo "$input" | jq -r "$1 // empty"; }
 
-# Get current working directory from input
-cwd=$(echo "$input" | jq -r '.workspace.current_dir')
+# --- Colors ---
+RESET='\033[0m'
+BOLD='\033[1m'
+DIM='\033[2m'
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+PURPLE='\033[35m'
+CYAN='\033[36m'
 
-# Truncate directory path (show last 3 components, or from repo root)
+# --- Model ---
+model=$(jq_get '.model.display_name')
+
+# --- Context window ---
+ctx_pct=$(jq_get '.context_window.used_percentage' | cut -d. -f1)
+if [[ -n "$ctx_pct" ]]; then
+  if   (( ctx_pct >= 80 )); then ctx_color="$RED"
+  elif (( ctx_pct >= 50 )); then ctx_color="$YELLOW"
+  else                           ctx_color="$GREEN"
+  fi
+  ctx_str="${ctx_color}${ctx_pct}%${RESET}"
+else
+  ctx_str="${DIM}—${RESET}"
+fi
+
+# --- 5-hour rate limit (Pro/Max) ---
+quota_pct=$(jq_get '.rate_limits.five_hour.used_percentage' | cut -d. -f1)
+if [[ -n "$quota_pct" ]]; then
+  if   (( quota_pct >= 80 )); then q_color="$RED"
+  elif (( quota_pct >= 50 )); then q_color="$YELLOW"
+  else                             q_color="$GREEN"
+  fi
+  quota_str="${q_color}${quota_pct}%${RESET}"
+else
+  quota_str="${DIM}—${RESET}"
+fi
+
+# --- Session cost ---
+cost=$(jq_get '.cost.total_cost_usd')
+if [[ -n "$cost" ]]; then
+  cost_str=$(printf '$%.2f' "$cost")
+else
+  cost_str="${DIM}—${RESET}"
+fi
+
+# --- Git (directory + branch + dirty) ---
+cwd=$(jq_get '.workspace.current_dir')
+git_str=""
 if git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
   git_root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)
   if [[ "$cwd" == "$git_root" ]]; then
     dir=$(basename "$cwd")
   else
-    rel_path="${cwd#$git_root/}"
-    dir="$(basename "$git_root")/$rel_path"
+    dir="$(basename "$git_root")/${cwd#$git_root/}"
   fi
-else
-  # Show last 3 components
-  dir=$(echo "$cwd" | awk -F'/' '{if(NF<=3) print $0; else print $(NF-2)"/"$(NF-1)"/"$NF}')
-fi
-
-output="$dir"
-
-# Git branch (bold purple to match Starship)
-if git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
   branch=$(git -C "$cwd" branch --show-current 2>/dev/null)
-  if [[ -n "$branch" ]]; then
-    output="$output $(printf '\033[1;35m%s\033[0m' "$branch")"
-  fi
-
-  # Git status (bold red to match Starship) - skip locks for speed
+  dirty=""
   if [[ -n "$(git -C "$cwd" -c core.useBuiltinFSMonitor=true status --porcelain 2>/dev/null)" ]]; then
-    output="$output $(printf '\033[1;31m*\033[0m')"
+    dirty=" ${BOLD}${RED}*${RESET}"
   fi
+  git_str="${dir} ${BOLD}${PURPLE}${branch}${RESET}${dirty}"
+else
+  dir=$(echo "$cwd" | awk -F'/' '{if(NF<=3) print $0; else print $(NF-2)"/"$(NF-1)"/"$NF}')
+  git_str="$dir"
 fi
 
-# Model name (dim cyan)
-model=$(echo "$input" | jq -r '.model.display_name // empty')
-if [[ -n "$model" ]]; then
-  output="$output $(printf '\033[2;36m%s\033[0m' "$model")"
-fi
-
-# Context usage percentage (dim yellow; colour shifts to red above 80%)
-used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
-if [[ -n "$used_pct" ]]; then
-  used_int=$(printf '%.0f' "$used_pct")
-  if (( used_int >= 80 )); then
-    ctx_color='\033[2;31m'
-  else
-    ctx_color='\033[2;33m'
-  fi
-  output="$output $(printf "${ctx_color}ctx:${used_int}%%\033[0m")"
-fi
-
-# Rate limit indicators (dim magenta; shown only when data is present)
-five_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
-seven_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
-rate_str=""
-if [[ -n "$five_pct" ]]; then
-  rate_str="5h:$(printf '%.0f' "$five_pct")%"
-fi
-if [[ -n "$seven_pct" ]]; then
-  [[ -n "$rate_str" ]] && rate_str="$rate_str "
-  rate_str="${rate_str}7d:$(printf '%.0f' "$seven_pct")%"
-fi
-if [[ -n "$rate_str" ]]; then
-  output="$output $(printf '\033[2;35m%s\033[0m' "$rate_str")"
-fi
-
-echo "$output"
+# --- Assemble ---
+# Line 1: git info
+# Line 2: model | context | quota | cost
+echo -e "$git_str"
+echo -e "${BOLD}${model}${RESET} ${DIM}|${RESET} ctx ${ctx_str} ${DIM}|${RESET} quota ${quota_str} ${DIM}|${RESET} ${cost_str}"
