@@ -5,5 +5,7 @@
     "claudeCode.preferredLocation": "panel",
     "terminal.integrated.defaultProfile.osx": "zsh",
     "editor.accessibilitySupport": "off",
-    "git.blame.statusBarItem.enabled": true
+    "git.blame.statusBarItem.enabled": true,
+    "cursorBlame.editorDecoration.enabled": false,
+    "git.blame.editorDecoration.enabled": true
 }
