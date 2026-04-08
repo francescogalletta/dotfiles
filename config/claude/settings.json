@@ -47,8 +47,7 @@
     "command": "/bin/bash $HOME/.claude/statusline.sh"
   },
   "enabledPlugins": {
-    "skill-creator@claude-plugins-official": true,
-    "discord@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
   "voiceEnabled": true,
