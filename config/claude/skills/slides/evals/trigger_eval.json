@@ -1,0 +1,14 @@
+[
+  {"query": "I need to make a presentation for the team about Q1 results", "should_trigger": true},
+  {"query": "create a slide deck for the directors meeting", "should_trigger": true},
+  {"query": "make me some slides about our roadmap", "should_trigger": true},
+  {"query": "/slides Q2 strategy update", "should_trigger": true},
+  {"query": "can you build a pitch deck for the new ML project", "should_trigger": true},
+  {"query": "I need a deck about fincrime trends", "should_trigger": true},
+  {"query": "help me write a presentation", "should_trigger": true},
+  {"query": "fix the bug in the payment service", "should_trigger": false},
+  {"query": "explain how the auth middleware works", "should_trigger": false},
+  {"query": "deploy this to production", "should_trigger": false},
+  {"query": "review this pull request", "should_trigger": false},
+  {"query": "create a new project for data analysis", "should_trigger": false}
+]
