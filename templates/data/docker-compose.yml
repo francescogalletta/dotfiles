@@ -17,6 +17,8 @@ services:
         - action: sync
           path: .
           target: /workspace
+        - action: rebuild
+          path: uv.lock
 
   streamlit:
     build: .
@@ -36,6 +38,8 @@ services:
         - action: sync
           path: .
           target: /workspace
+        - action: rebuild
+          path: uv.lock
 
   # Uncomment to add Postgres
   # db:

@@ -16,6 +16,8 @@ services:
           target: /app
           ignore:
             - __pycache__
+        - action: rebuild
+          path: ./backend/uv.lock
 
   frontend:
     build: ./frontend

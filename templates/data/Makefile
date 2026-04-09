@@ -7,7 +7,7 @@ build:
 	docker compose build
 
 test:
-	docker compose run --rm jupyter pytest
+	docker compose run --rm jupyter sh -c "uv sync --frozen && pytest"
 
 shell:
 	docker compose run --rm jupyter /bin/bash

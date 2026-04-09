@@ -7,7 +7,7 @@ build:
 	docker compose build
 
 test:
-	docker compose run --rm backend pytest
+	docker compose run --rm backend sh -c "uv sync --frozen && pytest"
 
 shell:
 	docker compose run --rm backend /bin/bash

@@ -12,7 +12,7 @@ build:
 	docker compose build
 
 test:
-	docker compose run --rm app pytest
+	docker compose run --rm app sh -c "uv sync --frozen && pytest"
 
 shell:
 	docker compose run --rm --entrypoint /bin/bash app

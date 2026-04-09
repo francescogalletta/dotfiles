@@ -21,7 +21,7 @@ echo -e "  ${bold}dotfiles installer${reset}"
 echo -e "  ${dim}─────────────────────────────────${reset}"
 echo -e "  This script sets up a fresh Mac:"
 echo ""
-echo -e "  📦 Homebrew + Brewfile     CLI tools, cmux, Ghostty, Warp, prompt"
+echo -e "  📦 Homebrew + Brewfile     CLI tools, Ghostty, Warp, prompt"
 echo -e "  🟢 Node.js                 via nvm"
 echo -e "  🔗 Symlinks                shell, git, terminal, editor, AI agent"
 echo -e "  🔑 Git identity + SSH      name, email, ed25519 key"
@@ -132,18 +132,6 @@ fi
 if [ -d "/Applications/Warp.app" ]; then
   printf "\r${clear_line}"
   echo -e "\n  ${cyan}🖥️  Warp detected${reset} — log in to your Warp account to sync settings.\n"
-fi
-
-# ─── 2c. 🖥️ cmux preferences ────────────────────────
-CMUX_PLIST="$DOTFILES/config/cmux/com.cmuxterm.app.plist"
-if [ -f "$CMUX_PLIST" ]; then
-  if defaults import com.cmuxterm.app "$CMUX_PLIST" >> "$LOGFILE" 2>&1; then
-    pass "🖥️  cmux preferences"
-    printf "\r${clear_line}"
-    echo -e "\n  ${cyan}🖥️  cmux detected${reset} — restart cmux to apply preferences (shortcuts, etc).\n"
-  else
-    fail "🖥️  cmux preferences" "defaults import failed"
-  fi
 fi
 
 # ─── 3. 🟢 Node.js via nvm ─────────────────────────────
@@ -311,7 +299,6 @@ if [ "$fail_count" -gt 0 ]; then
   exit 1
 else
   installed_terms=()
-  [ -d "/Applications/cmux.app" ]    && installed_terms+=("cmux")
   [ -d "/Applications/Ghostty.app" ] && installed_terms+=("Ghostty")
   [ -d "/Applications/Warp.app" ]    && installed_terms+=("Warp")
   if [ ${#installed_terms[@]} -gt 0 ]; then

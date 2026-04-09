@@ -114,15 +114,16 @@ Create all files in order:
 
 1. `mkdir -p ~/projects/<name>/.claude/agents ~/projects/<name>/.claude/skills ~/projects/<name>/.claude/rules ~/projects/<name>/tasks`
 2. **If archetype is not `none`**: copy template files from `~/dotfiles/templates/<archetype>/` into `~/projects/<name>/`. Use `cp -r ~/dotfiles/templates/<archetype>/. ~/projects/<name>/` — this copies all files including hidden ones.
-3. `cd ~/projects/<name> && git init`
-4. Write `CLAUDE.md` (see template)
-5. Write `PRD.md` — use the approved draft
-6. Write `TASKS.md` — use the approved draft
-7. Write one `tasks/T###.md` per task (see template)
-8. Write `DESIGN.md` (see template)
-9. Write `CLAUDE.local.md` (see template)
-10. If no `.gitignore` exists yet (i.e. archetype was `none`), write the default `.gitignore`
-11. `git add -A && git commit -m "Initial project scaffold"`
+3. **If a `pyproject.toml` exists** (all Python archetypes): generate `uv.lock` by running `docker run --rm -v "$(pwd)":/app -w /app ghcr.io/astral-sh/uv:python3.12-slim uv lock` from the project directory. This keeps uv off the host — the lockfile is generated inside a disposable container.
+4. `cd ~/projects/<name> && git init`
+5. Write `CLAUDE.md` (see template)
+6. Write `PRD.md` — use the approved draft
+7. Write `TASKS.md` — use the approved draft
+8. Write one `tasks/T###.md` per task (see template)
+9. Write `DESIGN.md` (see template)
+10. Write `CLAUDE.local.md` (see template)
+11. If no `.gitignore` exists yet (i.e. archetype was `none`), write the default `.gitignore`
+12. `git add -A && git commit -m "Initial project scaffold"`
 
 After scaffolding, ask: "Want me to run `make dev` to verify it starts?" If yes, run `cd ~/projects/<name> && make dev` and confirm it comes up.
 

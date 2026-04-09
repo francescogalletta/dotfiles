@@ -47,7 +47,7 @@ source <(fzf --zsh)
 # AI coding tool completions
 # ---------------------
 if command -v claude &>/dev/null; then
-  eval "$(claude completion zsh 2>/dev/null)"
+  source ~/.claude/completion.zsh 2>/dev/null
 fi
 # ---------------------
 # nvm (lazy-loaded for fast shell startup)
@@ -109,23 +109,21 @@ alias finder="open ."
 # fzf directory jumper
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" || return; }
 
-# Open a file in micro in a new cmux tab
+# Open a file in Cursor
 e() {
-  local abs_path
-  abs_path="$(realpath "${1:?Usage: e <file>}")"
-  cmux new-workspace --cwd "$(dirname "$abs_path")" --command "micro $abs_path"
+  code "${1:?Usage: e <file>}"
 }
 
-# Ctrl+O: fzf-pick a file and open it in micro in a new cmux tab
-_fzf_open_micro() {
-  local file abs_path
+# Ctrl+O: fzf-pick a file and open it in Cursor
+_fzf_open_cursor() {
+  local file
   file=$(fzf --preview 'bat --color=always --style=numbers {}' 2>/dev/null) || return
-  abs_path="$(realpath "$file")"
-  cmux new-workspace --cwd "$(dirname "$abs_path")" --command "micro $abs_path"
+  code "$file"
   zle reset-prompt
 }
-zle -N _fzf_open_micro
-bindkey '^O' _fzf_open_micro
+zle -N _fzf_open_cursor
+bindkey '^O' _fzf_open_cursor
+
 
 # ---------------------
 # Bell on slow command completion (>=10s) — Ghostty shows a system notification

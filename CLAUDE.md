@@ -8,8 +8,8 @@
 - Code over prose when code is clearer.
 
 # Environment
-- macOS, Ghostty terminal, zsh with Starship prompt
-- Editor: VS Code (`code --wait`)
+- macOS, Cursor editor (primary IDE + terminal), Ghostty terminal (fallback), zsh with Starship prompt
+- Editor: Cursor (`code --wait`)
 
 # Preferred CLI tools
 | Instead of | Use | Notes |
@@ -21,7 +21,7 @@
 
 # Language runtimes
 - **Node.js**: managed via `nvm` (lazy-loaded — don't source nvm.sh manually)
-- **Python**: managed via `uv` (use `uv run`, `uv pip`, `uv venv`)
+- **Python**: runs inside Docker containers only — never install Python or pip on the host. Use `uv` as the package manager inside containers (see Prototyping section).
 
 # Git & GitHub
 - Authenticated via `gh` CLI
@@ -70,7 +70,7 @@ Then state your recommendation and why. Don't skip straight to the answer — th
 
 **Run tests yourself. Fix failures yourself. Never hand broken code to the user.**
 
-1. After every code change, run the project's test command (typically `make test-local`) using the Bash tool.
+1. After every code change, run the project's test command (typically `make test`) using the Bash tool.
 2. If tests fail, read the output, diagnose the cause, fix it, and run again.
 3. Repeat until the full suite is green.
 4. Only then commit and report back.
@@ -82,6 +82,15 @@ Never ask the user to run tests, copy-paste errors, or diagnose failures. You ha
 New projects live at `~/projects/<name>/` (each its own git repo).
 Templates are at `~/dotfiles/templates/<archetype>/`.
 Standard Makefile targets on every project: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`.
+
+All Python runs inside Docker. Dockerfiles use `uv` (not pip) as the package manager:
+```dockerfile
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev
+```
+
+Dependencies are declared in `pyproject.toml` with a `uv.lock` lockfile for reproducibility. Never use `requirements.txt` or `pip install`.
 
 - `/project-new` — scaffold a new project from a template archetype
 - `/graduate` — deploy a prototype to Fly.io or GCP Cloud Run

@@ -7,7 +7,7 @@
         "key": "shift+enter",
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-            "text": "\u001b\r"
+            "text": "\n"
         },
         "when": "terminalFocus"
     },
@@ -47,5 +47,10 @@
     {
         "key": "ctrl+alt+down",
         "command": "workbench.action.focusBelowGroup"
+    },
+    {
+        "key": "alt+cmd+s",
+        "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+        "when": "!isAuxiliaryWindowFocusedContext"
     }
 ]

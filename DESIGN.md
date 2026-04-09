@@ -60,7 +60,17 @@
 **Decision:** Added `templates/` directory with one subdirectory per archetype (`data`, `web`, `api`, `cli`, `agent`). Each template is a complete Docker-based project with `docker-compose.yml`, `Makefile`, and starter code. `/project-new` was updated to copy the chosen template into `~/projects/<name>/`. Three new skills added: `/graduate` (deployment), `/learn` (self-improvement loop), `/explain` (educational mode).
 **Reason:** The gap between "new idea" and "running project" required too many manual decisions. Templates encode the stack choices so Claude has an opinionated starting point and knows how to run, test, and debug any project via standard Makefile targets. Docker is the abstraction — the same image runs locally and in production, making `/graduate` (deploy) a thin wrapper around the platform CLI.
 
-## ADR-012: cmux preferences via plist import
+## ADR-012: cmux preferences via plist import (SUPERSEDED by ADR-014)
 **Date:** 2026-03-13
 **Decision:** cmux preferences (keybindings, sidebar layout) are stored as a macOS plist in `config/cmux/` and restored via `defaults import` during install, rather than symlinked.
 **Reason:** cmux stores preferences in macOS defaults (a binary plist database), not a file that can be reliably symlinked. `defaults import/export` is the standard mechanism for persisting and restoring these settings across machines.
+
+## ADR-014: Simplify to Cursor-primary workflow
+**Date:** 2026-04-09
+**Decision:** Removed cmux, Midnight Commander, and micro. Simplified to three tools: Cursor (primary IDE + terminal), Ghostty (fallback terminal), Warp (deprioritized, kept installed). Unified on Catppuccin Mocha dark + transparent theme across all tools. Expanded Cursor settings for full IDE setup with font/terminal/editor/git/window configuration. Rewired `e()` and `Ctrl+O` shell functions to open files in Cursor instead of micro/cmux.
+**Reason:** Too many tools with overlapping purposes created maintenance burden and inconsistent experience. Cursor 3's integrated terminal and AI features make it viable as a single-pane-of-glass for development. Ghostty remains as a fast, extensible fallback. Catppuccin Mocha provides a cohesive dark aesthetic with official theme support across all three tools. Supersedes ADR-011 (Transparent macOS theme) and ADR-012 (cmux plist).
+
+## ADR-015: uv inside containers, no Python on host
+**Date:** 2026-04-09
+**Decision:** Migrated all Python templates from `pip install -r requirements.txt` to `uv sync --frozen` with `pyproject.toml` + `uv.lock`. uv is installed inside Docker containers only (`COPY --from=ghcr.io/astral-sh/uv:latest`), not on the host machine. Production images use `--no-dev`; `make test` installs dev deps on the fly via `uv sync --frozen`. Docker Compose watch configs trigger a rebuild on `uv.lock` changes.
+**Reason:** Python should never be installed on the host — everything runs in Docker (consistent with the template design since day one). uv is 10-100x faster than pip for dependency resolution and installation, and `uv.lock` provides reproducible builds. Keeping uv container-only means zero host dependencies beyond Docker, and users/CI don't need uv installed locally.
