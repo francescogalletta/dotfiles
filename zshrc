@@ -44,12 +44,6 @@ eval "$(starship init zsh)"
 source <(fzf --zsh)
 
 # ---------------------
-# AI coding tool completions
-# ---------------------
-if command -v claude &>/dev/null; then
-  source ~/.claude/completion.zsh 2>/dev/null
-fi
-# ---------------------
 # nvm (lazy-loaded for fast shell startup)
 # ---------------------
 export NVM_DIR="$HOME/.nvm"
