@@ -20,4 +20,5 @@ LINKS=(
   "config/claude/skills:$HOME/.claude/skills:claude/skills"
   "config/claude/settings.json:$HOME/.claude/settings.json:claude/settings"
   "config/claude/statusline.sh:$HOME/.claude/statusline.sh:claude/statusline"
+  "config/obsidian/obsidian.json:$HOME/Library/Application Support/obsidian/obsidian.json:obsidian/settings"
 )
