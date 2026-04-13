@@ -100,6 +100,9 @@ mkcd() { mkdir -p "$1" && cd "$1"; }
 alias o="open ."
 alias finder="open ."
 
+# Claude Code
+alias cc="claude --permission-mode auto"
+
 # fzf directory jumper
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" || return; }
 
