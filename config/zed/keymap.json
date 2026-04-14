@@ -1,0 +1,72 @@
+// Zed keymap — unified bindings across Ghostty, Warp, Cursor, Zed.
+// Managed via ~/dotfiles, symlinked into place.
+// Open defaults: cmd-shift-p → "zed: open default keymap"
+[
+  // ----- Tab navigation (Alt+Shift) -----
+  {
+    "context": "Pane",
+    "bindings": {
+      "alt-shift-left": "pane::ActivatePrevItem",
+      "alt-shift-right": "pane::ActivateNextItem"
+    }
+  },
+
+  // ----- Split panes (Ctrl+Shift) -----
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-shift-r": "pane::SplitRight",
+      "ctrl-shift-d": "pane::SplitDown",
+      "ctrl-shift-w": "pane::CloseActiveItem"
+    }
+  },
+
+  // ----- Pane focus navigation (Ctrl+Alt) -----
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-alt-left": ["workspace::ActivatePaneInDirection", "Left"],
+      "ctrl-alt-right": ["workspace::ActivatePaneInDirection", "Right"],
+      "ctrl-alt-up": ["workspace::ActivatePaneInDirection", "Up"],
+      "ctrl-alt-down": ["workspace::ActivatePaneInDirection", "Down"]
+    }
+  },
+
+  // ----- Terminal -----
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-shift-w": "pane::CloseActiveItem"
+    }
+  },
+
+  // ----- Editor productivity -----
+  {
+    "context": "Editor",
+    "bindings": {
+      // Quick duplicate line (VS Code-style)
+      "cmd-shift-d": "editor::DuplicateLineDown",
+      // Move line up/down
+      "alt-up": "editor::MoveLineUp",
+      "alt-down": "editor::MoveLineDown"
+    }
+  },
+
+  // ----- Agent panel -----
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-i": "agent::ToggleFocus"
+    }
+  },
+
+  // ----- Task runner shortcuts -----
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-shift-b": ["task::Spawn", { "task_name": "Build" }],
+      "cmd-shift-t": ["task::Spawn", { "task_name": "Test" }],
+      "alt-r": ["task::Rerun", { "reevaluate_context": true }]
+    }
+  }
+]

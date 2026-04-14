@@ -1,0 +1,147 @@
+// Zed settings — managed via ~/dotfiles, symlinked into place.
+// Open defaults: cmd-shift-p → "zed: open default settings"
+{
+  // ----- Theme & appearance -----
+  "theme": {
+    "mode": "system",
+    "dark": "Catppuccin Mocha",
+    "light": "Solarized Light"
+  },
+  "icon_theme": "Catppuccin Mocha",
+  "ui_font_family": "JetBrains Mono",
+  "ui_font_size": 15,
+  "buffer_font_family": "JetBrains Mono",
+  "buffer_font_size": 14,
+  "buffer_line_height": { "custom": 1.6 },
+  "cursor_shape": "bar",
+  "cursor_blink": true,
+
+  // ----- Editor -----
+  "tab_size": 2,
+  "hard_tabs": false,
+  "soft_wrap": "none",
+  "show_whitespaces": "boundary",
+  "format_on_save": "on",
+  "remove_trailing_whitespace_on_save": true,
+  "ensure_final_newline_on_save": true,
+  "autosave": "on_focus_change",
+  "linked_edits": true,
+  "minimap": { "show": "never" },
+  "scrollbar": { "show": "auto" },
+  "relative_line_numbers": false,
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": false,
+    "show_other_hints": true
+  },
+  "indent_guides": {
+    "enabled": true,
+    "active_line_width": 2
+  },
+
+  // ----- Git -----
+  "git": {
+    "git_gutter": "tracked_files",
+    "inline_blame": { "enabled": true }
+  },
+
+  // ----- Terminal -----
+  "terminal": {
+    "shell": { "program": "/bin/zsh" },
+    "dock": "bottom",
+    "font_family": "JetBrains Mono",
+    "font_size": 14,
+    "option_as_meta": true,
+    "copy_on_select": true,
+    "working_directory": "current_project_directory",
+    "env": {
+      "EDITOR": "zed --wait"
+    }
+  },
+
+  // ----- Tabs & panels -----
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+    "close_position": "right"
+  },
+  "project_panel": {
+    "git_status_indicator": true,
+    "auto_fold_dirs": true
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+
+  // ----- Window -----
+  "restore_on_startup": "last_session",
+  "use_system_window_tabs": false,
+  "title_bar": {
+    "show_branch_icon": true
+  },
+  "status_bar": {
+    "show_active_file": true
+  },
+
+  // ----- Search -----
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/node_modules",
+    "**/dist",
+    "**/.next",
+    "**/__pycache__",
+    "**/.venv",
+    "**/target"
+  ],
+
+  // ----- AI -----
+  "features": {
+    "edit_predictions": "copilot"
+  },
+  "agent": {
+    "default_profile": "write",
+    "tool_permissions": {
+      "default": "confirm"
+    }
+  },
+
+  // ----- Sessions -----
+  "session": {
+    "trust_all_worktrees": true
+  },
+  "base_keymap": "VSCode",
+
+  // ----- Extensions (auto-install) -----
+  "auto_install_extensions": {
+    "catppuccin": true,
+    "catppuccin-icons": true,
+    "dockerfile": true,
+    "html": true,
+    "emmet": true,
+    "git-firefly": true,
+    "toml": true,
+    "make": true
+  },
+
+  // ----- Per-language overrides -----
+  "languages": {
+    "Python": {
+      "tab_size": 4,
+      "format_on_save": "on",
+      "formatter": "language_server"
+    },
+    "Markdown": {
+      "soft_wrap": "preferred_line_length",
+      "preferred_line_length": 100
+    },
+    "JSON": {
+      "tab_size": 2,
+      "format_on_save": "on"
+    },
+    "JSONC": {
+      "tab_size": 2,
+      "format_on_save": "on"
+    }
+  }
+}

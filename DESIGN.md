@@ -74,3 +74,8 @@
 **Date:** 2026-04-09
 **Decision:** Migrated all Python templates from `pip install -r requirements.txt` to `uv sync --frozen` with `pyproject.toml` + `uv.lock`. uv is installed inside Docker containers only (`COPY --from=ghcr.io/astral-sh/uv:latest`), not on the host machine. Production images use `--no-dev`; `make test` installs dev deps on the fly via `uv sync --frozen`. Docker Compose watch configs trigger a rebuild on `uv.lock` changes.
 **Reason:** Python should never be installed on the host — everything runs in Docker (consistent with the template design since day one). uv is 10-100x faster than pip for dependency resolution and installation, and `uv.lock` provides reproducible builds. Keeping uv container-only means zero host dependencies beyond Docker, and users/CI don't need uv installed locally.
+
+## ADR-016: Zed as secondary editor
+**Date:** 2026-04-14
+**Decision:** Added Zed editor to the managed dotfiles alongside Cursor. Zed config (`settings.json`, `keymap.json`, `tasks.json`) lives in `config/zed/` and is symlinked to `~/.config/zed/`. Keybindings follow the unified scheme (Alt+Shift for tabs, Ctrl+Shift for splits, Ctrl+Alt for pane focus). Global tasks mirror the standard Makefile targets (`make dev`, `make test`, `make build`, etc.). Added `z` shell alias.
+**Reason:** Zed is a native, GPU-accelerated editor with near-instant startup, built-in collaboration, editable multibuffers, and first-class AI agent support. It complements Cursor as a lightweight alternative for quick edits, reading code, and AI-assisted work without Electron overhead. Cursor remains primary for heavy IDE work; Zed fills the fast-editor niche.

@@ -103,6 +103,9 @@ alias finder="open ."
 # Claude Code
 alias cc="claude --permission-mode auto"
 
+# Zed
+alias z="zed"
+
 # fzf directory jumper
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" || return; }
 

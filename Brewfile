@@ -21,3 +21,6 @@ cask "google-cloud-sdk"
 # Terminal
 cask "ghostty"
 cask "warp"
+
+# Editor
+cask "zed"

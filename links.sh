@@ -20,4 +20,7 @@ LINKS=(
   "config/claude/skills:$HOME/.claude/skills:claude/skills"
   "config/claude/settings.json:$HOME/.claude/settings.json:claude/settings"
   "config/claude/statusline.sh:$HOME/.claude/statusline.sh:claude/statusline"
+  "config/zed/settings.json:$HOME/.config/zed/settings.json:zed/settings"
+  "config/zed/keymap.json:$HOME/.config/zed/keymap.json:zed/keymap"
+  "config/zed/tasks.json:$HOME/.config/zed/tasks.json:zed/tasks"
 )
