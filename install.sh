@@ -178,38 +178,28 @@ advance "🔑 Configuring Git identity..."
 GIT_LOCAL="$HOME/.gitconfig.local"
 
 # Read existing or prompt for name
-git_name="$(git config --global user.name 2>/dev/null)"
+git_name="$(git config --file "$GIT_LOCAL" user.name 2>/dev/null)"
+if [ -z "$git_name" ]; then
+  git_name="$(git config --global user.name 2>/dev/null)"
+fi
 if [ -z "$git_name" ]; then
   printf "\r${clear_line}"
   read -rp "  Git user name: " git_name
 fi
 
 # Read existing or prompt for email
-git_email="$(git config --global user.email 2>/dev/null)"
+git_email="$(git config --file "$GIT_LOCAL" user.email 2>/dev/null)"
+if [ -z "$git_email" ]; then
+  git_email="$(git config --global user.email 2>/dev/null)"
+fi
 if [ -z "$git_email" ]; then
   printf "\r${clear_line}"
   read -rp "  Git email: " git_email
 fi
 
-# Write identity to ~/.gitconfig.local (preserves [core] editor if ide.sh wrote it)
-if [ -f "$GIT_LOCAL" ] && grep -q '\[core\]' "$GIT_LOCAL"; then
-  # Append [user] if not already present
-  if ! grep -q '\[user\]' "$GIT_LOCAL"; then
-    cat >> "$GIT_LOCAL" << USEREOF
-
-[user]
-    name = $git_name
-    email = $git_email
-USEREOF
-  fi
-else
-  cat >> "$GIT_LOCAL" << USEREOF
-
-[user]
-    name = $git_name
-    email = $git_email
-USEREOF
-fi
+# Write identity to ~/.gitconfig.local (safe — only touches user.* keys)
+git config --file "$GIT_LOCAL" user.name "$git_name"
+git config --file "$GIT_LOCAL" user.email "$git_email"
 pass "🔑 Git: $git_name <$git_email>"
 
 # ─── 7. 🔐 SSH key ─────────────────────────────────────
