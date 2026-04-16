@@ -52,5 +52,18 @@
         "key": "alt+cmd+s",
         "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
         "when": "!isAuxiliaryWindowFocusedContext"
+    },
+    {
+        "key": "cmd+shift+d",
+        "command": "editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "cmd+shift+b",
+        "command": "workbench.action.tasks.build"
+    },
+    {
+        "key": "cmd+shift+t",
+        "command": "workbench.action.tasks.test"
     }
 ]

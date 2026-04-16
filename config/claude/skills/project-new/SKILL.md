@@ -120,7 +120,7 @@ Create all files in order:
 6. Write `PRD.md` — use the approved draft
 7. Write `TASKS.md` — use the approved draft
 8. Write one `tasks/T###.md` per task (see template)
-9. Write `DESIGN.md` (see template)
+9. Write `ADR.md` (see template)
 10. Write `CLAUDE.local.md` (see template)
 11. If no `.gitignore` exists yet (i.e. archetype was `none`), write the default `.gitignore`
 12. `git add -A && git commit -m "Initial project scaffold"`
@@ -186,15 +186,20 @@ Relevant background, constraints, decisions from the PRD.
 - PRD.md — relevant section
 ```
 
-### Template: `DESIGN.md`
+### Template: `ADR.md`
 
 ```markdown
-# Design — <Name>
+# Architecture Decision Records — <Name>
 
-Architecture decisions and technical choices. Append-only — never edit past entries.
+Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md to reflect the current state.
 
-<!-- Format: ## [T###] Decision title — YYYY-MM-DD
-Briefly state: what was decided, why, and what alternatives were rejected. -->
+---
+
+<!-- Format: ## ADR-NNN: Decision title
+**Date:** YYYY-MM-DD
+**Decision:** What was decided.
+**Reason:** Why. What alternatives were rejected.
+**Supersedes:** ADR-NNN (if applicable) -->
 ```
 
 ### Template: `CLAUDE.local.md`
@@ -238,7 +243,7 @@ Files:
   PRD.md                       — problem, requirements, tech stack
   TASKS.md                     — task index (one line per task)
   tasks/T001.md … T###.md      — per-task detail files
-  DESIGN.md                    — architecture decision log (append-only)
+  ADR.md                       — architecture decision log (newest first)
   .claude/agents/              — ready for sub-agent definitions
   .claude/skills/              — ready for project slash commands
   .claude/rules/               — ready for topic-scoped rules

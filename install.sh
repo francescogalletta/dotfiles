@@ -29,7 +29,9 @@ echo -e "  🐙 GitHub CLI auth         login via gh"
 echo ""
 echo -e "  ${dim}Optional (you'll be asked):${reset}"
 echo -e "  🤖 Claude Code             Anthropic's coding agent"
+echo -e "  🔥 Forge Code              Tailcall's coding agent"
 echo -e "  ☁️  Google Drive            desktop sync client"
+echo -e "  🖥️  Editors                 VS Code, Zed, Cursor (via ide.sh)"
 echo ""
 echo -e "  ${dim}Logs are written to ~/dotfiles/.install.log${reset}"
 echo -e "  ${dim}─────────────────────────────────${reset}"
@@ -128,13 +130,13 @@ else
   fail "📦 Brewfile packages" "$LAST_ERROR"
 fi
 
-# ─── 2b. 🖥️ Warp settings sync ──────────────────────
+# ─── 3. 🖥️ Warp settings sync ────────────────────────
 if [ -d "/Applications/Warp.app" ]; then
   printf "\r${clear_line}"
   echo -e "\n  ${cyan}🖥️  Warp detected${reset} — log in to your Warp account to sync settings.\n"
 fi
 
-# ─── 3. 🟢 Node.js via nvm ─────────────────────────────
+# ─── 4. 🟢 Node.js via nvm ─────────────────────────────
 advance "🟢 Installing Node.js LTS..."
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
@@ -149,7 +151,7 @@ else
   skip "🟢 Node.js $(node --version)"
 fi
 
-# ─── 4. 🔗 Symlinks ───────────────────────────────────
+# ─── 5. 🔗 Symlinks ───────────────────────────────────
 link_file() {
   local src="$1" dst="$2" name="$3"
   if [ -L "$dst" ]; then
@@ -173,19 +175,44 @@ done
 
 # ─── 6. 🔑 Git identity ───────────────────────────────
 advance "🔑 Configuring Git identity..."
-if [ -z "$(git config --global user.name 2>/dev/null)" ]; then
+GIT_LOCAL="$HOME/.gitconfig.local"
+
+# Read existing or prompt for name
+git_name="$(git config --global user.name 2>/dev/null)"
+if [ -z "$git_name" ]; then
   printf "\r${clear_line}"
   read -rp "  Git user name: " git_name
-  git config --global user.name "$git_name"
 fi
-if [ -z "$(git config --global user.email 2>/dev/null)" ]; then
+
+# Read existing or prompt for email
+git_email="$(git config --global user.email 2>/dev/null)"
+if [ -z "$git_email" ]; then
   printf "\r${clear_line}"
   read -rp "  Git email: " git_email
-  git config --global user.email "$git_email"
 fi
-pass "🔑 Git: $(git config --global user.name) <$(git config --global user.email)>"
 
-# ─── 7. 🔐 SSH key ────────────────────────────────────
+# Write identity to ~/.gitconfig.local (preserves [core] editor if ide.sh wrote it)
+if [ -f "$GIT_LOCAL" ] && grep -q '\[core\]' "$GIT_LOCAL"; then
+  # Append [user] if not already present
+  if ! grep -q '\[user\]' "$GIT_LOCAL"; then
+    cat >> "$GIT_LOCAL" << USEREOF
+
+[user]
+    name = $git_name
+    email = $git_email
+USEREOF
+  fi
+else
+  cat >> "$GIT_LOCAL" << USEREOF
+
+[user]
+    name = $git_name
+    email = $git_email
+USEREOF
+fi
+pass "🔑 Git: $git_name <$git_email>"
+
+# ─── 7. 🔐 SSH key ─────────────────────────────────────
 advance "🔐 Setting up SSH key..."
 SSH_KEY="$HOME/.ssh/id_ed25519"
 if [ ! -f "$SSH_KEY" ]; then
@@ -200,7 +227,7 @@ else
   skip "🔐 SSH key"
 fi
 
-# ─── 8. 🐙 GitHub CLI auth ────────────────────────────
+# ─── 8. 🐙 GitHub CLI auth ─────────────────────────────
 advance "🐙 Authenticating with GitHub..."
 if ! gh auth status &>/dev/null; then
   printf "\r${clear_line}"
@@ -213,7 +240,7 @@ else
   skip "🐙 GitHub CLI"
 fi
 
-# ─── 9. Optional extras prompt ────────────────────────
+# ─── 9. Optional extras prompt ─────────────────────────
 printf "\r${clear_line}\n"
 echo -e "  ${bold}Optional extras:${reset}\n"
 
@@ -228,14 +255,16 @@ ask_yes_no() {
 }
 
 ask_yes_no "🤖 Install Claude Code (Anthropic)?" INSTALL_CLAUDE
+ask_yes_no "🔥 Install Forge Code (Tailcall)?"     INSTALL_FORGE
 ask_yes_no "☁️  Install Google Drive?"              INSTALL_GDRIVE
 echo ""
 
 # Add optional steps to total
 if [ "$INSTALL_CLAUDE" = true ]; then count; fi
+if [ "$INSTALL_FORGE" = true ]; then count; fi
 if [ "$INSTALL_GDRIVE" = true ]; then count; fi
 
-# ─── 10. 🤖 Claude Code (optional) ───────────────────
+# ─── 10. 🤖 Claude Code (optional) ─────────────────────
 if [ "$INSTALL_CLAUDE" = true ]; then
   advance "🤖 Installing Claude Code..."
   if ! command -v claude &>/dev/null; then
@@ -251,7 +280,23 @@ else
   RESULTS+=("  ⏭️  🤖 Claude Code ${dim}(not selected)${reset}")
 fi
 
-# ─── 11. ☁️ Google Drive (optional) ───────────────────
+# ─── 11. 🔥 Forge Code (optional) ──────────────────────
+if [ "$INSTALL_FORGE" = true ]; then
+  advance "🔥 Installing Forge Code..."
+  if ! command -v forge &>/dev/null; then
+    if run_logged "Forge Code" bash -c 'curl -fsSL https://forgecode.dev/cli | sh'; then
+      pass "🔥 Forge Code"
+    else
+      fail "🔥 Forge Code" "$LAST_ERROR"
+    fi
+  else
+    skip "🔥 Forge Code"
+  fi
+else
+  RESULTS+=("  ⏭️  🔥 Forge Code ${dim}(not selected)${reset}")
+fi
+
+# ─── 12. ☁️ Google Drive (optional) ────────────────────
 if [ "$INSTALL_GDRIVE" = true ]; then
   advance "☁️  Installing Google Drive..."
   if ! brew list --cask google-drive &>/dev/null; then
@@ -267,7 +312,16 @@ else
   RESULTS+=("  ⏭️  ☁️  Google Drive ${dim}(not selected)${reset}")
 fi
 
-# ─── 12. 📁 Projects directory ────────────────────────
+# ─── 13. 🖥️ IDE installation (ide.sh) ──────────────────
+printf "\r${clear_line}\n"
+echo -e "  ${bold}Editor setup:${reset}\n"
+if [ -x "$DOTFILES/ide.sh" ]; then
+  bash "$DOTFILES/ide.sh"
+else
+  echo -e "  ${yellow}ide.sh not found — skipping editor setup.${reset}\n"
+fi
+
+# ─── 14. 📁 Projects directory ─────────────────────────
 mkdir -p "$HOME/projects"
 
 # ─── Summary ──────────────────────────────────────────

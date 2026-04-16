@@ -1,4 +1,4 @@
-// Zed keymap — unified bindings across Ghostty, Warp, Cursor, Zed.
+// Zed keymap — unified bindings across Ghostty, Warp, Zed.
 // Managed via ~/dotfiles, symlinked into place.
 // Open defaults: cmd-shift-p → "zed: open default keymap"
 [
@@ -49,6 +49,14 @@
       // Move line up/down
       "alt-up": "editor::MoveLineUp",
       "alt-down": "editor::MoveLineDown"
+    }
+  },
+
+  // ----- Sidebar -----
+  {
+    "context": "Workspace",
+    "bindings": {
+      "alt-cmd-s": "workspace::ToggleLeftDock"
     }
   },
 

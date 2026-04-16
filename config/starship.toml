@@ -3,7 +3,6 @@ $directory\
 $git_branch\
 $git_status\
 $nodejs\
-$python\
 $character"""
 
 [directory]
@@ -21,10 +20,6 @@ style = "bold red"
 [nodejs]
 format = "[$symbol($version)]($style) "
 symbol = "node "
-
-[python]
-format = "[$symbol($version)]($style) "
-symbol = "py "
 
 [character]
 success_symbol = "[>](bold green)"

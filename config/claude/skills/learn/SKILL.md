@@ -14,8 +14,8 @@ Read the following in order:
 
 1. `git log --oneline -20` — what was shipped
 2. `TASKS.md` — what was planned vs done; open questions
-3. `DESIGN.md` — decisions made and why
-4. `PRD.md` — original intent
+3. `ADR.md` — decisions made and why (newest first)
+4. `PRD.md` — current project state
 
 If any of these files don't exist, skip them.
 

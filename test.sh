@@ -31,16 +31,24 @@ echo -e "  ${dim}─────────────────────
 echo ""
 
 # ─── Shell syntax ───────────────────────────────────────
-check "zsh -n zshrc"      zsh -n "$DOTFILES/zshrc"
-check "zsh -n zprofile"   zsh -n "$DOTFILES/zprofile"
-check "zsh -n install.sh" zsh -n "$DOTFILES/install.sh"
-check "zsh -n sync.sh"    zsh -n "$DOTFILES/sync.sh"
-check "zsh -n links.sh"   zsh -n "$DOTFILES/links.sh"
+check "zsh -n zshrc"       zsh -n "$DOTFILES/zshrc"
+check "zsh -n zprofile"    zsh -n "$DOTFILES/zprofile"
+check "bash -n install.sh" bash -n "$DOTFILES/install.sh"
+check "bash -n ide.sh"     bash -n "$DOTFILES/ide.sh"
+check "bash -n sync.sh"    bash -n "$DOTFILES/sync.sh"
+check "bash -n links.sh"   bash -n "$DOTFILES/links.sh"
 
 # ─── JSON ───────────────────────────────────────────────
 check "claude/settings.json"    jq empty "$DOTFILES/config/claude/settings.json"
 check "cursor/settings.json"    jq empty "$DOTFILES/config/cursor/settings.json"
 check "cursor/keybindings.json" jq empty "$DOTFILES/config/cursor/keybindings.json"
+
+# ─── Zed JSONC ──────────────────────────────────────────
+for zed_file in settings.json keymap.json tasks.json; do
+  if [ -f "$DOTFILES/config/zed/$zed_file" ]; then
+    check "zed/$zed_file" bash -c "sed 's|//.*||' \"$DOTFILES/config/zed/$zed_file\" | jq empty"
+  fi
+done
 
 # ─── Starship TOML ──────────────────────────────────────
 if command -v starship &>/dev/null; then

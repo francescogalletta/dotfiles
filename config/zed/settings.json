@@ -28,7 +28,7 @@
   "linked_edits": true,
   "minimap": { "show": "never" },
   "scrollbar": { "show": "auto" },
-  "relative_line_numbers": false,
+  "relative_line_numbers": "disabled",
   "inlay_hints": {
     "enabled": true,
     "show_type_hints": true,
@@ -55,9 +55,7 @@
     "option_as_meta": true,
     "copy_on_select": true,
     "working_directory": "current_project_directory",
-    "env": {
-      "EDITOR": "zed --wait"
-    }
+    "env": {}
   },
 
   // ----- Tabs & panels -----
