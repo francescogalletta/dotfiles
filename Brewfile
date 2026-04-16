@@ -26,4 +26,5 @@ cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 cask "warp"
 
-# Editors are managed by ide.sh (VS Code, Zed, Cursor)
+# Notes
+cask "obsidian"
