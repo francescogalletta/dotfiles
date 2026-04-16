@@ -24,9 +24,9 @@ Note: branch name, remote tracking status (ahead/behind/no remote), uncommitted 
 Read in this order (note any that are missing):
 
 1. `CLAUDE.md`
-2. `PRD.md`
-3. `TASKS.md`
-4. `DESIGN.md` (skip silently if absent)
+2. `ADR.md` (skip silently if absent)
+3. `PRD.md`
+4. `TASKS.md`
 
 If `TASKS.md` is missing entirely, suggest running `/project-new` to set up the project structure.
 
@@ -56,7 +56,7 @@ Next pending: <top 2–3 [T###] titles>
 <from TASKS.md, or "none">
 
 ### Key Design Decisions
-<1–2 most recent entries from DESIGN.md, or "none recorded">
+<1–2 most recent entries from ADR.md (top of file = newest), or "none recorded">
 
 ### Last Session
 <summary from .claude/session-current.md, or "no handoff note found">

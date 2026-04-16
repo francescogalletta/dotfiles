@@ -1,6 +1,7 @@
 # CLI tools
 brew "bat"
 brew "eza"
+brew "fd"
 brew "fzf"
 brew "gh"
 brew "jq"
@@ -17,6 +18,9 @@ cask "docker"
 # Deployment
 brew "flyctl"
 cask "google-cloud-sdk"
+
+# Fonts
+cask "font-jetbrains-mono-nerd-font"
 
 # Terminal
 cask "ghostty"

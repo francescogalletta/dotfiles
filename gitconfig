@@ -2,8 +2,10 @@
 	defaultBranch = main
 
 [core]
-	editor = code --wait
 	excludesFile = ~/.config/git/ignore
+
+[include]
+	path = ~/.gitconfig.local
 
 [alias]
 	s = status
@@ -19,6 +21,5 @@
 
 [push]
 	autoSetupRemote = true
-[user]
-	name = francescogalletta
-	email = francesco@galletta.xyz
+
+# [user] is in ~/.gitconfig.local (written by install.sh)

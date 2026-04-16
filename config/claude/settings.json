@@ -17,6 +17,7 @@
       "Bash(ls:*)",
       "Bash(env:*)",
       "Bash(code:*)",
+      "Bash(zed:*)",
       "Bash(python:*)",
       "WebSearch",
       "WebFetch",
@@ -36,6 +37,18 @@
           {
             "type": "command",
             "command": "test -f TASKS.md && echo 'This is a managed project. Run /project-resume to orient yourself before doing any work.' || echo 'No TASKS.md found — this does not appear to be a managed project.'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_TOOL_ARG_FILE_PATH\" | grep -q 'ADR.md' && echo 'ADR.md was modified — update PRD.md to reflect the current state.' || true",
             "timeout": 5
           }
         ]

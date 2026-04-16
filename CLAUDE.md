@@ -8,8 +8,8 @@
 - Code over prose when code is clearer.
 
 # Environment
-- macOS, Cursor editor (primary IDE + terminal), Ghostty terminal (fallback), zsh with Starship prompt
-- Editor: Cursor (`code --wait`)
+- macOS, Zed editor (primary IDE), Ghostty terminal (primary), zsh with Starship prompt
+- Editor: Zed (`zed --wait`), configurable via `~/.editor_env`
 
 # Preferred CLI tools
 | Instead of | Use | Notes |
@@ -45,16 +45,26 @@
 
 # Dotfiles
 
-System config is managed through `~/dotfiles` and symlinked into place. When changing any config (Claude settings, shell, editor, etc.), prefer editing the source in `~/dotfiles/` rather than the symlink target. After making changes, prompt to ship them.
+System config is managed through `~/dotfiles` and symlinked into place. Editor symlinks are conditional (only if the app is installed). Generated files (`~/.editor_env`, `~/.gitconfig.local`) are machine-specific — never check them in.
+
+When changing any config (Claude settings, shell, editor, etc.), prefer editing the source in `~/dotfiles/` rather than the symlink target. After making changes, prompt to ship them.
+
+- Prefer standard env vars (`EDITOR`, `VISUAL`, `PAGER`) over custom variables. Derive values from them (e.g., `${EDITOR%% *}` for the base command).
+- Don't add references to tools or editors that aren't part of the managed Brewfile/ide.sh setup.
 
 # Project Documentation
 
-Managed projects are scaffolded with `/project-new` and use `PRD.md` + `TASKS.md` + `DESIGN.md`.
+Managed projects are scaffolded with `/project-new` and use three files:
+- `ADR.md` — reverse-chronological decision log (newest first, prepend new entries)
+- `PRD.md` — living doc reflecting current project state (must stay in sync with ADR.md)
+- `TASKS.md` — progress tracking, phases, changelog. Presence signals a managed project.
 
+Workflow:
 - Run `/project-resume` at session start to orient yourself
 - Use `/ship` when committing and pushing work
-- After a design/architecture decision: append an entry to `DESIGN.md` (append-only, never edit past entries)
+- After a design decision: prepend an entry to `ADR.md`, then update `PRD.md` to reflect the current state. These two files must never contradict each other.
 - After completing a task: mark it done in `TASKS.md` and append a changelog entry
+- When making structural changes: update all docs (README, ADR.md, PRD.md, TASKS.md) in the same pass. Never ship code changes without corresponding doc updates.
 
 # Architecture & Stack Decisions
 

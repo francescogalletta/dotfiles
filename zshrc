@@ -28,10 +28,14 @@ setopt CORRECT            # "did you mean?" when you typo a command
 setopt INTERACTIVE_COMMENTS  # allow # comments in the terminal
 
 # ---------------------
-# Editor
+# Editor (override via ~/.editor_env, written by ide.sh)
 # ---------------------
-export EDITOR="code --wait"
-export VISUAL="$EDITOR"
+if [ -f "$HOME/.editor_env" ]; then
+  source "$HOME/.editor_env"
+else
+  export EDITOR="zed --wait"
+  export VISUAL="$EDITOR"
+fi
 
 # ---------------------
 # Starship prompt
@@ -43,12 +47,6 @@ eval "$(starship init zsh)"
 # ---------------------
 source <(fzf --zsh)
 
-# ---------------------
-# AI coding tool completions
-# ---------------------
-if command -v claude &>/dev/null; then
-  source ~/.claude/completion.zsh 2>/dev/null
-fi
 # ---------------------
 # nvm (lazy-loaded for fast shell startup)
 # ---------------------
@@ -106,23 +104,43 @@ mkcd() { mkdir -p "$1" && cd "$1"; }
 alias o="open ."
 alias finder="open ."
 
+# Claude Code
+alias cc="claude --permission-mode auto"
+
+# Zed
+alias z="zed"
+
+# Git identity — view or change ~/.gitconfig.local identity
+gitid() {
+  local GIT_LOCAL="$HOME/.gitconfig.local"
+  local name email
+  name="$(git config --file "$GIT_LOCAL" user.name 2>/dev/null)"
+  email="$(git config --file "$GIT_LOCAL" user.email 2>/dev/null)"
+  echo "Current: $name <$email>"
+  read -r "?New name [$name]: " new_name
+  read -r "?New email [$email]: " new_email
+  git config --file "$GIT_LOCAL" user.name "${new_name:-$name}"
+  git config --file "$GIT_LOCAL" user.email "${new_email:-$email}"
+  echo "Updated: $(git config user.name) <$(git config user.email)>"
+}
+
 # fzf directory jumper
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" || return; }
 
-# Open a file in Cursor
+# Open a file in the default IDE (derived from $EDITOR)
 e() {
-  code "${1:?Usage: e <file>}"
+  ${EDITOR%% *} "${1:?Usage: e <file>}"
 }
 
-# Ctrl+O: fzf-pick a file and open it in Cursor
-_fzf_open_cursor() {
+# Ctrl+O: fzf-pick a file and open it in the default IDE
+_fzf_open_ide() {
   local file
   file=$(fzf --preview 'bat --color=always --style=numbers {}' 2>/dev/null) || return
-  code "$file"
+  ${EDITOR%% *} "$file"
   zle reset-prompt
 }
-zle -N _fzf_open_cursor
-bindkey '^O' _fzf_open_cursor
+zle -N _fzf_open_ide
+bindkey '^O' _fzf_open_ide
 
 
 # ---------------------
@@ -135,13 +153,5 @@ precmd() { [[ $(( SECONDS - _cmd_start_time )) -ge 10 ]] && echo -n "\a"; _cmd_s
 # ---------------------
 # Plugins (must be near end of file)
 # ---------------------
-source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-
-# bun completions
-[ -s "/Users/francesco/.bun/_bun" ] && source "/Users/francesco/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+[ -n "$HOMEBREW_PREFIX" ] && source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[ -n "$HOMEBREW_PREFIX" ] && source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
