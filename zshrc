@@ -110,6 +110,20 @@ alias cc="claude --permission-mode auto"
 # Zed
 alias z="zed"
 
+# Git identity — view or change ~/.gitconfig.local identity
+gitid() {
+  local GIT_LOCAL="$HOME/.gitconfig.local"
+  local name email
+  name="$(git config --file "$GIT_LOCAL" user.name 2>/dev/null)"
+  email="$(git config --file "$GIT_LOCAL" user.email 2>/dev/null)"
+  echo "Current: $name <$email>"
+  read -r "?New name [$name]: " new_name
+  read -r "?New email [$email]: " new_email
+  git config --file "$GIT_LOCAL" user.name "${new_name:-$name}"
+  git config --file "$GIT_LOCAL" user.email "${new_email:-$email}"
+  echo "Updated: $(git config user.name) <$(git config user.email)>"
+}
+
 # fzf directory jumper
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" || return; }
 

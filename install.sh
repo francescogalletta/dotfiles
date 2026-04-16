@@ -177,27 +177,28 @@ done
 advance "🔑 Configuring Git identity..."
 GIT_LOCAL="$HOME/.gitconfig.local"
 
-# Read existing or prompt for name
 git_name="$(git config --file "$GIT_LOCAL" user.name 2>/dev/null)"
-if [ -z "$git_name" ]; then
-  git_name="$(git config --global user.name 2>/dev/null)"
-fi
-if [ -z "$git_name" ]; then
-  printf "\r${clear_line}"
-  read -rp "  Git user name: " git_name
-fi
-
-# Read existing or prompt for email
 git_email="$(git config --file "$GIT_LOCAL" user.email 2>/dev/null)"
-if [ -z "$git_email" ]; then
-  git_email="$(git config --global user.email 2>/dev/null)"
-fi
-if [ -z "$git_email" ]; then
+
+if [ -n "$git_name" ] && [ -n "$git_email" ]; then
+  # Identity exists — show it, offer to change
   printf "\r${clear_line}"
-  read -rp "  Git email: " git_email
+  echo -e "\n  Current git identity: ${bold}$git_name${reset} <${bold}$git_email${reset}>"
+  printf "  Keep this identity? [Y/n] "
+  read -r keep_identity
+  if [[ "$keep_identity" =~ ^[nN] ]]; then
+    read -rp "  Git user name [$git_name]: " new_name
+    git_name="${new_name:-$git_name}"
+    read -rp "  Git email [$git_email]: " new_email
+    git_email="${new_email:-$git_email}"
+  fi
+else
+  # No identity yet — prompt
+  printf "\r${clear_line}"
+  [ -z "$git_name" ] && read -rp "  Git user name: " git_name
+  [ -z "$git_email" ] && read -rp "  Git email: " git_email
 fi
 
-# Write identity to ~/.gitconfig.local (safe — only touches user.* keys)
 git config --file "$GIT_LOCAL" user.name "$git_name"
 git config --file "$GIT_LOCAL" user.email "$git_email"
 pass "🔑 Git: $git_name <$git_email>"
