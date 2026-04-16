@@ -6,7 +6,7 @@
   {
     "context": "Pane",
     "bindings": {
-      "alt-shift-left": "pane::ActivatePrevItem",
+      "alt-shift-left": "pane::ActivatePreviousItem",
       "alt-shift-right": "pane::ActivateNextItem"
     }
   },
@@ -25,10 +25,10 @@
   {
     "context": "Workspace",
     "bindings": {
-      "ctrl-alt-left": ["workspace::ActivatePaneInDirection", "Left"],
-      "ctrl-alt-right": ["workspace::ActivatePaneInDirection", "Right"],
-      "ctrl-alt-up": ["workspace::ActivatePaneInDirection", "Up"],
-      "ctrl-alt-down": ["workspace::ActivatePaneInDirection", "Down"]
+      "ctrl-alt-left": "workspace::ActivatePaneLeft",
+      "ctrl-alt-right": "workspace::ActivatePaneRight",
+      "ctrl-alt-up": "workspace::ActivatePaneUp",
+      "ctrl-alt-down": "workspace::ActivatePaneDown"
     }
   },
 

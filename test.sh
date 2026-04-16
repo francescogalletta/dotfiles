@@ -50,6 +50,15 @@ for zed_file in settings.json keymap.json tasks.json; do
   fi
 done
 
+# ─── Zed deprecated actions ─────────────────────────────
+# Zed auto-migrates deprecated actions by writing through symlinks,
+# causing uncommitted changes in the repo. Catch them here.
+DEPRECATED_ACTIONS="ActivatePrevItem|ActivatePaneInDirection"
+if [ -f "$DOTFILES/config/zed/keymap.json" ]; then
+  check "zed/keymap (no deprecated actions)" bash -c \
+    "! grep -qE '$DEPRECATED_ACTIONS' '$DOTFILES/config/zed/keymap.json'"
+fi
+
 # ─── Starship TOML ──────────────────────────────────────
 if command -v starship &>/dev/null; then
   check "starship.toml" \
