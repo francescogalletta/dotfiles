@@ -63,7 +63,7 @@
   // ----- Terminal -----
   "terminal": {
     "shell": { "program": "/bin/zsh" },
-    "dock": "bottom",
+    "dock": "right",
     "font_family": "JetBrains Mono",
     "font_size": 14,
     "option_as_meta": true,
