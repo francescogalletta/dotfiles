@@ -64,5 +64,6 @@
   },
   "extraKnownMarketplaces": {},
   "voiceEnabled": true,
-  "notifications": true
+  "notifications": true,
+  "advisorModel": "opus"
 }
