@@ -91,7 +91,7 @@
   "restore_on_startup": "last_session",
   "use_system_window_tabs": false,
   "title_bar": {
-    "show_branch_icon": true
+    "show_branch_status_icon": true
   },
   "status_bar": {
     "show_active_file": true
@@ -109,8 +109,8 @@
   ],
 
   // ----- AI -----
-  "features": {
-    "edit_predictions": "copilot"
+  "edit_predictions": {
+    "provider": "copilot"
   },
   "agent": {
     "sidebar_side": "right",
