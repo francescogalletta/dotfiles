@@ -63,7 +63,8 @@
     "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
+  "advisorModel": "opus",
   "voiceEnabled": true,
   "notifications": true,
-  "advisorModel": "opus"
+  "theme": "light"
 }
