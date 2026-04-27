@@ -26,5 +26,8 @@ cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 cask "warp"
 
+# Local AI
+brew "ollama"
+
 # Notes
 cask "obsidian"
