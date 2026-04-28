@@ -368,14 +368,5 @@ if [ "$fail_count" -gt 0 ]; then
   echo ""
   exit 1
 else
-  installed_terms=()
-  [ -d "/Applications/Ghostty.app" ] && installed_terms+=("Ghostty")
-  [ -d "/Applications/Warp.app" ]    && installed_terms+=("Warp")
-  if [ ${#installed_terms[@]} -gt 0 ]; then
-    term_list=$(IFS=" or "; echo "${installed_terms[*]}")
-    echo -e "  ${green}All good! Open a new ${term_list} window to see changes.${reset}"
-  else
-    echo -e "  ${green}All good! Open a new terminal window to see changes.${reset}"
-  fi
-  echo ""
+  echo -e "  ${green}All good!${reset}"
 fi

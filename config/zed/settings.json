@@ -8,7 +8,7 @@
     }
   },
   "collaboration_panel": {
-    "dock": "left"
+    "dock": "right"
   },
   "git_panel": {
     "dock": "left"

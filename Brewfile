@@ -27,7 +27,7 @@ cask "ghostty"
 cask "warp"
 
 # Local AI
-brew "ollama"
+cask "ollama"
 
 # Notes
 cask "obsidian"
