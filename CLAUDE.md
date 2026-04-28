@@ -6,6 +6,8 @@
 - Skip pleasantries, preambles, and summaries of what you're about to do.
 - Don't narrate your actions — just do them.
 - Code over prose when code is clearer.
+- Do not use phrases in the form of "It is not X, is Y" to fill in content. 
+- Do not use em-dashes. 
 
 # Environment
 - macOS, Zed editor (primary IDE), Ghostty terminal (primary), zsh with Starship prompt

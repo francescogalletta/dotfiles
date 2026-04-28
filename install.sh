@@ -26,6 +26,8 @@ echo -e "  🟢 Node.js                 via nvm"
 echo -e "  🔗 Symlinks                shell, git, terminal, editor, AI agent"
 echo -e "  🔑 Git identity + SSH      name, email, ed25519 key"
 echo -e "  🐙 GitHub CLI auth         login via gh"
+echo -e "  🍎 macOS defaults          keyboard shortcuts, Spaces"
+echo -e "  🦙 Ollama + models         local LLM inference"
 echo ""
 echo -e "  ${dim}Optional (you'll be asked):${reset}"
 echo -e "  🤖 Claude Code             Anthropic's coding agent"
@@ -107,6 +109,8 @@ for entry in "${LINKS[@]}"; do count; done  # symlinks
 count  # Git identity
 count  # SSH key
 count  # GitHub CLI auth
+count  # macOS defaults
+count  # Ollama models
 
 # ─── 1. 🍺 Homebrew ────────────────────────────────────
 advance "🍺 Installing Homebrew..."
@@ -231,7 +235,28 @@ else
   skip "🐙 GitHub CLI"
 fi
 
-# ─── 9. Optional extras prompt ─────────────────────────
+# ─── 9. 🍎 macOS defaults ──────────────────────────────
+advance "🍎 Applying macOS defaults..."
+# Enable Ctrl+Left/Right to switch Desktops (Spaces)
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 79 '{enabled=1;value={parameters=(65535,123,8650752);type=standard;};}'
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 81 '{enabled=1;value={parameters=(65535,124,8650752);type=standard;};}'
+pass "🍎 macOS defaults"
+
+# ─── 10. 🦙 Ollama models ──────────────────────────────
+advance "🦙 Pulling Ollama models..."
+if command -v ollama &>/dev/null; then
+  brew services start ollama >> "$LOGFILE" 2>&1
+  sleep 2
+  if run_logged "Ollama models" ollama pull gemma4; then
+    pass "🦙 Ollama: gemma4"
+  else
+    fail "🦙 Ollama models" "$LAST_ERROR"
+  fi
+else
+  fail "🦙 Ollama models" "ollama not found — check Brewfile step"
+fi
+
+# ─── 11. Optional extras prompt ────────────────────────
 printf "\r${clear_line}\n"
 echo -e "  ${bold}Optional extras:${reset}\n"
 
@@ -255,7 +280,7 @@ if [ "$INSTALL_CLAUDE" = true ]; then count; fi
 if [ "$INSTALL_FORGE" = true ]; then count; fi
 if [ "$INSTALL_GDRIVE" = true ]; then count; fi
 
-# ─── 10. 🤖 Claude Code (optional) ─────────────────────
+# ─── 12. 🤖 Claude Code (optional) ─────────────────────
 if [ "$INSTALL_CLAUDE" = true ]; then
   advance "🤖 Installing Claude Code..."
   if ! command -v claude &>/dev/null; then
@@ -271,7 +296,7 @@ else
   RESULTS+=("  ⏭️  🤖 Claude Code ${dim}(not selected)${reset}")
 fi
 
-# ─── 11. 🔥 Forge Code (optional) ──────────────────────
+# ─── 13. 🔥 Forge Code (optional) ──────────────────────
 if [ "$INSTALL_FORGE" = true ]; then
   advance "🔥 Installing Forge Code..."
   if ! command -v forge &>/dev/null; then
@@ -287,7 +312,7 @@ else
   RESULTS+=("  ⏭️  🔥 Forge Code ${dim}(not selected)${reset}")
 fi
 
-# ─── 12. ☁️ Google Drive (optional) ────────────────────
+# ─── 14. ☁️ Google Drive (optional) ────────────────────
 if [ "$INSTALL_GDRIVE" = true ]; then
   advance "☁️  Installing Google Drive..."
   if ! brew list --cask google-drive &>/dev/null; then
@@ -303,7 +328,7 @@ else
   RESULTS+=("  ⏭️  ☁️  Google Drive ${dim}(not selected)${reset}")
 fi
 
-# ─── 13. 🖥️ IDE installation (ide.sh) ──────────────────
+# ─── 15. 🖥️ IDE installation (ide.sh) ──────────────────
 printf "\r${clear_line}\n"
 echo -e "  ${bold}Editor setup:${reset}\n"
 if [ -x "$DOTFILES/ide.sh" ]; then
@@ -312,7 +337,7 @@ else
   echo -e "  ${yellow}ide.sh not found — skipping editor setup.${reset}\n"
 fi
 
-# ─── 14. 📁 Projects directory ─────────────────────────
+# ─── 16. 📁 Projects directory ─────────────────────────
 mkdir -p "$HOME/projects"
 
 # ─── Summary ──────────────────────────────────────────
@@ -343,14 +368,5 @@ if [ "$fail_count" -gt 0 ]; then
   echo ""
   exit 1
 else
-  installed_terms=()
-  [ -d "/Applications/Ghostty.app" ] && installed_terms+=("Ghostty")
-  [ -d "/Applications/Warp.app" ]    && installed_terms+=("Warp")
-  if [ ${#installed_terms[@]} -gt 0 ]; then
-    term_list=$(IFS=" or "; echo "${installed_terms[*]}")
-    echo -e "  ${green}All good! Open a new ${term_list} window to see changes.${reset}"
-  else
-    echo -e "  ${green}All good! Open a new terminal window to see changes.${reset}"
-  fi
-  echo ""
+  echo -e "  ${green}All good!${reset}"
 fi
