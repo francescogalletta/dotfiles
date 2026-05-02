@@ -31,3 +31,6 @@ cask "ollama"
 
 # Notes
 cask "obsidian"
+
+# Launcher
+cask "raycast"

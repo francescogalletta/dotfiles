@@ -22,6 +22,8 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | Node.js | nvm (lazy-loaded) |
 | Python | Docker-only, uv package manager (never on host) |
 | AI agents | Claude Code (optional), Forge Code (optional) |
+| Notes | Obsidian (Minimal theme, shared config across vaults via symlinks) |
+| Launcher | Raycast (script commands for shortcut display, cloud sync for settings) |
 | Deploy | flyctl, google-cloud-sdk |
 | Theme | Catppuccin Mocha across all tools |
 
@@ -34,6 +36,14 @@ Unified across Ghostty, Warp, Zed, Cursor:
 - **Command palette:** Cmd+Shift+P
 - **Sidebar:** Alt+Cmd+S
 - **AI agent:** Cmd+I
+
+Obsidian-specific (macOS-conflict-free):
+- **Daily note:** Ctrl+Shift+D
+- **Left sidebar:** Cmd+Shift+E | **Right sidebar:** Ctrl+Shift+R
+- **Graph view:** Ctrl+Shift+G
+- **Split vertical:** Cmd+\ | **Toggle fold:** Ctrl+Cmd+.
+- **Move line:** Ctrl+Cmd+Up/Down
+- **Templater insert:** Ctrl+Shift+T
 
 ## Project Documentation Convention
 

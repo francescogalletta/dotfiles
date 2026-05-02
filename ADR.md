@@ -4,6 +4,11 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-018: Obsidian shared config via symlinks + Raycast script commands
+**Date:** 2026-05-02
+**Decision:** Shared Obsidian config files in `config/obsidian/shared/`, symlinked into each vault's `.obsidian/` directory. Vault paths discovered dynamically from `obsidian.json` via `jq` in `links.sh`. Unified on Minimal theme, starter hotkey set (all macOS-conflict-free), and four community plugins. Raycast added to Brewfile. Custom Raycast Script Command detects frontmost app and displays per-app shortcuts from `config/raycast/shortcuts/`. Per-app shortcut files chosen over README parsing for simplicity and maintainability.
+**Reason:** Obsidian stores config per-vault, causing theme/plugin/hotkey divergence across vaults. Symlinks into Google Drive folders were tested and confirmed to work. Dynamic vault discovery avoids hardcoding paths. Raycast config lives in encrypted SQLite (not manageable as plain text), so only install, script commands, and a few `defaults write` values are managed from dotfiles. Cloud sync handles the rest.
+
 ## ADR-017: Standalone IDE installer with dynamic default
 **Date:** 2026-04-16
 **Decision:** Extracted editor installation and default selection into a standalone `ide.sh` script, called by `install.sh`. Multi-select menu (VS Code, Zed, Cursor), installs via `brew install --cask`, prompts for default. Writes `~/.editor_env` (EDITOR/VISUAL for zsh) and `~/.gitconfig.local` (git core.editor). Zed is the primary editor. Shell functions (`e()`, `Ctrl+O`) derive the IDE command from `$EDITOR` via `${EDITOR%% *}`.

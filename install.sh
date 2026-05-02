@@ -240,6 +240,10 @@ advance "🍎 Applying macOS defaults..."
 # Enable Ctrl+Left/Right to switch Desktops (Spaces)
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 79 '{enabled=1;value={parameters=(65535,123,8650752);type=standard;};}'
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 81 '{enabled=1;value={parameters=(65535,124,8650752);type=standard;};}'
+# Raycast global hotkey (Cmd+Space)
+if [ -d "/Applications/Raycast.app" ]; then
+  defaults write com.raycast.macos raycastGlobalHotkey "Command-49"
+fi
 pass "🍎 macOS defaults"
 
 # ─── 10. 🦙 Ollama models ──────────────────────────────

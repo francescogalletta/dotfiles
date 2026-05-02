@@ -30,3 +30,17 @@ LINKS=(
   "config/zed/keymap.json:$HOME/.config/zed/keymap.json:zed/keymap"
   "config/zed/tasks.json:$HOME/.config/zed/tasks.json:zed/tasks"
 )
+# Obsidian shared config -- link into each vault's .obsidian/ directory
+if [ -d "/Applications/Obsidian.app" ] && command -v jq &>/dev/null; then
+  _obsidian_json="$DOTFILES/config/obsidian/obsidian.json"
+  if [ -f "$_obsidian_json" ]; then
+    while IFS= read -r _vault_path; do
+      [ -z "$_vault_path" ] && continue
+      [ -d "$_vault_path" ] || continue
+      _vault_name=$(basename "$_vault_path")
+      for _cfg in appearance.json app.json core-plugins.json community-plugins.json hotkeys.json; do
+        LINKS+=("config/obsidian/shared/$_cfg:$_vault_path/.obsidian/$_cfg:obsidian/$_cfg ($_vault_name)")
+      done
+    done < <(jq -r '.vaults | to_entries[] | .value.path' "$_obsidian_json" 2>/dev/null)
+  fi
+fi

@@ -120,5 +120,27 @@
 - Meta-analysis: updated CLAUDE.md with lessons learned
 - Added ADR-016, ADR-017
 
+### Phase 5: Notes & Launcher Integration ✅
+- [x] Obsidian shared config (appearance, app, plugins, hotkeys)
+- [x] Dynamic vault discovery in links.sh via jq
+- [x] Raycast Script Command for per-app shortcut display
+- [x] Per-app shortcut reference files (Zed, Ghostty, Warp, Cursor, Obsidian)
+- [x] Raycast added to Brewfile
+- [x] Raycast defaults write in install.sh
+- [x] Documentation updates (README, ADR, PRD, TASKS)
+- [ ] Test Google Drive symlink persistence over time
+
+## Changelog
+
+### 2026-05-02 (session 14)
+- Unified Obsidian config across vaults: Minimal theme, starter hotkeys, community plugins
+- Created `config/obsidian/shared/` with 5 shared config files symlinked into each vault
+- Dynamic vault discovery in `links.sh` via `jq` parsing of `obsidian.json`
+- Added Raycast to Brewfile and `install.sh` macOS defaults
+- Created Raycast Script Command (`show-shortcuts.sh`) for per-app shortcut display
+- Created per-app shortcut reference files in `config/raycast/shortcuts/`
+- Updated README with Obsidian column in keybindings table, Obsidian config section, Raycast section
+- Added ADR-018
+
 ## Open Questions
 None.

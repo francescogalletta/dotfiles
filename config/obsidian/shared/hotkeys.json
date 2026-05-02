@@ -1,0 +1,29 @@
+{
+  "daily-notes": [
+    { "modifiers": ["Ctrl", "Shift"], "key": "D" }
+  ],
+  "app:toggle-left-sidebar": [
+    { "modifiers": ["Mod", "Shift"], "key": "E" }
+  ],
+  "app:toggle-right-sidebar": [
+    { "modifiers": ["Ctrl", "Shift"], "key": "R" }
+  ],
+  "graph:open": [
+    { "modifiers": ["Ctrl", "Shift"], "key": "G" }
+  ],
+  "workspace:split-vertical": [
+    { "modifiers": ["Mod"], "key": "\\" }
+  ],
+  "editor:swap-line-up": [
+    { "modifiers": ["Ctrl", "Mod"], "key": "ArrowUp" }
+  ],
+  "editor:swap-line-down": [
+    { "modifiers": ["Ctrl", "Mod"], "key": "ArrowDown" }
+  ],
+  "templater-obsidian:insert-templater": [
+    { "modifiers": ["Ctrl", "Shift"], "key": "T" }
+  ],
+  "editor:toggle-fold": [
+    { "modifiers": ["Ctrl", "Mod"], "key": "." }
+  ]
+}

@@ -50,6 +50,13 @@ for zed_file in settings.json keymap.json tasks.json; do
   fi
 done
 
+# ─── Obsidian shared JSON ──────────────────────────────
+for obs_file in appearance.json app.json core-plugins.json community-plugins.json hotkeys.json; do
+  if [ -f "$DOTFILES/config/obsidian/shared/$obs_file" ]; then
+    check "obsidian/shared/$obs_file" jq empty "$DOTFILES/config/obsidian/shared/$obs_file"
+  fi
+done
+
 # ─── Zed deprecated actions ─────────────────────────────
 # Zed auto-migrates deprecated actions by writing through symlinks,
 # causing uncommitted changes in the repo. Catch them here.

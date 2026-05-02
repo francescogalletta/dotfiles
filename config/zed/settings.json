@@ -63,7 +63,7 @@
   // ----- Terminal -----
   "terminal": {
     "shell": { "program": "/bin/zsh" },
-    "dock": "right",
+    "dock": "left",
     "font_family": "JetBrains Mono",
     "font_size": 14,
     "option_as_meta": true,
@@ -110,7 +110,10 @@
 
   // ----- AI -----
   "edit_predictions": {
-    "provider": "copilot"
+    "ollama": {
+      "model": "gemma4:latest"
+    },
+    "provider": "ollama"
   },
   "agent": {
     "sidebar_side": "right",
