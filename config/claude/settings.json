@@ -64,7 +64,9 @@
   },
   "extraKnownMarketplaces": {},
   "advisorModel": "opus",
+  "theme": "auto",
+  "agentPushNotifEnabled": true,
   "voiceEnabled": true,
   "notifications": true,
-  "theme": "light"
+  "preferredNotifChannel": "ghostty"
 }
