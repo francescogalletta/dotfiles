@@ -4,6 +4,11 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-020: Add Codex CLI with Ollama provider
+**Date:** 2026-05-02
+**Decision:** Added Codex (OpenAI's coding agent) as an optional install via `brew install --cask codex`. Config at `config/codex/config.toml` (symlinked to `~/.codex/config.toml`) defines Ollama as the model provider with `gemma4` as the default model. Codex symlink is conditional on `codex` being in PATH.
+**Reason:** Codex has native Ollama support, letting it run fully locally with no API key or cloud dependency. `gemma4` is already pulled by `install.sh`, so no extra setup is needed. Added as optional (same pattern as Claude Code and Forge) since it's an AI tool choice.
+
 ## ADR-019: Remove Raycast and Cursor/VS Code; Zed-only; Tolaria added
 **Date:** 2026-05-02
 **Decision:** Removed Raycast from Brewfile and all managed config (`config/raycast/`). Removed Cursor and VS Code from `ide.sh` — Zed is now the only managed editor. Removed `config/cursor/` from the repo. Added Tolaria cask. Renamed deprecated casks `docker` → `docker-desktop` and `google-cloud-sdk` → `gcloud-cli`. Brew bundle output now streams filtered live lines instead of being fully silenced.

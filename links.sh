@@ -20,6 +20,11 @@ LINKS=(
   "config/obsidian/obsidian.json:$HOME/Library/Application Support/obsidian/obsidian.json:obsidian/settings"
 )
 
+# Codex config — only link if Codex is installed
+command -v codex &>/dev/null && LINKS+=(
+  "config/codex/config.toml:$HOME/.codex/config.toml:codex/config"
+)
+
 # Editor configs — only link if the editor is installed
 [ -d "/Applications/Zed.app" ] && LINKS+=(
   "config/zed/settings.json:$HOME/.config/zed/settings.json:zed/settings"

@@ -21,7 +21,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | CLI | eza, bat, fd, fzf, ripgrep, jq, yq, gh |
 | Node.js | nvm (lazy-loaded) |
 | Python | Docker-only, uv package manager (never on host) |
-| AI agents | Claude Code (optional), Forge Code (optional) |
+| AI agents | Claude Code (optional), Forge Code (optional), Codex (optional, uses Ollama) |
 | Notes | Obsidian (Minimal theme, shared config across vaults via symlinks), Tolaria |
 | Deploy | flyctl, gcloud-cli |
 | Theme | Catppuccin Mocha across all tools |

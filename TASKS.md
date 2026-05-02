@@ -128,6 +128,12 @@
 
 ## Changelog
 
+### 2026-05-02 (session 16)
+- Added Codex CLI as optional install (`brew install --cask codex`)
+- Created `config/codex/config.toml` with Ollama provider and `gemma4` default model
+- Symlink in `links.sh` conditional on `codex` being in PATH
+- Updated README, PRD, ADR (ADR-020), TASKS
+
 ### 2026-05-02 (session 15)
 - Removed Raycast from Brewfile and `config/raycast/` — cask times out on Cloudflare R2 during install
 - Removed Cursor and VS Code from `ide.sh` and `links.sh` — Zed-only setup

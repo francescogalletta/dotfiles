@@ -27,6 +27,7 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 |------|---------|
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | Anthropic's AI coding agent |
 | [Forge Code](https://forgecode.dev) | Tailcall's AI coding agent |
+| [Codex](https://github.com/openai/codex) | OpenAI's coding agent (configured to use local Ollama models) |
 | [Google Drive](https://www.google.com/drive/download/) | Desktop sync client |
 
 ### Editor
@@ -54,7 +55,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 2. Installs Homebrew
 3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + flyctl + gcloud-cli + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
-5. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, warp/themes, warp/keybindings, zed, obsidian, CLAUDE.md, Claude skills/settings/statusline)
+5. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, warp/themes, warp/keybindings, zed, obsidian, codex, CLAUDE.md, Claude skills/settings/statusline)
 6. Prompts for git name/email
 7. Generates an ed25519 SSH key
 8. Authenticates with GitHub via `gh auth login`
@@ -128,6 +129,8 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │       ├── learn/          #   /learn — end-of-session review and improvement loop
     │       ├── explain/        #   /explain — explain a file, diff, or concept
     │       └── slides/         #   /slides — generate PPTX presentations
+    ├── codex/
+    │   └── config.toml         # Codex config → ~/.codex/config.toml (Ollama provider + gemma4 default)
     ├── zed/
     │   ├── settings.json       # Zed settings → ~/.config/zed/settings.json
     │   ├── keymap.json         # Zed keybindings → ~/.config/zed/keymap.json

@@ -116,6 +116,7 @@
     "provider": "ollama"
   },
   "agent": {
+    "notify_when_agent_waiting": "all_screens",
     "sidebar_side": "right",
     "dock": "right",
     "default_profile": "write",

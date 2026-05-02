@@ -32,8 +32,9 @@ echo ""
 echo -e "  ${dim}Optional (you'll be asked):${reset}"
 echo -e "  🤖 Claude Code             Anthropic's coding agent"
 echo -e "  🔥 Forge Code              Tailcall's coding agent"
+echo -e "  📦 Codex                   OpenAI's coding agent (uses Ollama)"
 echo -e "  ☁️  Google Drive            desktop sync client"
-echo -e "  🖥️  Editors                 VS Code, Zed, Cursor (via ide.sh)"
+echo -e "  🖥️  Editors                 Zed (via ide.sh)"
 echo ""
 echo -e "  ${dim}Logs are written to ~/dotfiles/.install.log${reset}"
 echo -e "  ${dim}─────────────────────────────────${reset}"
@@ -286,12 +287,14 @@ ask_yes_no() {
 
 ask_yes_no "🤖 Install Claude Code (Anthropic)?" INSTALL_CLAUDE
 ask_yes_no "🔥 Install Forge Code (Tailcall)?"     INSTALL_FORGE
+ask_yes_no "📦 Install Codex (OpenAI)?"            INSTALL_CODEX
 ask_yes_no "☁️  Install Google Drive?"              INSTALL_GDRIVE
 echo ""
 
 # Add optional steps to total
 if [ "$INSTALL_CLAUDE" = true ]; then count; fi
 if [ "$INSTALL_FORGE" = true ]; then count; fi
+if [ "$INSTALL_CODEX" = true ]; then count; fi
 if [ "$INSTALL_GDRIVE" = true ]; then count; fi
 
 # ─── 12. 🤖 Claude Code (optional) ─────────────────────
@@ -326,7 +329,23 @@ else
   RESULTS+=("  ⏭️  🔥 Forge Code ${dim}(not selected)${reset}")
 fi
 
-# ─── 14. ☁️ Google Drive (optional) ────────────────────
+# ─── 14. 📦 Codex (optional) ────────────────────────────
+if [ "$INSTALL_CODEX" = true ]; then
+  advance "📦 Installing Codex..."
+  if ! command -v codex &>/dev/null; then
+    if run_logged "Codex" brew install --cask codex; then
+      pass "📦 Codex"
+    else
+      fail "📦 Codex" "$LAST_ERROR"
+    fi
+  else
+    skip "📦 Codex"
+  fi
+else
+  RESULTS+=("  ⏭️  📦 Codex ${dim}(not selected)${reset}")
+fi
+
+# ─── 15. ☁️ Google Drive (optional) ────────────────────
 if [ "$INSTALL_GDRIVE" = true ]; then
   advance "☁️  Installing Google Drive..."
   if ! brew list --cask google-drive &>/dev/null; then
