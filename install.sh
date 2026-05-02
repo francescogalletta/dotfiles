@@ -128,10 +128,24 @@ fi
 
 # ─── 2. 📦 Brewfile packages ───────────────────────────
 advance "📦 Installing Brewfile packages..."
-if run_logged "Brewfile" brew bundle install --file="$DOTFILES/Brewfile"; then
+printf "\n\n"
+echo "=== [Brewfile] $(date) ===" >> "$LOGFILE"
+_brew_tmp=$(mktemp)
+set +o pipefail
+brew bundle install --file="$DOTFILES/Brewfile" 2>&1 \
+  | tee "$_brew_tmp" \
+  | grep --line-buffered -E "Fetching|Installing|Using|✔|✘|Error:|Warning:|brew bundle|failed|renamed" \
+  | sed -u 's/^/    /'
+_brew_exit=${PIPESTATUS[0]}
+set -o pipefail
+cat "$_brew_tmp" >> "$LOGFILE"
+rm -f "$_brew_tmp"
+printf "\n"
+if [ "$_brew_exit" -eq 0 ]; then
   pass "📦 Brewfile packages"
 else
-  fail "📦 Brewfile packages" "$LAST_ERROR"
+  _brew_last=$(grep -E "Error:|failed|✘" "$LOGFILE" | tail -5 | sed 's/^/       > /' || true)
+  fail "📦 Brewfile packages" "$_brew_last"
 fi
 
 # ─── 3. 🖥️ Warp settings sync ────────────────────────
@@ -240,10 +254,6 @@ advance "🍎 Applying macOS defaults..."
 # Enable Ctrl+Left/Right to switch Desktops (Spaces)
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 79 '{enabled=1;value={parameters=(65535,123,8650752);type=standard;};}'
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 81 '{enabled=1;value={parameters=(65535,124,8650752);type=standard;};}'
-# Raycast global hotkey (Cmd+Space)
-if [ -d "/Applications/Raycast.app" ]; then
-  defaults write com.raycast.macos raycastGlobalHotkey "Command-49"
-fi
 pass "🍎 macOS defaults"
 
 # ─── 10. 🦙 Ollama models ──────────────────────────────

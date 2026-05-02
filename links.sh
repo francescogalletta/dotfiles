@@ -21,10 +21,6 @@ LINKS=(
 )
 
 # Editor configs — only link if the editor is installed
-[ -d "/Applications/Cursor.app" ] && LINKS+=(
-  "config/cursor/settings.json:$HOME/Library/Application Support/Cursor/User/settings.json:cursor/settings"
-  "config/cursor/keybindings.json:$HOME/Library/Application Support/Cursor/User/keybindings.json:cursor/keybindings"
-)
 [ -d "/Applications/Zed.app" ] && LINKS+=(
   "config/zed/settings.json:$HOME/.config/zed/settings.json:zed/settings"
   "config/zed/keymap.json:$HOME/.config/zed/keymap.json:zed/keymap"

@@ -123,14 +123,19 @@
 ### Phase 5: Notes & Launcher Integration ✅
 - [x] Obsidian shared config (appearance, app, plugins, hotkeys)
 - [x] Dynamic vault discovery in links.sh via jq
-- [x] Raycast Script Command for per-app shortcut display
-- [x] Per-app shortcut reference files (Zed, Ghostty, Warp, Cursor, Obsidian)
-- [x] Raycast added to Brewfile
-- [x] Raycast defaults write in install.sh
 - [x] Documentation updates (README, ADR, PRD, TASKS)
 - [ ] Test Google Drive symlink persistence over time
 
 ## Changelog
+
+### 2026-05-02 (session 15)
+- Removed Raycast from Brewfile and `config/raycast/` — cask times out on Cloudflare R2 during install
+- Removed Cursor and VS Code from `ide.sh` and `links.sh` — Zed-only setup
+- Deleted `config/cursor/` from repo
+- Added Tolaria cask to Brewfile
+- Renamed deprecated casks: `docker` → `docker-desktop`, `google-cloud-sdk` → `gcloud-cli`
+- Brew bundle now streams filtered output live (`--line-buffered` grep, `-u` sed)
+- Added ADR-019
 
 ### 2026-05-02 (session 14)
 - Unified Obsidian config across vaults: Minimal theme, starter hotkeys, community plugins

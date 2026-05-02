@@ -19,7 +19,7 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | [gh](https://cli.github.com) | GitHub CLI — PRs, issues, auth from the terminal |
 | [nvm](https://github.com/nvm-sh/nvm) | Node.js version manager |
 | [Obsidian](https://obsidian.md) | Markdown-based note-taking (Minimal theme, shared config across vaults) |
-| [Raycast](https://www.raycast.com) | Launcher with script commands for per-app shortcut display |
+| [Tolaria](https://tolaria.md) | Markdown knowledgebase manager |
 
 ### Optional (prompted during install)
 
@@ -29,13 +29,9 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | [Forge Code](https://forgecode.dev) | Tailcall's AI coding agent |
 | [Google Drive](https://www.google.com/drive/download/) | Desktop sync client |
 
-### Editors (managed by `ide.sh`)
+### Editor
 
-| Tool | Purpose |
-|------|---------|
-| [Zed](https://zed.dev) | GPU-accelerated native editor (default) |
-| [Cursor](https://www.cursor.com) | AI-native code editor (VS Code fork) |
-| [VS Code](https://code.visualstudio.com) | General-purpose editor |
+[Zed](https://zed.dev) — GPU-accelerated native editor, installed and configured by `ide.sh`.
 
 ## Prerequisites
 
@@ -56,9 +52,9 @@ The script is idempotent — safe to run multiple times. Existing config files a
 
 1. Listing all install steps
 2. Installs Homebrew
-3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + flyctl + google-cloud-sdk)
+3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + flyctl + gcloud-cli + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
-5. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, ghostty/themes, starship, warp/themes, warp/keybindings, cursor, zed, obsidian, CLAUDE.md, Claude skills/settings/statusline)
+5. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, warp/themes, warp/keybindings, zed, obsidian, CLAUDE.md, Claude skills/settings/statusline)
 6. Prompts for git name/email
 7. Generates an ed25519 SSH key
 8. Authenticates with GitHub via `gh auth login`
@@ -74,11 +70,11 @@ Failures capture the last 5 lines of output so you can see what broke without di
 
 ### `ide.sh` — Editor installer
 
-Installs and configures code editors. Called automatically by `install.sh`, but can also be run standalone to add editors or change the default later. Presents a multi-select menu (VS Code, Zed, Cursor), installs chosen editors via Homebrew, then prompts for a default. Writes `~/.editor_env` (sourced by zshrc) and `~/.gitconfig.local` (included by gitconfig).
+Installs Zed and writes `~/.editor_env` (sourced by zshrc) and `~/.gitconfig.local` (included by gitconfig). Called automatically by `install.sh`, but can also be run standalone.
 
 ```bash
 cd ~/dotfiles
-./ide.sh        # run standalone to change editor setup
+./ide.sh        # run standalone to reinstall or reset editor config
 ```
 
 ### `sync.sh` — Symlink doctor
@@ -104,7 +100,7 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 ```
 ~/dotfiles/
 ├── install.sh                  # Bootstrap script
-├── ide.sh                      # Editor installer (VS Code, Zed, Cursor)
+├── ide.sh                      # Editor installer (Zed)
 ├── Brewfile                    # Homebrew package manifest (used by install.sh)
 ├── README.md
 ├── CLAUDE.md                   # Claude Code global config → ~/CLAUDE.md
@@ -132,9 +128,6 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │       ├── learn/          #   /learn — end-of-session review and improvement loop
     │       ├── explain/        #   /explain — explain a file, diff, or concept
     │       └── slides/         #   /slides — generate PPTX presentations
-    ├── cursor/
-    │   ├── settings.json       # Cursor settings → ~/Library/.../Cursor/User/settings.json
-    │   └── keybindings.json    # Cursor keybindings → ~/Library/.../Cursor/User/keybindings.json
     ├── zed/
     │   ├── settings.json       # Zed settings → ~/.config/zed/settings.json
     │   ├── keymap.json         # Zed keybindings → ~/.config/zed/keymap.json
@@ -152,15 +145,6 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │       ├── core-plugins.json   # Core plugin toggles
     │       ├── community-plugins.json  # Community plugin list
     │       └── hotkeys.json        # Keyboard shortcuts
-    ├── raycast/
-    │   ├── scripts/
-    │   │   └── show-shortcuts.sh   # Script Command: show shortcuts for frontmost app
-    │   └── shortcuts/              # Per-app shortcut reference files
-    │       ├── ghostty.md
-    │       ├── warp.md
-    │       ├── zed.md
-    │       ├── cursor.md
-    │       └── obsidian.md
     ├── starship.toml           # Starship prompt → ~/.config/starship.toml
     └── warp/
         ├── keybindings.yaml    # Warp keybindings → ~/.warp/keybindings.yaml
@@ -172,23 +156,23 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 
 Keybindings are aligned across all tools where the action exists. The scheme is defined once, implemented per-tool:
 
-| Action | Shortcut | Ghostty | Warp | Zed | Cursor | Obsidian |
-|--------|----------|---------|------|-----|--------|----------|
-| Command palette | `Cmd+Shift+P` / `Cmd+P` | yes | yes | yes | yes | yes* |
-| Previous tab | `Alt+Shift+Left` | yes | yes | yes | yes | -- |
-| Next tab | `Alt+Shift+Right` | yes | yes | yes | yes | -- |
-| Split right | `Ctrl+Shift+R` | yes | -- | yes | yes | -- |
-| Split down | `Ctrl+Shift+D` | yes | -- | yes | yes | -- |
-| Close pane | `Ctrl+Shift+W` | yes | -- | yes | yes | -- |
-| Focus left pane | `Ctrl+Alt+Left` | yes | -- | yes | yes | -- |
-| Focus right pane | `Ctrl+Alt+Right` | yes | -- | yes | yes | -- |
-| Focus up pane | `Ctrl+Alt+Up` | yes | -- | yes | yes | -- |
-| Focus down pane | `Ctrl+Alt+Down` | yes | -- | yes | yes | -- |
-| Toggle sidebar | `Alt+Cmd+S` / `Cmd+Shift+E` | -- | -- | yes | yes | yes** |
-| AI agent | `Cmd+I` | -- | -- | yes | yes | -- |
-| Duplicate line | `Cmd+Shift+D` | -- | -- | yes | yes | -- |
-| Build | `Cmd+Shift+B` | -- | -- | yes | yes | -- |
-| Test | `Cmd+Shift+T` | -- | -- | yes | yes | -- |
+| Action | Shortcut | Ghostty | Warp | Zed | Obsidian |
+|--------|----------|---------|------|-----|----------|
+| Command palette | `Cmd+Shift+P` / `Cmd+P` | yes | yes | yes | yes* |
+| Previous tab | `Alt+Shift+Left` | yes | yes | yes | -- |
+| Next tab | `Alt+Shift+Right` | yes | yes | yes | -- |
+| Split right | `Ctrl+Shift+R` | yes | -- | yes | -- |
+| Split down | `Ctrl+Shift+D` | yes | -- | yes | -- |
+| Close pane | `Ctrl+Shift+W` | yes | -- | yes | -- |
+| Focus left pane | `Ctrl+Alt+Left` | yes | -- | yes | -- |
+| Focus right pane | `Ctrl+Alt+Right` | yes | -- | yes | -- |
+| Focus up pane | `Ctrl+Alt+Up` | yes | -- | yes | -- |
+| Focus down pane | `Ctrl+Alt+Down` | yes | -- | yes | -- |
+| Toggle sidebar | `Alt+Cmd+S` / `Cmd+Shift+E` | -- | -- | yes | yes** |
+| AI agent | `Cmd+I` | -- | -- | yes | -- |
+| Duplicate line | `Cmd+Shift+D` | -- | -- | yes | -- |
+| Build | `Cmd+Shift+B` | -- | -- | yes | -- |
+| Test | `Cmd+Shift+T` | -- | -- | yes | -- |
 
 **Obsidian-only shortcuts:**
 
@@ -206,7 +190,7 @@ Keybindings are aligned across all tools where the action exists. The scheme is 
 \* Obsidian uses `Cmd+P` for its command palette.
 \** Obsidian left sidebar uses `Cmd+Shift+E`; right sidebar uses `Ctrl+Shift+R`.
 
-Warp doesn't support split panes, so those bindings are terminal-only (Ghostty) and editor-only (Zed, Cursor). Obsidian has no tab/pane model, so `Ctrl+Shift+D` and `Ctrl+Shift+R` are reused for Obsidian-specific actions (daily note and right sidebar).
+Warp doesn't support split panes, so those bindings are terminal-only (Ghostty) and editor-only (Zed). Obsidian has no tab/pane model, so `Ctrl+Shift+D` and `Ctrl+Shift+R` are reused for Obsidian-specific actions (daily note and right sidebar).
 
 ### Warp settings
 
@@ -248,18 +232,3 @@ Shared config files in `config/obsidian/shared/` are symlinked into each vault's
 
 **First run per vault:** Open Settings > Appearance > install Minimal theme (the Monzo vault currently has AnuPpuccin). Then install the community plugins listed above. Run `./sync.sh` to propagate themes and plugins to all vaults.
 
-### Raycast
-
-Raycast stores most config in encrypted SQLite (not manageable as dotfiles). Settings sync via Raycast Cloud Sync. What we manage:
-
-**Search Menu Bar (built-in):** Hit your configured hotkey to search the active app's menu items with shortcuts shown. No setup needed beyond assigning a hotkey in Raycast Preferences > Extensions > Search Menu Bar.
-
-**Script Command -- Show Shortcuts:** Detects the frontmost app and displays custom keybindings from `config/raycast/shortcuts/`. One-time setup:
-
-1. Open Raycast Preferences > Extensions > Script Commands
-2. Click "Add Directories" and select `~/dotfiles/config/raycast/scripts/`
-3. The "Show Shortcuts" command appears in Raycast
-
-Per-app shortcut files live in `config/raycast/shortcuts/` (one markdown file per app). These are derived from the keybinding configs managed elsewhere in this repo.
-
-**Raycast extensions** (install via Raycast Store after cloud sync login): Google Translate, Spotify Player, ChatGPT, Notion, Google Workspace, GitHub, Superwhisper, Linear, 1Password, Brave, Kill Process, Google Chrome, Messages.

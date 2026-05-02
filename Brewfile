@@ -13,11 +13,11 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # Docker
-cask "docker"
+cask "docker-desktop"
 
 # Deployment
 brew "flyctl"
-cask "google-cloud-sdk"
+cask "gcloud-cli"
 
 # Fonts
 cask "font-jetbrains-mono-nerd-font"
@@ -31,6 +31,4 @@ cask "ollama"
 
 # Notes
 cask "obsidian"
-
-# Launcher
-cask "raycast"
+cask "tolaria"

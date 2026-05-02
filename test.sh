@@ -39,9 +39,7 @@ check "bash -n sync.sh"    bash -n "$DOTFILES/sync.sh"
 check "bash -n links.sh"   bash -n "$DOTFILES/links.sh"
 
 # ─── JSON ───────────────────────────────────────────────
-check "claude/settings.json"    jq empty "$DOTFILES/config/claude/settings.json"
-check "cursor/settings.json"    jq empty "$DOTFILES/config/cursor/settings.json"
-check "cursor/keybindings.json" jq empty "$DOTFILES/config/cursor/keybindings.json"
+check "claude/settings.json" jq empty "$DOTFILES/config/claude/settings.json"
 
 # ─── Zed JSONC ──────────────────────────────────────────
 for zed_file in settings.json keymap.json tasks.json; do

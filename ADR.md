@@ -4,6 +4,11 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-019: Remove Raycast and Cursor/VS Code; Zed-only; Tolaria added
+**Date:** 2026-05-02
+**Decision:** Removed Raycast from Brewfile and all managed config (`config/raycast/`). Removed Cursor and VS Code from `ide.sh` — Zed is now the only managed editor. Removed `config/cursor/` from the repo. Added Tolaria cask. Renamed deprecated casks `docker` → `docker-desktop` and `google-cloud-sdk` → `gcloud-cli`. Brew bundle output now streams filtered live lines instead of being fully silenced.
+**Reason:** Raycast's Homebrew cask consistently times out on Cloudflare R2 during `brew bundle`, blocking the installer. Cursor and VS Code were unused — Zed covers all editor needs. Tolaria fills the knowledgebase gap left by the simplified launcher setup. Cask renames eliminate Homebrew deprecation warnings. Streaming brew output makes install failures visible without digging through logs.
+
 ## ADR-018: Obsidian shared config via symlinks + Raycast script commands
 **Date:** 2026-05-02
 **Decision:** Shared Obsidian config files in `config/obsidian/shared/`, symlinked into each vault's `.obsidian/` directory. Vault paths discovered dynamically from `obsidian.json` via `jq` in `links.sh`. Unified on Minimal theme, starter hotkey set (all macOS-conflict-free), and four community plugins. Raycast added to Brewfile. Custom Raycast Script Command detects frontmost app and displays per-app shortcuts from `config/raycast/shortcuts/`. Per-app shortcut files chosen over README parsing for simplicity and maintainability.

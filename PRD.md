@@ -5,7 +5,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 ## Current Architecture
 
 - **Bootstrap:** `install.sh` orchestrates the full setup — Homebrew, Brewfile packages, Node.js, symlinks, git identity, SSH, GitHub auth, optional tools, IDE setup
-- **IDE management:** `ide.sh` (called by install.sh, also standalone) — multi-select install of VS Code/Zed/Cursor, default editor picker, writes `~/.editor_env` and `~/.gitconfig.local`
+- **IDE management:** `ide.sh` (called by install.sh, also standalone) — installs Zed, writes `~/.editor_env` and `~/.gitconfig.local`
 - **Symlinks:** All config files live in `~/dotfiles/` and are symlinked into place. Editor symlinks are conditional (only created if the app is installed). Definitions in `links.sh`, shared by `install.sh` and `sync.sh`
 - **Sync:** `sync.sh` detects and repairs broken symlinks anytime
 - **Packages:** Declarative `Brewfile` for CLI tools, terminals, fonts. Editors excluded (managed by `ide.sh`)
@@ -17,19 +17,18 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 |----------|-------|
 | Shell | zsh + Starship prompt, zsh-autosuggestions, zsh-syntax-highlighting |
 | Terminals | Ghostty (primary), Warp (secondary, cloud-synced settings) |
-| Editors | Zed (primary), Cursor (optional), VS Code (optional) — managed by `ide.sh` |
+| Editor | Zed — managed by `ide.sh` |
 | CLI | eza, bat, fd, fzf, ripgrep, jq, yq, gh |
 | Node.js | nvm (lazy-loaded) |
 | Python | Docker-only, uv package manager (never on host) |
 | AI agents | Claude Code (optional), Forge Code (optional) |
-| Notes | Obsidian (Minimal theme, shared config across vaults via symlinks) |
-| Launcher | Raycast (script commands for shortcut display, cloud sync for settings) |
-| Deploy | flyctl, google-cloud-sdk |
+| Notes | Obsidian (Minimal theme, shared config across vaults via symlinks), Tolaria |
+| Deploy | flyctl, gcloud-cli |
 | Theme | Catppuccin Mocha across all tools |
 
 ## Keybinding Scheme
 
-Unified across Ghostty, Warp, Zed, Cursor:
+Unified across Ghostty, Warp, Zed:
 - **Tab navigation:** Alt+Shift+Left/Right
 - **Split panes:** Ctrl+Shift+R (right), Ctrl+Shift+D (down), Ctrl+Shift+W (close)
 - **Pane focus:** Ctrl+Alt+arrow keys
