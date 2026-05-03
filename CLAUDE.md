@@ -10,7 +10,7 @@
 - Do not use em-dashes. 
 
 # Environment
-- macOS, Zed editor (primary IDE), Ghostty terminal (primary), zsh with Starship prompt
+- macOS, Zed editor (primary IDE), Ghostty terminal (primary), zsh + Oh My Zsh, Forge-owned prompt
 - Editor: Zed (`zed --wait`), configurable via `~/.editor_env`
 
 # Preferred CLI tools

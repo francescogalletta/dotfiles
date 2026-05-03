@@ -10,7 +10,6 @@ LINKS=(
   "gitconfig:$HOME/.gitconfig:gitconfig"
   "config/git/ignore:$HOME/.config/git/ignore:git/ignore"
   "config/ghostty/config:$HOME/.config/ghostty/config:ghostty"
-  "config/starship.toml:$HOME/.config/starship.toml:starship"
   "config/warp/themes:$HOME/.warp/themes:warp/themes"
   "config/warp/keybindings.yaml:$HOME/.warp/keybindings.yaml:warp/keybindings"
   "CLAUDE.md:$HOME/CLAUDE.md:CLAUDE.md"

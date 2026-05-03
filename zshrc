@@ -1,31 +1,37 @@
 # ---------------------
-# Homebrew
+# Homebrew (must be first — sets HOMEBREW_PREFIX used by OMZ)
 # ---------------------
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # ---------------------
-# History
+# Oh My Zsh
+# ---------------------
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""   # Forge owns the prompt via eval "$(forge zsh theme)"
+
+plugins=(git brew zsh-autosuggestions zsh-syntax-highlighting)
+
+source "$ZSH/oh-my-zsh.sh"
+
+# ---------------------
+# History (must come AFTER source — OMZ's lib/history.zsh sets HISTSIZE=50000)
 # ---------------------
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt SHARE_HISTORY          # share history across terminal tabs
-setopt HIST_IGNORE_DUPS       # don't store duplicate consecutive commands
 setopt HIST_IGNORE_SPACE      # commands starting with space aren't saved (for secrets)
 
 # ---------------------
-# Tab completion
+# Shell options (OMZ sets AUTO_CD, SHARE_HISTORY, HIST_IGNORE_DUPS — these are the rest)
 # ---------------------
-autoload -Uz compinit && compinit
-zstyle ':completion:*' menu select              # arrow-key menu for completions
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # case-insensitive matching
+setopt CORRECT
+setopt INTERACTIVE_COMMENTS
 
 # ---------------------
-# Shell options
+# Tab completion (OMZ calls compinit; these zstyle calls extend its config)
 # ---------------------
-setopt AUTO_CD            # type a directory name to cd into it
-setopt CORRECT            # "did you mean?" when you typo a command
-setopt INTERACTIVE_COMMENTS  # allow # comments in the terminal
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # ---------------------
 # Editor (override via ~/.editor_env, written by ide.sh)
@@ -38,12 +44,7 @@ else
 fi
 
 # ---------------------
-# Starship prompt
-# ---------------------
-eval "$(starship init zsh)"
-
-# ---------------------
-# fzf keybindings + completion
+# fzf keybindings + completion (explicit — avoids OMZ fzf plugin version variance)
 # ---------------------
 source <(fzf --zsh)
 
@@ -148,19 +149,16 @@ _fzf_open_ide() {
 zle -N _fzf_open_ide
 bindkey '^O' _fzf_open_ide
 
-
 # ---------------------
-# Bell on slow command completion (>=10s) — Ghostty shows a system notification
+# Bell on slow command completion (>=10s)
+# Uses add-zsh-hook to avoid clobbering OMZ's preexec/precmd hooks
 # ---------------------
-_cmd_start_time=0
-preexec() { _cmd_start_time=$SECONDS }
-precmd() { [[ $(( SECONDS - _cmd_start_time )) -ge 10 ]] && echo -n "\a"; _cmd_start_time=$SECONDS }
-
-# ---------------------
-# Plugins (must be near end of file)
-# ---------------------
-[ -n "$HOMEBREW_PREFIX" ] && source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-[ -n "$HOMEBREW_PREFIX" ] && source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+autoload -U add-zsh-hook
+typeset -g _cmd_start_time=0
+_bell_preexec() { _cmd_start_time=$SECONDS }
+_bell_precmd() { (( SECONDS - _cmd_start_time >= 10 )) && print -n "\a"; _cmd_start_time=$SECONDS }
+add-zsh-hook preexec _bell_preexec
+add-zsh-hook precmd _bell_precmd
 
 # >>> forge initialize >>>
 # !! Contents within this block are managed by 'forge zsh setup' !!

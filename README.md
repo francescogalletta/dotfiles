@@ -9,7 +9,7 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | [Homebrew](https://brew.sh) | macOS package manager |
 | [Ghostty](https://ghostty.org) | GPU-accelerated terminal emulator |
 | [Warp](https://www.warp.dev) | AI-powered terminal with IDE features |
-| [Starship](https://starship.rs) | Fast, customizable cross-shell prompt |
+| [Oh My Zsh](https://ohmyz.sh) | Zsh framework with plugins (`git`, `brew`, autosuggestions, syntax highlighting) |
 | [eza](https://eza.rocks) | Modern replacement for `ls` with icons and colors |
 | [bat](https://github.com/sharkdp/bat) | `cat` with syntax highlighting and line numbers |
 | [fzf](https://github.com/junegunn/fzf) | Fuzzy finder — Ctrl+R history search, file search |
@@ -55,13 +55,14 @@ The script is idempotent — safe to run multiple times. Existing config files a
 2. Installs Homebrew
 3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + flyctl + gcloud-cli + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
-5. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, starship, warp/themes, warp/keybindings, zed, obsidian, codex, CLAUDE.md, Claude skills/settings/statusline)
-6. Prompts for git name/email
-7. Generates an ed25519 SSH key
-8. Authenticates with GitHub via `gh auth login`
-9. Prompts for optional installs (Claude Code, Google Drive)
-10. Runs `ide.sh` to install and configure editors
-11. Creates `~/projects/` directory
+5. Installs Oh My Zsh, symlinks Homebrew plugins into `$ZSH_CUSTOM/plugins/`
+6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, obsidian, codex, CLAUDE.md, Claude skills/settings/statusline)
+7. Prompts for git name/email
+8. Generates an ed25519 SSH key
+9. Authenticates with GitHub via `gh auth login`
+10. Prompts for optional installs (Claude Code, Google Drive)
+11. Runs `ide.sh` to install and configure editors
+12. Creates `~/projects/` directory
 
 Doesn't replace any configuration already in place.
 
@@ -120,7 +121,7 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 └── config/                     # Configs for each tooling
     ├── claude/
     │   ├── settings.json       # Claude Code settings → ~/.claude/settings.json
-    │   ├── statusline.sh       # Claude Code statusline (matches Starship prompt) → ~/.claude/statusline.sh
+    │   ├── statusline.sh       # Claude Code statusline → ~/.claude/statusline.sh
     │   └── skills/             # Claude Code skills → ~/.claude/skills/
     │       ├── project-new/    #   /project-new — scaffold a new project from a template
     │       ├── project-resume/ #   /project-resume — orient any agent at session start
@@ -148,7 +149,6 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │       ├── core-plugins.json   # Core plugin toggles
     │       ├── community-plugins.json  # Community plugin list
     │       └── hotkeys.json        # Keyboard shortcuts
-    ├── starship.toml           # Starship prompt → ~/.config/starship.toml
     └── warp/
         ├── keybindings.yaml    # Warp keybindings → ~/.warp/keybindings.yaml
         └── themes/             # Custom themes → ~/.warp/themes/

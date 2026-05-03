@@ -4,6 +4,11 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-021: Replace Starship with Oh My Zsh
+**Date:** 2026-05-02
+**Decision:** Replaced Starship with Oh My Zsh as the shell framework. `zshrc` now uses OMZ with `plugins=(git brew zsh-autosuggestions zsh-syntax-highlighting)` and `ZSH_THEME=""` so Forge's `forge zsh theme` owns the prompt. Homebrew plugin dirs are symlinked into `$ZSH_CUSTOM/plugins/` during install. Bell hooks use `add-zsh-hook` to avoid clobbering OMZ's internal preexec/precmd. History settings (HISTSIZE/SAVEHIST) are placed after `source "$ZSH/oh-my-zsh.sh"` to override OMZ's internal 50000 default. `brew "starship"` and `config/starship.toml` removed.
+**Reason:** Forge's `forge zsh setup` checks `${plugins[@]}` for autosuggestions and syntax-highlighting and writes `PROMPT` via `forge zsh theme`. Starship also writes `PROMPT`, causing a conflict. OMZ provides the plugin management Forge expects, adds `git` plugin aliases (`gco`, `gst`, `gaa`, etc.) as a bonus, and cleanly hands prompt ownership to Forge via `ZSH_THEME=""`.
+
 ## ADR-020: Add Codex CLI with Ollama provider
 **Date:** 2026-05-02
 **Decision:** Added Codex (OpenAI's coding agent) as an optional install via `brew install --cask codex`. Config at `config/codex/config.toml` (symlinked to `~/.codex/config.toml`) defines Ollama as the model provider with `gemma4` as the default model. Codex symlink is conditional on `codex` being in PATH.

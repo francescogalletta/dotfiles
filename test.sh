@@ -64,14 +64,6 @@ if [ -f "$DOTFILES/config/zed/keymap.json" ]; then
     "! grep -qE '$DEPRECATED_ACTIONS' '$DOTFILES/config/zed/keymap.json'"
 fi
 
-# ─── Starship TOML ──────────────────────────────────────
-if command -v starship &>/dev/null; then
-  check "starship.toml" \
-    env STARSHIP_CONFIG="$DOTFILES/config/starship.toml" starship print-config
-else
-  echo -e "  ${dim}⏭️   starship.toml  (starship not found)${reset}"
-fi
-
 # ─── Ghostty config ─────────────────────────────────────
 if command -v ghostty &>/dev/null; then
   check "ghostty config" ghostty +validate-config

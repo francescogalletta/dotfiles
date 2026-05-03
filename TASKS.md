@@ -128,6 +128,14 @@
 
 ## Changelog
 
+### 2026-05-02 (session 17)
+- Replaced Starship with Oh My Zsh as shell framework
+- Rewrote `zshrc`: OMZ block with `plugins=(git brew zsh-autosuggestions zsh-syntax-highlighting)`, `ZSH_THEME=""` so Forge owns prompt, history after source, `add-zsh-hook` for bell, Forge block last
+- Added OMZ install step to `install.sh` with `KEEP_ZSHRC=yes RUNZSH=no CHSH=no` + Homebrew plugin symlinks
+- Removed `brew "starship"` from Brewfile, starship symlink from `links.sh`, starship test from `test.sh`
+- Deleted `config/starship.toml`
+- Updated README, PRD, ADR (ADR-021), TASKS
+
 ### 2026-05-02 (session 16)
 - Added Codex CLI as optional install (`brew install --cask codex`)
 - Created `config/codex/config.toml` with Ollama provider and `gemma4` default model

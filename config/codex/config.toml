@@ -1,7 +1,6 @@
-[model_providers.ollama]
+[model_providers.ollama-launch]
 name = "Ollama (local)"
 base_url = "http://localhost:11434/v1"
-wire_api = "chat"
 
 [profiles.default]
 model = "gemma4:latest"

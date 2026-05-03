@@ -21,7 +21,8 @@ echo -e "  ${bold}dotfiles installer${reset}"
 echo -e "  ${dim}─────────────────────────────────${reset}"
 echo -e "  This script sets up a fresh Mac:"
 echo ""
-echo -e "  📦 Homebrew + Brewfile     CLI tools, Ghostty, Warp, prompt"
+echo -e "  📦 Homebrew + Brewfile     CLI tools, Ghostty, Warp"
+echo -e "  🐚 Oh My Zsh               shell framework with git, brew plugins"
 echo -e "  🟢 Node.js                 via nvm"
 echo -e "  🔗 Symlinks                shell, git, terminal, editor, AI agent"
 echo -e "  🔑 Git identity + SSH      name, email, ed25519 key"
@@ -104,6 +105,7 @@ run_logged() {
 # ─── Count core steps ───────────────────────────────────
 count  # Homebrew
 count  # Brewfile
+count  # Oh My Zsh
 count  # Node.js
 source "$DOTFILES/links.sh"
 for entry in "${LINKS[@]}"; do count; done  # symlinks
@@ -149,13 +151,32 @@ else
   fail "📦 Brewfile packages" "$_brew_last"
 fi
 
-# ─── 3. 🖥️ Warp settings sync ────────────────────────
+# ─── 3. 🐚 Oh My Zsh ────────────────────────────────────
+advance "🐚 Installing Oh My Zsh..."
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  if run_logged "Oh My Zsh" \
+      env KEEP_ZSHRC=yes RUNZSH=no CHSH=no \
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
+      "" --unattended; then
+    ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+    mkdir -p "$ZSH_CUSTOM/plugins"
+    ln -snf "$(brew --prefix)/share/zsh-autosuggestions" "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+    ln -snf "$(brew --prefix)/share/zsh-syntax-highlighting" "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    pass "🐚 Oh My Zsh"
+  else
+    fail "🐚 Oh My Zsh" "$LAST_ERROR"
+  fi
+else
+  skip "🐚 Oh My Zsh"
+fi
+
+# ─── 4. 🖥️ Warp settings sync ────────────────────────
 if [ -d "/Applications/Warp.app" ]; then
   printf "\r${clear_line}"
   echo -e "\n  ${cyan}🖥️  Warp detected${reset} — log in to your Warp account to sync settings.\n"
 fi
 
-# ─── 4. 🟢 Node.js via nvm ─────────────────────────────
+# ─── 5. 🟢 Node.js via nvm ─────────────────────────────
 advance "🟢 Installing Node.js LTS..."
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"

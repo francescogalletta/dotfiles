@@ -15,7 +15,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 
 | Category | Tools |
 |----------|-------|
-| Shell | zsh + Starship prompt, zsh-autosuggestions, zsh-syntax-highlighting |
+| Shell | zsh + Oh My Zsh (git, brew plugins), zsh-autosuggestions, zsh-syntax-highlighting, Forge-owned prompt |
 | Terminals | Ghostty (primary), Warp (secondary, cloud-synced settings) |
 | Editor | Zed — managed by `ide.sh` |
 | CLI | eza, bat, fd, fzf, ripgrep, jq, yq, gh |
