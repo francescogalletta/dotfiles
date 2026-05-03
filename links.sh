@@ -22,6 +22,7 @@ LINKS=(
 # Codex config — only link if Codex is installed
 command -v codex &>/dev/null && LINKS+=(
   "config/codex/config.toml:$HOME/.codex/config.toml:codex/config"
+  "config/codex/model_catalog.json:$HOME/.codex/model_catalog.json:codex/model_catalog"
 )
 
 # Forge config — always link (forge reads ~/.forge/.forge.toml)

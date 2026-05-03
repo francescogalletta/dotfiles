@@ -1,2 +1,4 @@
 model = "gemma4:latest"
 model_provider = "ollama"
+model_catalog_json = "~/.codex/model_catalog.json"
+personality = "pragmatic"
