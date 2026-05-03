@@ -1,7 +1,2 @@
-[model_providers.ollama-launch]
-name = "Ollama (local)"
-base_url = "http://localhost:11434/v1"
-
-[profiles.default]
 model = "gemma4:latest"
 model_provider = "ollama"

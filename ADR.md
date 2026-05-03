@@ -4,6 +4,11 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-022: Fix OMZ plugins, Codex/Forge Ollama configs, Zed Nerd Font
+**Date:** 2026-05-03
+**Decision:** Three fixes applied. (1) OMZ plugin symlinks in `install.sh` now create per-plugin directories and symlink individual `.zsh` files with the `.plugin.zsh` suffix that OMZ's `is_plugin()` requires. Previously the entire Homebrew `share/` dir was symlinked, which lacked the expected filename. (2) Codex `config.toml` simplified to top-level `model` and `model_provider` keys (not a `[profiles.default]` section, which only applies with `-p default`). Removed dead `[model_providers.ollama-launch]` block. (3) Forge `forge.toml` trimmed to just `[session]` with `provider_id`/`model_id`. Forge's built-in Ollama provider requires a one-time `forge provider login ollama` to register the endpoint in the macOS keychain; added this interactive step to `install.sh` after Forge installation. (4) Zed terminal `font_family` changed from `JetBrains Mono` to `JetBrainsMono Nerd Font Mono` for glyph support.
+**Reason:** OMZ printed "plugin not found" on every shell startup. Codex defaulted to OpenAI's cloud API instead of local Ollama. Forge rejected Ollama with "provider not available" until the keychain entry existed. Zed terminal couldn't render Nerd Font icons from eza/prompt.
+
 ## ADR-021: Replace Starship with Oh My Zsh
 **Date:** 2026-05-02
 **Decision:** Replaced Starship with Oh My Zsh as the shell framework. `zshrc` now uses OMZ with `plugins=(git brew zsh-autosuggestions zsh-syntax-highlighting)` and `ZSH_THEME=""` so Forge's `forge zsh theme` owns the prompt. Homebrew plugin dirs are symlinked into `$ZSH_CUSTOM/plugins/` during install. Bell hooks use `add-zsh-hook` to avoid clobbering OMZ's internal preexec/precmd. History settings (HISTSIZE/SAVEHIST) are placed after `source "$ZSH/oh-my-zsh.sh"` to override OMZ's internal 50000 default. `brew "starship"` and `config/starship.toml` removed.

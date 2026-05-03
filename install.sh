@@ -159,9 +159,11 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
       sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
       "" --unattended; then
     ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-    mkdir -p "$ZSH_CUSTOM/plugins"
-    ln -snf "$(brew --prefix)/share/zsh-autosuggestions" "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-    ln -snf "$(brew --prefix)/share/zsh-syntax-highlighting" "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    mkdir -p "$ZSH_CUSTOM/plugins/zsh-autosuggestions" "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    ln -snf "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+      "$ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
+    ln -snf "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+      "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
     pass "🐚 Oh My Zsh"
   else
     fail "🐚 Oh My Zsh" "$LAST_ERROR"
@@ -345,6 +347,12 @@ if [ "$INSTALL_FORGE" = true ]; then
     fi
   else
     skip "🔥 Forge Code"
+  fi
+  # Register Ollama as a Forge provider (interactive — user picks auth method)
+  if command -v ollama &>/dev/null; then
+    printf "\r${clear_line}"
+    echo -e "\n  ${cyan}🔥 Forge + Ollama${reset} — register Ollama as a local provider:\n"
+    forge provider login ollama
   fi
 else
   RESULTS+=("  ⏭️  🔥 Forge Code ${dim}(not selected)${reset}")

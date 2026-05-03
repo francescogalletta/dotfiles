@@ -21,7 +21,7 @@
 - [x] Brewfile for declarative package management
 - [x] Manage editor settings, global gitignore, zprofile
 - [x] Clean up `.bak` artifacts from config reorg
-- [ ] Test full clean install on fresh machine
+- [x] ~~Test full clean install on fresh machine~~ (dropped: no fresh machine available, testing in-place instead)
 
 ### Phase 4: Prototyping Fast-Path ✅
 - [x] Project templates: `data`, `web`, `api`, `cli`, `agent` archetypes
@@ -127,6 +127,14 @@
 - [ ] Test Google Drive symlink persistence over time
 
 ## Changelog
+
+### 2026-05-03 (session 18)
+- Fixed OMZ plugin symlinks: individual `.zsh` files with `.plugin.zsh` suffix instead of symlinking Homebrew `share/` dirs
+- Fixed Codex config: top-level `model`/`model_provider` keys, removed dead `[model_providers.ollama-launch]` block
+- Simplified Forge config to `[session]` only; added `forge provider login ollama` step to `install.sh`
+- Changed Zed terminal font to `JetBrainsMono Nerd Font Mono` for icon support
+- Verified Codex and Forge both route to local Ollama with `gemma4`
+- Added ADR-022
 
 ### 2026-05-02 (session 17)
 - Replaced Starship with Oh My Zsh as shell framework
