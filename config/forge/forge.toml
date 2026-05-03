@@ -1,0 +1,10 @@
+[[providers]]
+id            = "ollama"
+url           = "http://localhost:11434/v1/chat/completions"
+models        = "http://localhost:11434/v1/models"
+response_type = "OpenAI"
+auth_methods  = ["api_key"]
+
+[session]
+provider_id = "ollama"
+model_id    = "gemma4:latest"
