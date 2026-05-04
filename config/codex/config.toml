@@ -5,3 +5,6 @@ personality = "pragmatic"
 
 [projects."/Users/francescogalletta/.ollama/models/blobs"]
 trust_level = "trusted"
+
+[projects."/Users/francescogalletta/dotfiles"]
+trust_level = "trusted"
