@@ -2,24 +2,25 @@
 // Open defaults: cmd-shift-p → "zed: open default settings"
 {
   // ----- Theme & appearance -----
+  "diff_view_style": "split",
   "agent_servers": {
     "claude-acp": {
-      "type": "registry"
-    }
+      "type": "registry",
+    },
   },
   "collaboration_panel": {
-    "dock": "right"
+    "dock": "right",
   },
   "git_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "thread_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "theme": {
     "mode": "system",
     "dark": "Catppuccin Mocha",
-    "light": "Solarized Light"
+    "light": "Solarized Light",
   },
   "icon_theme": "Catppuccin Mocha",
   "ui_font_family": "JetBrains Mono",
@@ -47,17 +48,17 @@
     "enabled": true,
     "show_type_hints": true,
     "show_parameter_hints": false,
-    "show_other_hints": true
+    "show_other_hints": true,
   },
   "indent_guides": {
     "enabled": true,
-    "active_line_width": 2
+    "active_line_width": 2,
   },
 
   // ----- Git -----
   "git": {
     "git_gutter": "tracked_files",
-    "inline_blame": { "enabled": true }
+    "inline_blame": { "enabled": true },
   },
 
   // ----- Terminal -----
@@ -69,32 +70,32 @@
     "option_as_meta": true,
     "copy_on_select": true,
     "working_directory": "current_project_directory",
-    "env": {}
+    "env": {},
   },
 
   // ----- Tabs & panels -----
   "tabs": {
     "file_icons": true,
     "git_status": true,
-    "close_position": "right"
+    "close_position": "right",
   },
   "project_panel": {
     "dock": "left",
     "git_status_indicator": true,
-    "auto_fold_dirs": true
+    "auto_fold_dirs": true,
   },
   "outline_panel": {
-    "dock": "right"
+    "dock": "right",
   },
 
   // ----- Window -----
   "restore_on_startup": "last_session",
   "use_system_window_tabs": false,
   "title_bar": {
-    "show_branch_status_icon": true
+    "show_branch_status_icon": true,
   },
   "status_bar": {
-    "show_active_file": true
+    "show_active_file": true,
   },
 
   // ----- Search -----
@@ -105,15 +106,15 @@
     "**/.next",
     "**/__pycache__",
     "**/.venv",
-    "**/target"
+    "**/target",
   ],
 
   // ----- AI -----
   "edit_predictions": {
     "ollama": {
-      "model": "gemma4:latest"
+      "model": "gemma4:latest",
     },
-    "provider": "ollama"
+    "provider": "ollama",
   },
   "agent": {
     "notify_when_agent_waiting": "all_screens",
@@ -121,13 +122,13 @@
     "dock": "right",
     "default_profile": "write",
     "tool_permissions": {
-      "default": "confirm"
-    }
+      "default": "confirm",
+    },
   },
 
   // ----- Sessions -----
   "session": {
-    "trust_all_worktrees": true
+    "trust_all_worktrees": true,
   },
   "base_keymap": "VSCode",
 
@@ -140,7 +141,7 @@
     "emmet": true,
     "git-firefly": true,
     "toml": true,
-    "make": true
+    "make": true,
   },
 
   // ----- Per-language overrides -----
@@ -148,19 +149,19 @@
     "Python": {
       "tab_size": 4,
       "format_on_save": "on",
-      "formatter": "language_server"
+      "formatter": "language_server",
     },
     "Markdown": {
       "soft_wrap": "preferred_line_length",
-      "preferred_line_length": 100
+      "preferred_line_length": 100,
     },
     "JSON": {
       "tab_size": 2,
-      "format_on_save": "on"
+      "format_on_save": "on",
     },
     "JSONC": {
       "tab_size": 2,
-      "format_on_save": "on"
-    }
-  }
+      "format_on_save": "on",
+    },
+  },
 }
