@@ -9,7 +9,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""   # Forge owns the prompt via eval "$(forge zsh theme)"
 
-plugins=(git brew zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git brew)
+[[ -d "${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions" ]] && plugins+=(zsh-autosuggestions)
+[[ -d "${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting" ]] && plugins+=(zsh-syntax-highlighting)
 
 source "$ZSH/oh-my-zsh.sh"
 
