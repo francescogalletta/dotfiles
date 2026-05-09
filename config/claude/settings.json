@@ -60,13 +60,14 @@
     "command": "/bin/bash $HOME/.claude/statusline.sh"
   },
   "enabledPlugins": {
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
   "advisorModel": "opus",
   "theme": "auto",
+  "preferredNotifChannel": "ghostty",
   "agentPushNotifEnabled": true,
   "voiceEnabled": true,
-  "notifications": true,
-  "preferredNotifChannel": "ghostty"
+  "notifications": true
 }

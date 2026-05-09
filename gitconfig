@@ -23,3 +23,5 @@
 	autoSetupRemote = true
 
 # [user] is in ~/.gitconfig.local (written by install.sh)
+[url "ssh://git@github.com/monzo/"]
+	insteadOf = https://github.com/monzo/

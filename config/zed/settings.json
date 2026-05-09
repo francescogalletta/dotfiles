@@ -18,9 +18,9 @@
     "dock": "left",
   },
   "theme": {
-    "mode": "system",
+    "mode": "dark",
     "dark": "Catppuccin Mocha",
-    "light": "Solarized Light",
+    "light": "Catppuccin Latte",
   },
   "icon_theme": "Catppuccin Mocha",
   "ui_font_family": "JetBrains Mono",
@@ -64,7 +64,7 @@
   // ----- Terminal -----
   "terminal": {
     "shell": { "program": "/bin/zsh" },
-    "dock": "left",
+    "dock": "bottom",
     "font_family": "JetBrainsMono Nerd Font Mono",
     "font_size": 14,
     "option_as_meta": true,
