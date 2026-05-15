@@ -30,11 +30,15 @@ Read in this order (note any that are missing):
 
 If `TASKS.md` is missing entirely, suggest running `/project-new` to set up the project structure.
 
-## Step 3 — Read handoff note (if present)
+## Step 3 — Check inbox
+
+If `inbox/` exists, list its contents. Flag any files beyond `README.md` in the briefing under an **Inbox** line — they may contain relevant context or waiting work.
+
+## Step 4 — Read handoff note (if present)
 
 Read `.claude/session-current.md` if it exists. Skip gracefully if absent.
 
-## Step 4 — Present briefing
+## Step 5 — Present briefing
 
 Synthesise everything into this format:
 
@@ -58,6 +62,9 @@ Next pending: <top 2–3 [T###] titles>
 ### Key Design Decisions
 <1–2 most recent entries from ADR.md (top of file = newest), or "none recorded">
 
+### Inbox
+<list unprocessed files, or "empty">
+
 ### Last Session
 <summary from .claude/session-current.md, or "no handoff note found">
 ```
@@ -67,7 +74,7 @@ Flag any git housekeeping needed before work begins:
 - Ahead of remote → suggest push
 - Uncommitted changes → ask: commit, stash, or ignore?
 
-## Step 5 — Propose next actions
+## Step 6 — Propose next actions
 
 Suggest the top 2–3 concrete next actions by task ID, e.g.:
 
@@ -80,7 +87,7 @@ Ask: "What do you want to work on?"
 
 **Wait for selection. Do NOT begin work until confirmed.**
 
-## Step 6 — Claim task and begin
+## Step 7 — Claim task and begin
 
 On selection:
 
