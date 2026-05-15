@@ -19,6 +19,8 @@ Read the following in order:
 
 If any of these files don't exist, skip them.
 
+**Comms check:** If any files under `programmes/*/comms/` or `knowledge/comms-voice.md` were modified this session, read their diffs (`git diff HEAD~N -- <file>` or `git show <commit> -- <file>`). Flag voice calibration learnings as candidates for Proposal output — these diffs are the highest-signal input for improving the comms voice doc.
+
 ## Step 2 — Analyse
 
 Identify:
