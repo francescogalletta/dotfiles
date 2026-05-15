@@ -17,7 +17,15 @@ git diff HEAD
 
 If the working tree is clean (nothing to commit), say so and stop.
 
-## Step 2 — Propose a commit message
+## Step 2 — Check scope
+
+Look at the changed files. If they span more than one logical area (e.g., two unrelated workstreams, agent config mixed with content, fixes mixed with new features), flag it:
+
+> "These changes cover X and Y — worth splitting into two commits/PRs?"
+
+If the user confirms a split, help them stage subsets of files into separate commits before proceeding. If they want to ship as-is, continue.
+
+## Step 3 — Propose a commit message
 
 Write one line. Rules:
 - Imperative mood: "Add …", "Fix …", "Refactor …", "Remove …"
