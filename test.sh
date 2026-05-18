@@ -44,7 +44,7 @@ check "claude/settings.json" jq empty "$DOTFILES/config/claude/settings.json"
 # ─── Zed JSONC ──────────────────────────────────────────
 for zed_file in settings.json keymap.json tasks.json; do
   if [ -f "$DOTFILES/config/zed/$zed_file" ]; then
-    check "zed/$zed_file" bash -c "sed 's|//.*||' \"$DOTFILES/config/zed/$zed_file\" | jq empty"
+    check "zed/$zed_file" bash -c "perl -0pe 's|//[^\n]*||g; s/,(\s*[}\]])/\$1/g' \"$DOTFILES/config/zed/$zed_file\" | jq empty"
   fi
 done
 
