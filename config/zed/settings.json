@@ -103,6 +103,7 @@
   },
 
   // ----- Window -----
+  "close_panel_on_toggle": true,
   "restore_on_startup": "last_session",
   "use_system_window_tabs": false,
   "title_bar": {

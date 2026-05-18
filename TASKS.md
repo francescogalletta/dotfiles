@@ -128,6 +128,15 @@
 
 ## Changelog
 
+### 2026-05-18 (session 19)
+- Overhauled Zed keymap: unified `cmd-opt` scheme replacing mixed `alt-shift`/`ctrl-shift`/`ctrl-alt` prefixes
+- Panel toggles: cmd-opt-t/p/g/a/r; splits: cmd-opt-v/h; pane focus: cmd-opt-arrow; tabs: cmd-opt-space/tab; zoom: cmd-opt-m
+- Added `"close_panel_on_toggle": true` to settings for consistent show/hide behaviour across panels
+- Used Zed `unbind` syntax for targeted conflict removal (agent::NewThread, pane::CloseOtherItems, etc.)
+- Added `AgentPanel` context: cmd-n → new thread, cmd-opt-t → close panel from within
+- Updated Zed appearance: system-adaptive Catppuccin (Frappé/Latte), ZedMono fonts, minimap on hover, git panel bottom dock
+- Updated PRD.md keybinding table, added ADR-023
+
 ### 2026-05-03 (session 18)
 - Fixed OMZ plugin symlinks: individual `.zsh` files with `.plugin.zsh` suffix instead of symlinking Homebrew `share/` dirs
 - Fixed Codex config: top-level `model`/`model_provider` keys, removed dead `[model_providers.ollama-launch]` block

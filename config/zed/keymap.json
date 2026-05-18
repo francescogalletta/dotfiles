@@ -1,80 +1,100 @@
-// Zed keymap — unified bindings across Ghostty, Warp, Zed.
-// Managed via ~/dotfiles, symlinked into place.
+// Zed keymap — managed via ~/dotfiles, symlinked into place.
 // Open defaults: cmd-shift-p → "zed: open default keymap"
 [
-  // ----- Tab navigation (Alt+Shift) -----
-  {
-    "context": "Pane",
-    "bindings": {
-      "alt-shift-left": "pane::ActivatePreviousItem",
-      "alt-shift-right": "pane::ActivateNextItem"
-    }
-  },
+  // ----- Null overrides -----
+  { "context": "Terminal",   "bindings": { "cmd-alt-r": null } },
 
-  // ----- Split panes (Ctrl+Shift) -----
-  {
-    "context": "Workspace",
-    "bindings": {
-      "ctrl-shift-r": "pane::SplitRight",
-      "ctrl-shift-d": "pane::SplitDown",
-      "ctrl-shift-w": "pane::CloseActiveItem"
-    }
-  },
+  // ----- Tab navigation (cmd-opt) -----
+  { "context": "Pane", "bindings": {
+      "cmd-alt-space": "pane::ActivatePreviousItem",
+      "cmd-alt-tab":   "pane::ActivateNextItem"
+  }},
 
-  // ----- Pane focus navigation (Ctrl+Alt) -----
-  {
-    "context": "Workspace",
-    "bindings": {
-      "ctrl-alt-left": "workspace::ActivatePaneLeft",
-      "ctrl-alt-right": "workspace::ActivatePaneRight",
-      "ctrl-alt-up": "workspace::ActivatePaneUp",
-      "ctrl-alt-down": "workspace::ActivatePaneDown"
-    }
-  },
+  // ----- Pane focus (cmd-opt-arrow) -----
+  { "context": "Workspace", "bindings": {
+      "cmd-alt-left":  "workspace::ActivatePaneLeft",
+      "cmd-alt-right": "workspace::ActivatePaneRight",
+      "cmd-alt-up":    "workspace::ActivatePaneUp",
+      "cmd-alt-down":  "workspace::ActivatePaneDown"
+  }},
 
-  // ----- Terminal -----
-  {
-    "context": "Terminal",
-    "bindings": {
-      "ctrl-shift-w": "pane::CloseActiveItem"
-    }
-  },
+  // ----- Panel toggles (cmd-opt) -----
+  { "context": "Workspace", "bindings": {
+      "cmd-alt-t": "terminal_panel::ToggleFocus",
+      "cmd-alt-p": "project_panel::ToggleFocus",
+      "cmd-alt-g": "git_panel::ToggleFocus",
+      "cmd-alt-a": "agent::ToggleFocus",
+      "cmd-alt-r": "agents_sidebar::ToggleThreadHistory"
+  }},
+
+  // ----- Agent panel context -----
+  { "context": "AgentPanel", "bindings": {
+      "cmd-n":     "agent::NewThread"
+  }},
+
+  // ----- Splits & zoom (cmd-opt) -----
+  { "context": "Workspace", "bindings": {
+      "cmd-alt-v": "pane::SplitRight",
+      "cmd-alt-h": "pane::SplitDown",
+      "cmd-alt-m": "workspace::ToggleZoom"
+  }},
+
+  // ----- Close tab -----
+  { "context": "Workspace", "bindings": { "ctrl-shift-w": "pane::CloseActiveItem" }},
+  { "context": "Terminal",  "bindings": { "ctrl-shift-w": "pane::CloseActiveItem" }},
 
   // ----- Editor productivity -----
-  {
-    "context": "Editor",
-    "bindings": {
-      // Quick duplicate line (VS Code-style)
+  { "context": "Editor", "bindings": {
       "cmd-shift-d": "editor::DuplicateLineDown",
-      // Move line up/down
-      "alt-up": "editor::MoveLineUp",
-      "alt-down": "editor::MoveLineDown"
-    }
-  },
+      "alt-up":      "editor::MoveLineUp",
+      "alt-down":    "editor::MoveLineDown"
+  }},
 
-  // ----- Sidebar -----
-  {
-    "context": "Workspace",
-    "bindings": {
-      "alt-cmd-s": "workspace::ToggleLeftDock"
-    }
-  },
-
-  // ----- Agent panel -----
-  {
-    "context": "Workspace",
-    "bindings": {
-      "cmd-i": "agent::ToggleFocus"
-    }
-  },
-
-  // ----- Task runner shortcuts -----
-  {
-    "context": "Workspace",
-    "bindings": {
+  // ----- Task runner -----
+  { "context": "Workspace", "bindings": {
       "cmd-shift-b": ["task::Spawn", { "task_name": "Build" }],
       "cmd-shift-t": ["task::Spawn", { "task_name": "Test" }],
-      "alt-r": ["task::Rerun", { "reevaluate_context": true }]
+      "alt-r":       ["task::Rerun", { "reevaluate_context": true }]
+  }},
+  {
+    "context": "AgentPanel && acp_thread",
+    "unbind": {
+      "alt-cmd-t": "agent::NewThread"
+    }
+  },
+  {
+    "context": "Pane",
+    "unbind": {
+      "alt-cmd-t": [
+        "pane::CloseOtherItems",
+        {
+          "close_pinned": false
+        }
+      ]
+    }
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "cmd-?": "agent::ToggleFocus"
+    }
+  },
+  {
+    "context": "AcpThread > Editor",
+    "bindings": {
+      "alt-cmd-d": "agent::OpenAgentDiff"
+    }
+  },
+  {
+    "context": "AcpThread > Editor",
+    "unbind": {
+      "ctrl-shift-r": "agent::OpenAgentDiff"
+    }
+  },
+  {
+    "context": "AgentPanel",
+    "unbind": {
+      "alt-shift-escape": "agent::ExpandMessageEditor"
     }
   }
 ]

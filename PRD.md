@@ -28,15 +28,30 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 
 ## Keybinding Scheme
 
-Unified across Ghostty, Warp, Zed:
-- **Tab navigation:** Alt+Shift+Left/Right
-- **Split panes:** Ctrl+Shift+R (right), Ctrl+Shift+D (down), Ctrl+Shift+W (close)
-- **Pane focus:** Ctrl+Alt+arrow keys
-- **Command palette:** Cmd+Shift+P
-- **Sidebar:** Alt+Cmd+S
-- **AI agent:** Cmd+I
+### Zed — unified `cmd-opt` scheme
 
-Obsidian-specific (macOS-conflict-free):
+All panel, split, and navigation shortcuts share the `cmd-opt` prefix with mnemonic letters. No symbol keys required (ergonomic keyboard friendly).
+
+| Shortcut | Action |
+|---|---|
+| `cmd-opt-t` | Toggle terminal panel (show/hide); close agent panel when in AgentPanel context |
+| `cmd-opt-p` | Toggle project panel |
+| `cmd-opt-g` | Toggle git panel |
+| `cmd-opt-a` | Toggle agent panel |
+| `cmd-opt-r` | Toggle thread history |
+| `cmd-opt-v` | Split vertical |
+| `cmd-opt-h` | Split horizontal |
+| `cmd-opt-m` | Zoom active pane |
+| `cmd-opt-arrow` | Focus adjacent pane |
+| `cmd-opt-space` | Previous tab |
+| `cmd-opt-tab` | Next tab |
+| `ctrl-shift-w` | Close active tab |
+| `cmd-n` | New agent thread (AgentPanel context only) |
+
+`close_panel_on_toggle: true` in settings ensures panels using `ToggleFocus` close when re-triggered while focused.
+
+### Obsidian-specific (macOS-conflict-free)
+
 - **Daily note:** Ctrl+Shift+D
 - **Left sidebar:** Cmd+Shift+E | **Right sidebar:** Ctrl+Shift+R
 - **Graph view:** Ctrl+Shift+G
