@@ -7,11 +7,15 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # Oh My Zsh
 # ---------------------
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
+ZSH_THEME=""  # Starship handles the prompt
 
-plugins=(git brew)
+plugins=(git brew extract colored-man-pages history-substring-search)
 
 source "$ZSH/oh-my-zsh.sh"
+
+# history-substring-search keybindings (must come after OMZ loads the plugin)
+bindkey "${terminfo[kcuu1]}" history-substring-search-up
+bindkey "${terminfo[kcud1]}" history-substring-search-down
 
 # Source brew-installed plugins directly (brew ships .zsh, not .plugin.zsh that OMZ expects)
 [[ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -22,9 +26,12 @@ source "$ZSH/oh-my-zsh.sh"
 # History (must come AFTER source — OMZ's lib/history.zsh sets HISTSIZE=50000)
 # ---------------------
 HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 setopt HIST_IGNORE_SPACE      # commands starting with space aren't saved (for secrets)
+setopt HIST_FIND_NO_DUPS      # don't show duplicates in history search
+setopt HIST_REDUCE_BLANKS     # strip extra whitespace before saving
+setopt EXTENDED_HISTORY       # record timestamp with each command
 
 # ---------------------
 # Shell options (OMZ sets AUTO_CD, SHARE_HISTORY, HIST_IGNORE_DUPS — these are the rest)
@@ -96,6 +103,7 @@ alias ls="eza --icons"
 alias ll="eza --icons -la"
 alias lt="eza --icons --tree --level=2"
 alias cat="bat"
+alias reload="source ~/.zshrc"
 
 # Directory shortcuts (conditional on existence)
 if [[ -d ~/Google\ Drive/My\ Drive ]]; then
@@ -103,6 +111,7 @@ if [[ -d ~/Google\ Drive/My\ Drive ]]; then
 elif [[ -d ~/francesco.paolo.galletta@gmail.com\ -\ Google\ Drive/My\ Drive ]]; then
   alias personal_drive="cd ~/francesco.paolo.galletta@gmail.com\ -\ Google\ Drive/My\ Drive"
 fi
+[[ -d ~/projects/coded ]] && alias coded="cd ~/projects/coded"
 [[ -d ~/francescogalletta@monzo.com\ -\ Google\ Drive ]] && alias monzo_drive="cd ~/francescogalletta@monzo.com\ -\ Google\ Drive"
 [[ -d ~/src/github.com/monzo/analytics ]] && alias analytics="cd ~/src/github.com/monzo/analytics"
 [[ -d ~/src/github.com/monzo/wearedev ]] && alias wearedev="cd ~/src/github.com/monzo/wearedev"
@@ -119,8 +128,8 @@ alias finder="open ."
 # Claude Code
 alias cc="claude --permission-mode auto"
 
-# Zed
-alias z="zed"
+# Zed (z is reserved for zoxide)
+alias ze="zed"
 
 # Git identity — view or change ~/.gitconfig.local identity
 gitid() {
@@ -155,6 +164,16 @@ zle -N _fzf_open_ide
 bindkey '^O' _fzf_open_ide
 
 # ---------------------
+# Zoxide (frecency-based directory jumping; replaces fcd for common dirs)
+# ---------------------
+eval "$(zoxide init zsh)"
+
+# ---------------------
+# Atuin (enhanced shell history with Ctrl+R)
+# ---------------------
+eval "$(atuin init zsh --disable-up-arrow)"
+
+# ---------------------
 # Bell on slow command completion (>=10s)
 # Uses add-zsh-hook to avoid clobbering OMZ's preexec/precmd hooks
 # ---------------------
@@ -164,3 +183,8 @@ _bell_preexec() { _cmd_start_time=$SECONDS }
 _bell_precmd() { (( SECONDS - _cmd_start_time >= 10 )) && print -n "\a"; _cmd_start_time=$SECONDS }
 add-zsh-hook preexec _bell_preexec
 add-zsh-hook precmd _bell_precmd
+
+# ---------------------
+# Starship prompt (must be last — overrides $PROMPT set by OMZ)
+# ---------------------
+eval "$(starship init zsh)"

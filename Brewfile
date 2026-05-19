@@ -1,4 +1,5 @@
 # CLI tools
+brew "atuin"
 brew "bat"
 brew "eza"
 brew "fd"
@@ -7,7 +8,9 @@ brew "gh"
 brew "jq"
 brew "nvm"
 brew "ripgrep"
+brew "starship"
 brew "yq"
+brew "zoxide"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
