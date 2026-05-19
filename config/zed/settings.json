@@ -79,7 +79,7 @@
     "show_count_badge": false,
     "shell": { "program": "/bin/zsh" },
     "dock": "left",
-    "font_family": ".ZedMono",
+    "font_family": "JetBrainsMono NFM",
     "font_size": 14,
     "option_as_meta": true,
     "copy_on_select": true,
