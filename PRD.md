@@ -15,13 +15,13 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 
 | Category | Tools |
 |----------|-------|
-| Shell | zsh + Oh My Zsh (git, brew plugins), zsh-autosuggestions, zsh-syntax-highlighting, Forge-owned prompt |
+| Shell | zsh + Oh My Zsh (git, brew plugins), zsh-autosuggestions, zsh-syntax-highlighting, robbyrussell theme |
 | Terminals | Ghostty (primary), Warp (secondary, cloud-synced settings) |
 | Editor | Zed — managed by `ide.sh` |
 | CLI | eza, bat, fd, fzf, ripgrep, jq, yq, gh |
 | Node.js | nvm (lazy-loaded) |
 | Python | Docker-only, uv package manager (never on host) |
-| AI agents | Claude Code (optional), Forge Code (optional, uses Ollama via built-in provider), Codex (optional, uses Ollama) |
+| AI agents | Claude Code (optional), Codex (optional, uses Ollama) |
 | Notes | Obsidian (Minimal theme, shared config across vaults via symlinks), Tolaria |
 | Deploy | flyctl, gcloud-cli |
 | Theme | Catppuccin Mocha across all tools |

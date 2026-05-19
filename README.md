@@ -26,7 +26,6 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | Tool | Purpose |
 |------|---------|
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | Anthropic's AI coding agent |
-| [Forge Code](https://forgecode.dev) | Tailcall's AI coding agent |
 | [Codex](https://github.com/openai/codex) | OpenAI's coding agent (configured to use local Ollama models) |
 | [Google Drive](https://www.google.com/drive/download/) | Desktop sync client |
 

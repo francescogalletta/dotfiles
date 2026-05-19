@@ -25,11 +25,6 @@ command -v codex &>/dev/null && LINKS+=(
   "config/codex/model_catalog.json:$HOME/.codex/model_catalog.json:codex/model_catalog"
 )
 
-# Forge config — always link (forge reads ~/.forge/.forge.toml)
-LINKS+=(
-  "config/forge/forge.toml:$HOME/.forge/.forge.toml:forge/config"
-)
-
 # Editor configs — only link if the editor is installed
 [ -d "/Applications/Zed.app" ] && LINKS+=(
   "config/zed/settings.json:$HOME/.config/zed/settings.json:zed/settings"

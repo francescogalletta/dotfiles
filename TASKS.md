@@ -128,6 +128,12 @@
 
 ## Changelog
 
+### 2026-05-17 (session 20)
+- Removed Forge Code: deleted `config/forge/forge.toml`, `links.sh` symlink, `install.sh` step, and `>>> forge initialize >>>` block from `zshrc`
+- Set `ZSH_THEME="robbyrussell"` to replace the Forge-owned prompt
+- Removed forge binary (`~/.local/bin/forge`) and runtime dir (`~/.forge/`)
+- Updated CLAUDE.md, PRD.md, README.md, ADR.md (ADR-024)
+
 ### 2026-05-18 (session 19)
 - Overhauled Zed keymap: unified `cmd-opt` scheme replacing mixed `alt-shift`/`ctrl-shift`/`ctrl-alt` prefixes
 - Panel toggles: cmd-opt-t/p/g/a/r; splits: cmd-opt-v/h; pane focus: cmd-opt-arrow; tabs: cmd-opt-space/tab; zoom: cmd-opt-m

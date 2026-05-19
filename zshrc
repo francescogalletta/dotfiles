@@ -7,7 +7,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # Oh My Zsh
 # ---------------------
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME=""   # Forge owns the prompt via eval "$(forge zsh theme)"
+ZSH_THEME="robbyrussell"
 
 plugins=(git brew)
 
@@ -164,26 +164,3 @@ _bell_preexec() { _cmd_start_time=$SECONDS }
 _bell_precmd() { (( SECONDS - _cmd_start_time >= 10 )) && print -n "\a"; _cmd_start_time=$SECONDS }
 add-zsh-hook preexec _bell_preexec
 add-zsh-hook precmd _bell_precmd
-
-# >>> forge initialize >>>
-# !! Contents within this block are managed by 'forge zsh setup' !!
-# !! Do not edit manually - changes will be overwritten !!
-
-# Add required zsh plugins if not already present
-if [[ ! " ${plugins[@]} " =~ " zsh-autosuggestions " ]]; then
-    plugins+=(zsh-autosuggestions)
-fi
-if [[ ! " ${plugins[@]} " =~ " zsh-syntax-highlighting " ]]; then
-    plugins+=(zsh-syntax-highlighting)
-fi
-
-# Load forge shell plugin (commands, completions, keybindings) if not already loaded
-if [[ -z "$_FORGE_PLUGIN_LOADED" ]]; then
-    eval "$(forge zsh plugin)"
-fi
-
-# Load forge shell theme (prompt with AI context) if not already loaded
-if [[ -z "$_FORGE_THEME_LOADED" ]]; then
-    eval "$(forge zsh theme)"
-fi
-# <<< forge initialize <<<

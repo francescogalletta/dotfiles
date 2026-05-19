@@ -32,7 +32,6 @@ echo -e "  🦙 Ollama + models         local LLM inference"
 echo ""
 echo -e "  ${dim}Optional (you'll be asked):${reset}"
 echo -e "  🤖 Claude Code             Anthropic's coding agent"
-echo -e "  🔥 Forge Code              Tailcall's coding agent"
 echo -e "  📦 Codex                   OpenAI's coding agent (uses Ollama)"
 echo -e "  ☁️  Google Drive            desktop sync client"
 echo -e "  🖥️  Editors                 Zed (via ide.sh)"
@@ -309,14 +308,12 @@ ask_yes_no() {
 }
 
 ask_yes_no "🤖 Install Claude Code (Anthropic)?" INSTALL_CLAUDE
-ask_yes_no "🔥 Install Forge Code (Tailcall)?"     INSTALL_FORGE
 ask_yes_no "📦 Install Codex (OpenAI)?"            INSTALL_CODEX
 ask_yes_no "☁️  Install Google Drive?"              INSTALL_GDRIVE
 echo ""
 
 # Add optional steps to total
 if [ "$INSTALL_CLAUDE" = true ]; then count; fi
-if [ "$INSTALL_FORGE" = true ]; then count; fi
 if [ "$INSTALL_CODEX" = true ]; then count; fi
 if [ "$INSTALL_GDRIVE" = true ]; then count; fi
 
@@ -334,28 +331,6 @@ if [ "$INSTALL_CLAUDE" = true ]; then
   fi
 else
   RESULTS+=("  ⏭️  🤖 Claude Code ${dim}(not selected)${reset}")
-fi
-
-# ─── 13. 🔥 Forge Code (optional) ──────────────────────
-if [ "$INSTALL_FORGE" = true ]; then
-  advance "🔥 Installing Forge Code..."
-  if ! command -v forge &>/dev/null; then
-    if run_logged "Forge Code" bash -c 'curl -fsSL https://forgecode.dev/cli | sh'; then
-      pass "🔥 Forge Code"
-    else
-      fail "🔥 Forge Code" "$LAST_ERROR"
-    fi
-  else
-    skip "🔥 Forge Code"
-  fi
-  # Register Ollama as a Forge provider (interactive — user picks auth method)
-  if command -v ollama &>/dev/null; then
-    printf "\r${clear_line}"
-    echo -e "\n  ${cyan}🔥 Forge + Ollama${reset} — register Ollama as a local provider:\n"
-    forge provider login ollama
-  fi
-else
-  RESULTS+=("  ⏭️  🔥 Forge Code ${dim}(not selected)${reset}")
 fi
 
 # ─── 14. 📦 Codex (optional) ────────────────────────────

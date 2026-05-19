@@ -4,6 +4,11 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-024: Remove Forge Code
+**Date:** 2026-05-17
+**Decision:** Removed Forge Code entirely. Deleted `config/forge/forge.toml`, the `links.sh` symlink entry, the `install.sh` install step, the `>>> forge initialize >>>` block from `zshrc`, and the `~/.local/bin/forge` binary. `ZSH_THEME` set to `robbyrussell` (OMZ default) to replace the Forge-owned prompt.
+**Reason:** Forge is no longer used. All references cleaned up from dotfiles, install script, and system.
+
 ## ADR-023: Zed unified cmd-opt keymap scheme
 **Date:** 2026-05-18
 **Decision:** Overhauled `config/zed/keymap.json` and `config/zed/settings.json`. All shortcuts unified under the `cmd-opt` modifier prefix. Panel toggles use mnemonic letters (T=terminal, P=project, G=git, A=agent, R=threads). Splits use V (vertical) and H (horizontal). Pane focus uses `cmd-opt-arrow`. Tab navigation uses `cmd-opt-space` / `cmd-opt-tab`. Zoom uses `cmd-opt-m`. Added `"close_panel_on_toggle": true` to settings so `ToggleFocus` panels close when re-triggered while focused. Used Zed's `unbind` syntax (not `null`) for targeted conflict removal. Added `AgentPanel` context bindings: `cmd-n` → new thread, `cmd-opt-t` → close panel. Updated Zed appearance: system-adaptive Catppuccin theme (Frappé dark / Latte light), ZedMono fonts, minimap on hover, git panel docked bottom.
