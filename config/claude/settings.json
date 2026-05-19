@@ -25,9 +25,7 @@
       "Glob(/Users/*/*)",
       "Grep(/Users/*/*)"
     ],
-    "deny": [
-      "Bash(rm -rf *)"
-    ]
+    "deny": ["Bash(rm -rf *)"]
   },
   "hooks": {
     "SessionStart": [
@@ -69,5 +67,6 @@
   "preferredNotifChannel": "ghostty",
   "agentPushNotifEnabled": true,
   "voiceEnabled": true,
-  "notifications": true
+  "notifications": true,
+  "cleanupPeriodDays": 999
 }
