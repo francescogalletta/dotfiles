@@ -17,6 +17,7 @@ LINKS=(
   "config/claude/settings.json:$HOME/.claude/settings.json:claude/settings"
   "config/claude/statusline.sh:$HOME/.claude/statusline.sh:claude/statusline"
   "config/obsidian/obsidian.json:$HOME/Library/Application Support/obsidian/obsidian.json:obsidian/settings"
+  "config/starship/starship.toml:$HOME/.config/starship.toml:starship"
 )
 
 # Codex config — only link if Codex is installed
