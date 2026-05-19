@@ -4,6 +4,13 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # ---------------------
+# tmux — auto-attach in Ghostty (full env is ready; $TMUX guard prevents nesting)
+# ---------------------
+if [[ "$TERM_PROGRAM" == "ghostty" && -z "$TMUX" ]]; then
+  exec tmux new-session -A -s main
+fi
+
+# ---------------------
 # Oh My Zsh
 # ---------------------
 export ZSH="$HOME/.oh-my-zsh"
