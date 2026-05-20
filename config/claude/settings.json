@@ -25,7 +25,9 @@
       "Glob(/Users/*/*)",
       "Grep(/Users/*/*)"
     ],
-    "deny": ["Bash(rm -rf *)"]
+    "deny": [
+      "Bash(rm -rf *)"
+    ]
   },
   "hooks": {
     "SessionStart": [
