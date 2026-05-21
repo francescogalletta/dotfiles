@@ -1,12 +1,14 @@
 ---
 name: project-resume
-description: Orient any agent (human or sub-agent) at session start — read VCS + docs, present briefing, propose next actions, wait for confirmation before starting work
+description: Full project briefing on demand — VCS state, docs, ADR, open questions, session note, next-action proposal. The default orientation at session start is the SessionStart hook; invoke this skill explicitly when you need the full picture.
 user-invocable: true
 ---
 
 # /project-resume
 
 **Read first. Do NOT begin work or modify any files until the user (or orchestrating agent) confirms a task.**
+
+The lightweight version of this briefing runs automatically via the SessionStart hook (`config/claude/hooks/session-start.sh`). Run this skill for the full picture (ADR, open questions, handoff note).
 
 ## Step 1 — Ground truth from VCS
 

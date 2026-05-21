@@ -7,54 +7,22 @@ allowed-tools: Bash(git diff:*), Bash(git status:*), Bash(git add:*), Bash(git c
 
 # /ship
 
-## Step 1 — Read the diff
+1. Run `git status --short` and `git diff HEAD`. If the tree is clean, say so and stop.
 
-Run:
-```
-git status --short
-git diff HEAD
-```
+2. Propose a one-line commit message:
+   - Imperative mood ("Add X", "Fix Y", "Refactor Z")
+   - No type prefix, no scope, no period, no emoji
+   - ≤72 characters; captures the *why*, not a file list
 
-If the working tree is clean (nothing to commit), say so and stop.
+   Present as:
+   ```
+   Commit message:
 
-## Step 2 — Check scope
+     <message>
 
-Look at the changed files. If they span more than one logical area (e.g., two unrelated workstreams, agent config mixed with content, fixes mixed with new features), flag it:
+   Ship it? (y to confirm, or edit)
+   ```
 
-> "These changes cover X and Y — worth splitting into two commits/PRs?"
+   **Do not commit until confirmed.** If the user edits the message, use their version verbatim.
 
-If the user confirms a split, help them stage subsets of files into separate commits before proceeding. If they want to ship as-is, continue.
-
-## Step 3 — Propose a commit message
-
-Write one line. Rules:
-- Imperative mood: "Add …", "Fix …", "Refactor …", "Remove …"
-- No type prefix, no scope, no period, no emoji
-- ≤72 characters
-- Captures the key achievement, not a list of files changed
-
-Present it like:
-
-```
-Commit message:
-
-  <message>
-
-Ship it? (y to confirm, or tell me what to change)
-```
-
-**Wait for response. Do not commit until confirmed.**
-
-## Step 3 — Commit and push
-
-On confirmation (any of: y, yes, ok, ship, lgtm, looks good):
-1. `git add -A`
-2. `git commit -m "<message>"`
-3. `git push`
-
-If the user edits the message instead, use their version verbatim.
-
-If `git push` fails because there is no upstream, run:
-`git push --set-upstream origin <branch>` and report the result.
-
-Print the final commit hash and push status on completion.
+3. On confirmation: `git add -A`, `git commit -m "<message>"`, `git push`. If push fails with no upstream, retry with `--set-upstream origin <branch>`.

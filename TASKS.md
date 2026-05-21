@@ -38,8 +38,8 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 
 - [x] [T101] Prune `settings.local.json` + scope `settings.json` allow list to in-container — `done` → [tasks/T101.md](tasks/T101.md)
 - [x] [T102] Remove Discord write pre-approval; keep Gmail draft — `done` → [tasks/T102.md](tasks/T102.md)
-- [ ] [T103] Slim `/ship` skill to minimum viable — `pending` → [tasks/T103.md](tasks/T103.md)
-- [ ] [T104] Collapse `/project-resume` into inline SessionStart hook — `pending` → [tasks/T104.md](tasks/T104.md)
+- [x] [T103] Slim `/ship` skill to minimum viable — `done` → [tasks/T103.md](tasks/T103.md)
+- [x] [T104] Collapse `/project-resume` into inline SessionStart hook — `done` → [tasks/T104.md](tasks/T104.md)
 - [ ] [T105] Slim `/project-new`: drop Blocks, drop empty `.claude/` dirs, keep per-task files — `pending` → [tasks/T105.md](tasks/T105.md)
 - [ ] [T106] Slim `/learn` skill (remove Monzo bits, drop memory step) — `pending` → [tasks/T106.md](tasks/T106.md)
 - [ ] [T107] Audit skill usage from transcripts; delete unused — `pending` → [tasks/T107.md](tasks/T107.md)
@@ -47,8 +47,14 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [ ] [T109] Templates: add `tests/` to `data` and `agent` archetypes — `pending` → [tasks/T109.md](tasks/T109.md)
 - [ ] [T110] Periodic transcript cull (cleanupPeriodDays + cleanup script) — `pending` → [tasks/T110.md](tasks/T110.md)
 - [x] [T111] Tidy small bugs: project-new description, ADR hook MultiEdit, rm -rf deny — `done` → [tasks/T111.md](tasks/T111.md)
+- [ ] [T112] Slim global `CLAUDE.md` (target ≤80 lines) — `pending` → [tasks/T112.md](tasks/T112.md)
 
 ## Changelog
+
+### 2026-05-21 (session 23)
+- T103 done: rewrote `config/claude/skills/ship/SKILL.md` to 18 body lines; removed duplicate `Step 3` header; dropped the "Check scope" preamble; kept spartan one-line rules and confirmation gate.
+- T104 done: added `config/claude/hooks/session-start.sh` and symlinked `config/claude/hooks → ~/.claude/hooks` via `links.sh`. Hook prints `<proj>: <branch>, <sync_state>, <dirty>` + last 3 commits + first 3 pending `[T###]` tasks. Replaces the old "go run /project-resume" SessionStart message; `/project-resume` skill kept as the explicit full-briefing path with updated description.
+- T112 opened: slim global `CLAUDE.md` to ≤80 lines (currently ~145).
 
 ### 2026-02-16 (session 1)
 - Replaced `ai/` concatenation approach with symlinked `CLAUDE.md` at repo root

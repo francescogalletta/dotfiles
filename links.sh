@@ -16,6 +16,7 @@ LINKS=(
   "config/claude/skills:$HOME/.claude/skills:claude/skills"
   "config/claude/settings.json:$HOME/.claude/settings.json:claude/settings"
   "config/claude/statusline.sh:$HOME/.claude/statusline.sh:claude/statusline"
+  "config/claude/hooks:$HOME/.claude/hooks:claude/hooks"
   "config/obsidian/obsidian.json:$HOME/Library/Application Support/obsidian/obsidian.json:obsidian/settings"
   "config/starship/starship.toml:$HOME/.config/starship.toml:starship"
   "config/tmux/tmux.conf:$HOME/.config/tmux/tmux.conf:tmux"

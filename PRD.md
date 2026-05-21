@@ -81,6 +81,8 @@ This dotfiles repo dogfoods the same convention starting with Phase 5 (T101 onwa
 
 Five archetypes in `templates/`: `data`, `web`, `api`, `cli`, `agent`. Each ships Docker Compose, Makefile, Dockerfile, starter code. Standard targets: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`.
 
-## Skills
+## Skills & Hooks
 
 Claude Code skills in `config/claude/skills/`: `/project-new`, `/project-resume`, `/ship`, `/graduate`, `/learn`, `/explain`, `/slides`.
+
+`config/claude/hooks/session-start.sh` runs as the `SessionStart` hook for every Claude Code session. In a managed project (TASKS.md present) it prints a one-paragraph briefing: project name, branch and sync state, last 3 commits, next 3 pending `[T###]` tasks. The `/project-resume` skill remains available for the full briefing (ADR, open questions, session note) on demand.
