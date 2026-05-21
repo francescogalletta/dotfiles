@@ -69,10 +69,13 @@ Defined in `CLAUDE.md`. Three non-negotiable sections:
 
 ## Project Documentation Convention
 
-Managed projects (scaffolded with `/project-new`) use three files:
+Managed projects (scaffolded with `/project-new`) use these files:
 - `ADR.md` — reverse-chronological decision log (newest first). Prepend new entries.
 - `PRD.md` — living document reflecting current project state. Must stay in sync with ADR.md.
-- `TASKS.md` — phases, task checklists, changelog. `TASKS.md` presence signals a managed project to AI agents.
+- `TASKS.md` — scannable task index (one line per task with ID, status, link to detail file) plus changelog. `TASKS.md` presence signals a managed project to AI agents.
+- `tasks/T###.md` — per-task detail files holding goal, acceptance criteria, context, decisions log. Used for progressive disclosure when routing sub-agents: TASKS.md gives them the scan, `tasks/T###.md` gives them the brief. Per-task frontmatter: Phase / Status / Owner / BlockedBy / Validation (no `Blocks:` field; redundant with BlockedBy).
+
+This dotfiles repo dogfoods the same convention starting with Phase 5 (T101 onward). Earlier phases remain in the legacy flat checklist format.
 
 ## Templates
 

@@ -1,6 +1,6 @@
 ---
 name: project-new
-description: Use whenever a user wants to start a brand-new project, app, tool, service, or side project — even if they just say "I want to build X", "let's kick off Y", or "new project: Z". Handles the full workflow: structured discovery conversation, PRD.md + TASKS.md drafts for review, then scaffolds a complete project directory with git, per-task files, and agent-ready config. Trigger on any fresh project start, not just explicit /project-new invocations.
+description: User-invoked scaffolder for new projects. Runs a structured discovery conversation, drafts PRD.md and TASKS.md for review, then scaffolds the project directory with git, per-task files in tasks/, ADR.md, and the chosen template archetype. Invoked explicitly via /project-new only.
 user-invocable: true
 disable-model-invocation: true
 ---

@@ -3,10 +3,8 @@
     "allow": [
       "Bash(git:*)",
       "Bash(gh:*)",
-      "Bash(uv:*)",
-      "Bash(node:*)",
-      "Bash(npm:*)",
-      "Bash(npx:*)",
+      "Bash(make:*)",
+      "Bash(docker compose:*)",
       "Bash(eza:*)",
       "Bash(bat:*)",
       "Bash(fd:*)",
@@ -18,7 +16,6 @@
       "Bash(env:*)",
       "Bash(code:*)",
       "Bash(zed:*)",
-      "Bash(python:*)",
       "WebSearch",
       "WebFetch",
       "Read(/Users/*/*)",
@@ -26,7 +23,10 @@
       "Grep(/Users/*/*)"
     ],
     "deny": [
-      "Bash(rm -rf *)"
+      "Bash(sudo:*)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~*)",
+      "Bash(rm -rf $HOME*)"
     ]
   },
   "hooks": {
@@ -44,7 +44,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",

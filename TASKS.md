@@ -33,6 +33,21 @@
 - [x] Brewfile — added `flyctl` and `google-cloud-sdk`
 - [x] `install.sh` — creates `~/projects/` on fresh install
 
+### Phase 5: Agent config sanity pass
+Index format: `[T###]` ID, one-line goal, status, link to full task file in `tasks/`.
+
+- [x] [T101] Prune `settings.local.json` + scope `settings.json` allow list to in-container — `done` → [tasks/T101.md](tasks/T101.md)
+- [x] [T102] Remove Discord write pre-approval; keep Gmail draft — `done` → [tasks/T102.md](tasks/T102.md)
+- [ ] [T103] Slim `/ship` skill to minimum viable — `pending` → [tasks/T103.md](tasks/T103.md)
+- [ ] [T104] Collapse `/project-resume` into inline SessionStart hook — `pending` → [tasks/T104.md](tasks/T104.md)
+- [ ] [T105] Slim `/project-new`: drop Blocks, drop empty `.claude/` dirs, keep per-task files — `pending` → [tasks/T105.md](tasks/T105.md)
+- [ ] [T106] Slim `/learn` skill (remove Monzo bits, drop memory step) — `pending` → [tasks/T106.md](tasks/T106.md)
+- [ ] [T107] Audit skill usage from transcripts; delete unused — `pending` → [tasks/T107.md](tasks/T107.md)
+- [ ] [T108] Disable global cloud MCP servers; enable per-project (Gmail draft excepted) — `pending` [blockedBy:T107] → [tasks/T108.md](tasks/T108.md)
+- [ ] [T109] Templates: add `tests/` to `data` and `agent` archetypes — `pending` → [tasks/T109.md](tasks/T109.md)
+- [ ] [T110] Periodic transcript cull (cleanupPeriodDays + cleanup script) — `pending` → [tasks/T110.md](tasks/T110.md)
+- [x] [T111] Tidy small bugs: project-new description, ADR hook MultiEdit, rm -rf deny — `done` → [tasks/T111.md](tasks/T111.md)
+
 ## Changelog
 
 ### 2026-02-16 (session 1)
@@ -127,6 +142,18 @@
 - [ ] Test Google Drive symlink persistence over time
 
 ## Changelog
+
+### 2026-05-21 (session 22)
+- Opened Phase 5: Agent config sanity pass (T101–T111) tracked via new per-task file convention in `tasks/`
+- T101 done: pruned `settings.local.json` from 73 lines to 22 lines; scoped `settings.json` allow list to in-container patterns (`make`, `docker compose`); removed host-runtime allows (`python`, `npm`, `npx`)
+- T102 done: removed Discord write pre-approval (`discord__reply`, `discord__fetch_messages`); kept Gmail draft pre-approval
+- T111 done: cleaned `/project-new` description (no longer contradicts `disable-model-invocation: true`); PostToolUse hook matches MultiEdit too; replaced `Bash(rm -rf *)` deny theatre with broader patterns including `Bash(sudo:*)`
+- Added ADR-026 (Phase 5 + per-task file convention for dotfiles)
+
+### 2026-05-21 (session 21)
+- Added three non-negotiable sections to `CLAUDE.md`: **Host Safety** (universal host-install ban), **Coding Projects, Containerised by Default**, and **Agentic Safety** (secrets/sudo/working-dir/git-safety/prompt-injection/cloud-MCP-writes)
+- Generalises ADR-015 from Python-only to all runtimes; codifies implicit safety assumptions so the agent doesn't re-derive them per session
+- Updated PRD.md (new "Agent Operating Rules" section), added ADR-025
 
 ### 2026-05-17 (session 20)
 - Removed Forge Code: deleted `config/forge/forge.toml`, `links.sh` symlink, `install.sh` step, and `>>> forge initialize >>>` block from `zshrc`
