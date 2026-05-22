@@ -1,6 +1,6 @@
 ---
 name: project-new
-description: User-invoked scaffolder for new projects. Runs a structured discovery conversation, drafts PRD.md and TASKS.md for review, then scaffolds the project directory with git, per-task files in tasks/, ADR.md, and the chosen template archetype. Invoked explicitly via /project-new only.
+description: User-invoked scaffolder. Runs a discovery conversation, drafts PRD and TASKS for review, then scaffolds `~/projects/<name>/` with git, ADR, per-task files in `tasks/`, and the chosen template archetype.
 user-invocable: true
 disable-model-invocation: true
 ---
@@ -112,7 +112,7 @@ Default location: `~/projects/<name>`. If the user has mentioned a different loc
 
 Create all files in order:
 
-1. `mkdir -p ~/projects/<name>/.claude/agents ~/projects/<name>/.claude/skills ~/projects/<name>/.claude/rules ~/projects/<name>/tasks`
+1. `mkdir -p ~/projects/<name>/tasks`
 2. **If archetype is not `none`**: copy template files from `~/dotfiles/templates/<archetype>/` into `~/projects/<name>/`. Use `cp -r ~/dotfiles/templates/<archetype>/. ~/projects/<name>/` — this copies all files including hidden ones.
 3. **If a `pyproject.toml` exists** (all Python archetypes): generate `uv.lock` by running `docker run --rm -v "$(pwd)":/app -w /app ghcr.io/astral-sh/uv:python3.12-slim uv lock` from the project directory. This keeps uv off the host — the lockfile is generated inside a disposable container.
 4. `cd ~/projects/<name> && git init`
@@ -144,7 +144,7 @@ After scaffolding, ask: "Want me to run `make dev` to verify it starts?" If yes,
 ## Session Rules
 - Follow global ~/CLAUDE.md as baseline
 - Read PRD.md for intent; read TASKS.md for current state
-- Run `/project-resume` at session start to orient yourself
+- SessionStart hook briefs you on session start; run `/project-resume` for the full picture on demand
 - Run `git log --oneline -10` to see recent activity
 - Claim tasks in TASKS.md (set status + @owner) before starting
 - Mark done + update changelog when completing
@@ -163,7 +163,6 @@ Generate one file per task using details from the conversation:
 **Status:** `pending`
 **Owner:** —
 **BlockedBy:** —
-**Blocks:** —
 **Validation:** <what the user needs to approve, or "none — agent can proceed autonomously">
 
 ## Goal
@@ -244,15 +243,12 @@ Files:
   TASKS.md                     — task index (one line per task)
   tasks/T001.md … T###.md      — per-task detail files
   ADR.md                       — architecture decision log (newest first)
-  .claude/agents/              — ready for sub-agent definitions
-  .claude/skills/              — ready for project slash commands
-  .claude/rules/               — ready for topic-scoped rules
   CLAUDE.local.md              — personal overrides (gitignored)
   <template files>             — docker-compose.yml, Makefile, README.md, etc.
 
 Next:
   cd ~/projects/<name>
   make dev                     — start services
-  /project-resume              — orient any agent at session start
+  /project-resume              — full briefing on demand (default is SessionStart hook)
   /graduate                    — when ready to deploy
 ```

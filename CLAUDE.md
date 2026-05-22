@@ -1,13 +1,8 @@
 # Claude Code — Global Instructions
 
 # Tone
-- Be concise. Short sentences, no filler.
-- Lead with the answer, then explain only if needed.
-- Skip pleasantries, preambles, and summaries of what you're about to do.
-- Don't narrate your actions — just do them.
-- Code over prose when code is clearer.
-- Do not use phrases in the form of "It is not X, is Y" to fill in content. 
-- Do not use em-dashes. 
+
+Be concise; lead with the answer. Skip preambles, filler, and summaries of what you're about to do. Code over prose when clearer. No "It's not X, it's Y" phrasing. No em-dashes in prose.
 
 # Host Safety — Non-Negotiable
 
@@ -45,101 +40,45 @@ These exist to prevent credential leakage, destructive actions, and prompt-injec
 **Cloud MCP, reads free, writes gated.** Gmail, Drive, Notion, and Calendar reads are fine. Any create, update, delete, send, share, or move operation requires explicit per-action approval from the user. Don't batch writes.
 
 # Environment
-- macOS, Zed editor (primary IDE), Ghostty terminal (primary), zsh + Oh My Zsh
-- Editor: Zed (`zed --wait`), configurable via `~/.editor_env`
 
-# Preferred CLI tools
-| Instead of | Use | Notes |
-|---|---|---|
-| `ls` | `eza` | aliased, supports `--icons` |
-| `cat` | `bat` | aliased, syntax highlighting |
-| `grep` | `rg` | ripgrep |
-| `find` | `fd` / `fzf` | fuzzy finding |
+macOS, Zed (`zed --wait`, configurable via `~/.editor_env`), Ghostty terminal, zsh + Oh My Zsh. Node via lazy-loaded `nvm`; Python inside Docker only with `uv` as the package manager.
 
-# Language runtimes
-- **Node.js**: managed via `nvm` (lazy-loaded — don't source nvm.sh manually)
-- **Python**: runs inside Docker containers only — never install Python or pip on the host. Use `uv` as the package manager inside containers (see Prototyping section).
+# Tool Discovery
 
-# Git & GitHub
-- Authenticated via `gh` CLI
-- SSH key configured (ed25519)
-- Use `gh` for PR/issue operations
-
-# Shell aliases
-- `ls` → `eza --icons`
-- `ll` → `eza --icons -la`
-- `lt` → `eza --icons --tree --level=2`
-- `cat` → `bat`
-- `o` / `finder` → `open .`
-- `mkcd <dir>` → mkdir + cd
-- `fcd` → fzf directory jumper
-
-## Directory Navigation
-- `personal_drive` → Personal Google Drive
-- `monzo_drive` → Monzo Google Drive
-- `analytics` → Monzo analytics repo
-- `wearedev` → Monzo wearedev repo
+Before guessing a command, suggesting an install, or grepping the filesystem for a binary, Read `~/.zshrc` and `~/.zprofile` with the Read tool. Most aliases, functions, and directory shortcuts already live there — those files are the source of truth for what's set up on this machine. Check there first; only then assume something is missing.
 
 # Dotfiles
 
-System config is managed through `~/dotfiles` and symlinked into place. Editor symlinks are conditional (only if the app is installed). Generated files (`~/.editor_env`, `~/.gitconfig.local`) are machine-specific — never check them in.
+Config is managed through `~/dotfiles` and symlinked into place. Editor symlinks are conditional. Generated files (`~/.editor_env`, `~/.gitconfig.local`) are machine-specific and never checked in.
 
-When changing any config (Claude settings, shell, editor, etc.), prefer editing the source in `~/dotfiles/` rather than the symlink target. After making changes, prompt to ship them.
-
-- Prefer standard env vars (`EDITOR`, `VISUAL`, `PAGER`) over custom variables. Derive values from them (e.g., `${EDITOR%% *}` for the base command).
-- Don't add references to tools or editors that aren't part of the managed Brewfile/ide.sh setup.
+Edit the source in `~/dotfiles/` rather than the symlink target. After changes, prompt to ship. Don't add references to tools or editors not in the managed `Brewfile`/`ide.sh` setup.
 
 # Project Documentation
 
-Managed projects are scaffolded with `/project-new` and use three files:
-- `ADR.md` — reverse-chronological decision log (newest first, prepend new entries)
-- `PRD.md` — living doc reflecting current project state (must stay in sync with ADR.md)
-- `TASKS.md` — progress tracking, phases, changelog. Presence signals a managed project.
+Managed projects use: `ADR.md` (reverse-chronological log, prepend entries), `PRD.md` (living state, kept in sync with ADR), `TASKS.md` (index of `[T###]` tasks + changelog; presence signals a managed project), and `tasks/T###.md` for per-task detail.
 
-Workflow:
-- Run `/project-resume` at session start to orient yourself
-- Use `/ship` when committing and pushing work
-- After a design decision: prepend an entry to `ADR.md`, then update `PRD.md` to reflect the current state. These two files must never contradict each other.
-- After completing a task: mark it done in `TASKS.md` and append a changelog entry
-- When making structural changes: update all docs (README, ADR.md, PRD.md, TASKS.md) in the same pass. Never ship code changes without corresponding doc updates.
+Workflow: prepend ADR entries and update PRD in the same pass; mark tasks done with a changelog entry; never ship code without doc updates. Use `/ship` to commit and push.
 
 # Architecture & Stack Decisions
 
-When discussing architecture or stack choices, always present 2–3 concrete options with a trade-off table before recommending one:
-
-```
-| Option | Pros | Cons | Best when |
-```
-
-Then state your recommendation and why. Don't skip straight to the answer — the table is the answer.
+When discussing architecture or stack choices, present 2–3 concrete options as a trade-off table (`| Option | Pros | Cons | Best when |`) before recommending one. The table is the answer, then state your recommendation and why.
 
 # Agent Behaviour — Non-Negotiable
 
 **Run tests yourself. Fix failures yourself. Never hand broken code to the user.**
 
-1. After every code change, run the project's test command (typically `make test`) using the Bash tool.
-2. If tests fail, read the output, diagnose the cause, fix it, and run again.
-3. Repeat until the full suite is green.
+1. After every code change, run the project's test command (typically `make test`).
+2. If tests fail, diagnose, fix, re-run.
+3. Repeat until green.
 4. Only then commit and report back.
 
-Never ask the user to run tests, copy-paste errors, or diagnose failures. You have a Bash tool — use it.
+Never ask the user to run tests, copy-paste errors, or diagnose failures.
 
 # Prototyping
 
-New projects live at `~/projects/<name>/` (each its own git repo).
-Templates are at `~/dotfiles/templates/<archetype>/`.
-Standard Makefile targets on every project: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`.
-
-All Python runs inside Docker. Dockerfiles use `uv` (not pip) as the package manager:
-```dockerfile
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
-```
-
-Dependencies are declared in `pyproject.toml` with a `uv.lock` lockfile for reproducibility. Never use `requirements.txt` or `pip install`.
+New projects live at `~/projects/<name>/` (each its own git repo). Templates at `~/dotfiles/templates/<archetype>/`. Standard Makefile targets: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`. Python deps via `pyproject.toml` + `uv.lock` inside Docker, never `requirements.txt` or `pip install`.
 
 - `/project-new` — scaffold a new project from a template archetype
 - `/graduate` — deploy a prototype to Fly.io or GCP Cloud Run
-- `/learn` — end-of-session review; propose improvements to CLAUDE.md, templates, skills
-- `/explain` — explain a file, diff, or concept with trade-offs and next steps
+- `/learn` — end-of-session review; propose improvements
+- `/explain` — explain a file, diff, or concept with trade-offs

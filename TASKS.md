@@ -40,20 +40,23 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [x] [T102] Remove Discord write pre-approval; keep Gmail draft — `done` → [tasks/T102.md](tasks/T102.md)
 - [x] [T103] Slim `/ship` skill to minimum viable — `done` → [tasks/T103.md](tasks/T103.md)
 - [x] [T104] Collapse `/project-resume` into inline SessionStart hook — `done` → [tasks/T104.md](tasks/T104.md)
-- [ ] [T105] Slim `/project-new`: drop Blocks, drop empty `.claude/` dirs, keep per-task files — `pending` → [tasks/T105.md](tasks/T105.md)
-- [ ] [T106] Slim `/learn` skill (remove Monzo bits, drop memory step) — `pending` → [tasks/T106.md](tasks/T106.md)
+- [x] [T105] Slim `/project-new`: drop Blocks, drop empty `.claude/` dirs, keep per-task files — `done` → [tasks/T105.md](tasks/T105.md)
+- [x] [T106] Slim `/learn` skill (remove Monzo bits, drop memory step) — `done` → [tasks/T106.md](tasks/T106.md)
 - [ ] [T107] Audit skill usage from transcripts; delete unused — `pending` → [tasks/T107.md](tasks/T107.md)
 - [ ] [T108] Disable global cloud MCP servers; enable per-project (Gmail draft excepted) — `pending` [blockedBy:T107] → [tasks/T108.md](tasks/T108.md)
 - [ ] [T109] Templates: add `tests/` to `data` and `agent` archetypes — `pending` → [tasks/T109.md](tasks/T109.md)
 - [ ] [T110] Periodic transcript cull (cleanupPeriodDays + cleanup script) — `pending` → [tasks/T110.md](tasks/T110.md)
 - [x] [T111] Tidy small bugs: project-new description, ADR hook MultiEdit, rm -rf deny — `done` → [tasks/T111.md](tasks/T111.md)
-- [ ] [T112] Slim global `CLAUDE.md` (target ≤80 lines) — `pending` → [tasks/T112.md](tasks/T112.md)
+- [x] [T112] Slim global `CLAUDE.md` (target ≤80 lines) — `done` → [tasks/T112.md](tasks/T112.md)
 - [x] [T113] Switch preferred notif channel to `terminal_bell` for Zed alerts — `done` → [tasks/T113.md](tasks/T113.md)
 
 ## Changelog
 
 ### 2026-05-22 (session 24)
 - T113 done: flipped `preferredNotifChannel` in `config/claude/settings.json` from `ghostty` to `terminal_bell` so agent notifications surface through Zed's integrated terminal.
+- T105 done: tightened `/project-new` description; dropped empty `.claude/{agents,skills,rules}` from scaffold `mkdir` and Phase 4 summary; replaced daily-`/project-resume` line in template with SessionStart-is-default phrasing; dropped `**Blocks:** —` from per-task template.
+- T106 done: rewrote `/learn` to 52 lines (from 86). Removed Monzo Comms check block, dropped Step 5 (Save memories — auto-memory handles it), tightened Step 2 analysis prompts.
+- T112 done: slimmed global `CLAUDE.md` from 146 to 84 lines. Cut CLI tools table, Shell aliases, Monzo directory shortcuts, inline Dockerfile uv snippet. Medium-trim Tone and Project Docs sections; folded Git/GitHub into Environment. Added **Tool Discovery** section instructing the agent to Read `~/.zshrc` and `~/.zprofile` before grepping or assuming an install is needed — addresses the recurring "naive grep" failure mode.
 
 ### 2026-05-21 (session 23)
 - T103 done: rewrote `config/claude/skills/ship/SKILL.md` to 18 body lines; removed duplicate `Step 3` header; dropped the "Check scope" preamble; kept spartan one-line rules and confirmation gate.
