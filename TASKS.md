@@ -48,8 +48,12 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [ ] [T110] Periodic transcript cull (cleanupPeriodDays + cleanup script) — `pending` → [tasks/T110.md](tasks/T110.md)
 - [x] [T111] Tidy small bugs: project-new description, ADR hook MultiEdit, rm -rf deny — `done` → [tasks/T111.md](tasks/T111.md)
 - [ ] [T112] Slim global `CLAUDE.md` (target ≤80 lines) — `pending` → [tasks/T112.md](tasks/T112.md)
+- [x] [T113] Switch preferred notif channel to `terminal_bell` for Zed alerts — `done` → [tasks/T113.md](tasks/T113.md)
 
 ## Changelog
+
+### 2026-05-22 (session 24)
+- T113 done: flipped `preferredNotifChannel` in `config/claude/settings.json` from `ghostty` to `terminal_bell` so agent notifications surface through Zed's integrated terminal.
 
 ### 2026-05-21 (session 23)
 - T103 done: rewrote `config/claude/skills/ship/SKILL.md` to 18 body lines; removed duplicate `Step 3` header; dropped the "Check scope" preamble; kept spartan one-line rules and confirmation gate.
