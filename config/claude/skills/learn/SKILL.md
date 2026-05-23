@@ -33,7 +33,6 @@ For each finding, propose one concrete action targeting:
 | Target | When to update |
 |--------|---------------|
 | `~/CLAUDE.md` | Global rule or guardrail for all projects |
-| `~/dotfiles/templates/<archetype>/` | Improvement for this stack |
 | A skill prompt | Better instructions for a slash command |
 
 Format:

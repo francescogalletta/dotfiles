@@ -18,10 +18,6 @@ brew "zsh-syntax-highlighting"
 # Docker
 cask "docker-desktop"
 
-# Deployment
-brew "flyctl"
-cask "gcloud-cli"
-
 # Fonts
 cask "font-jetbrains-mono-nerd-font"
 

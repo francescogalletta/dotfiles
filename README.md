@@ -111,12 +111,6 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
 ├── zshrc                       # Zsh config → ~/.zshrc
 ├── zprofile                    # Zsh profile → ~/.zprofile
 ├── gitconfig                   # Git config → ~/.gitconfig
-├── templates/                  # Project starter templates (copied by /project-new)
-│   ├── data/                   #   Python + Jupyter + Streamlit (+ optional Postgres)
-│   ├── web/                    #   FastAPI backend + Next.js frontend
-│   ├── api/                    #   FastAPI standalone REST API
-│   ├── cli/                    #   Python + Typer CLI tool
-│   └── agent/                  #   Python + Anthropic SDK
 └── config/                     # Configs for each tooling
     ├── claude/
     │   ├── settings.json       # Claude Code settings → ~/.claude/settings.json

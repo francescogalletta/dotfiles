@@ -21,7 +21,7 @@ Every coding project except this dotfiles repo lives in a Docker container.
 - `make dev`, `make test`, `make shell` all execute inside the container
 - Never run `python`, `node`, `npm`, `pip`, `uv` on the host for project work
 
-If a project lacks a `Dockerfile` or `compose.yml`, stop and scaffold one (via `/project-new` or the templates in `~/dotfiles/templates/`) before running code.
+If a project lacks a `Dockerfile` or `compose.yml`, stop and scaffold one before running code.
 
 # Agentic Safety — Non-Negotiable
 
@@ -76,8 +76,8 @@ Never ask the user to run tests, copy-paste errors, or diagnose failures.
 
 # Prototyping
 
-New projects live at `~/projects/<name>/` (each its own git repo). Templates at `~/dotfiles/templates/<archetype>/`. Standard Makefile targets: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`. Python deps via `pyproject.toml` + `uv.lock` inside Docker, never `requirements.txt` or `pip install`.
+New projects live at `~/projects/<name>/` (each its own git repo). `/project-new` scaffolds the docs + `.claude/` skeleton; container infra (Dockerfile, compose, Makefile) gets built agentically when you actually need it. Python deps via `pyproject.toml` + `uv.lock` inside Docker, never `requirements.txt` or `pip install`.
 
-- `/project-new` — scaffold a new project from a template archetype
+- `/project-new` — scaffold a new project's docs + `.claude/`
 - `/learn` — end-of-session review; propose improvements
 - `/ship` — stage, propose commit message, push

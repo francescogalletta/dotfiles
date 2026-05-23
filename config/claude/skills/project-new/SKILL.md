@@ -1,6 +1,6 @@
 ---
 name: project-new
-description: User-invoked scaffolder. Runs a discovery conversation, drafts PRD and TASKS for review, then scaffolds `~/projects/<name>/` with git, ADR, per-task files in `tasks/`, and the chosen template archetype.
+description: User-invoked scaffolder. Runs a discovery conversation, drafts PRD and TASKS for review, then scaffolds `~/projects/<name>/` with git, ADR, per-task files in `tasks/`, and a project-local `.claude/`. Container infra (Dockerfile, compose, Makefile) is built agentically afterwards when needed.
 user-invocable: true
 disable-model-invocation: true
 ---
@@ -12,21 +12,6 @@ disable-model-invocation: true
 ## Phase 1 — Explore
 
 Ask for the project name if not provided (no description arg — let the user explain freely).
-
-Then ask what archetype fits best — show this menu:
-
-```
-Which archetype fits best?
-
-  data    — Python + Jupyter + Streamlit (+ optional Postgres)
-  web     — FastAPI backend + Next.js frontend
-  api     — FastAPI standalone REST API
-  cli     — Python + Typer CLI tool
-  agent   — Python + Anthropic SDK (AI/agentic workflows)
-  none    — skip template, scaffold docs only
-```
-
-Wait for the user to pick one.
 
 Then have an open-ended discovery conversation. Ask one or a few questions at a time and wait for answers. Cover:
 
@@ -113,20 +98,18 @@ Default location: `~/projects/<name>`. If the user has mentioned a different loc
 Create all files in order:
 
 1. `mkdir -p ~/projects/<name>/tasks`
-2. **If archetype is not `none`**: copy template files from `~/dotfiles/templates/<archetype>/` into `~/projects/<name>/`. Use `cp -r ~/dotfiles/templates/<archetype>/. ~/projects/<name>/` — this copies all files including hidden ones.
-3. **If a `pyproject.toml` exists** (all Python archetypes): generate `uv.lock` by running `docker run --rm -v "$(pwd)":/app -w /app ghcr.io/astral-sh/uv:python3.12-slim uv lock` from the project directory. This keeps uv off the host — the lockfile is generated inside a disposable container.
-4. `cd ~/projects/<name> && git init`
-5. Write `CLAUDE.md` (see template)
-6. Write `PRD.md` — use the approved draft
-7. Write `TASKS.md` — use the approved draft
-8. Write one `tasks/T###.md` per task (see template)
-9. Write `ADR.md` (see template)
-10. Write `CLAUDE.local.md` (see template)
-11. If no `.gitignore` exists yet (i.e. archetype was `none`), write the default `.gitignore`
-12. Seed `.claude/`: write `.claude/settings.json`, `.claude/README.md`, `.claude/hooks/.gitkeep` (see templates)
-13. `git add -A && git commit -m "Initial project scaffold"`
+2. `cd ~/projects/<name> && git init`
+3. Write `CLAUDE.md` (see template)
+4. Write `PRD.md` — use the approved draft
+5. Write `TASKS.md` — use the approved draft
+6. Write one `tasks/T###.md` per task (see template)
+7. Write `ADR.md` (see template)
+8. Write `CLAUDE.local.md` (see template)
+9. Write `.gitignore` (see template)
+10. Seed `.claude/`: write `.claude/settings.json`, `.claude/README.md`, `.claude/hooks/.gitkeep` (see templates)
+11. `git add -A && git commit -m "Initial project scaffold"`
 
-After scaffolding, ask: "Want me to run `make dev` to verify it starts?" If yes, run `cd ~/projects/<name> && make dev` and confirm it comes up.
+Container infra (Dockerfile, docker-compose.yml, Makefile, app code) is intentionally *not* scaffolded here. After Phase 4, the user describes what they want to build; the agent scaffolds the stack agentically based on real requirements rather than archetype guesswork.
 
 ### Template: `CLAUDE.md` (≤60 lines)
 
@@ -139,9 +122,6 @@ After scaffolding, ask: "Want me to run `make dev` to verify it starts?" If yes,
 @PRD.md
 @TASKS.md
 
-## Stack
-<archetype> template — see README.md for how to run.
-
 ## Session Rules
 - Follow global ~/CLAUDE.md as baseline
 - Read PRD.md for intent; read TASKS.md for current state
@@ -150,7 +130,6 @@ After scaffolding, ask: "Want me to run `make dev` to verify it starts?" If yes,
 - Claim tasks in TASKS.md (set status + @owner) before starting
 - Mark done + update changelog when completing
 - Use `/ship` when committing and pushing work
-- Standard Makefile targets: `make dev`, `make test`, `make shell`, `make logs`, `make stop`
 ```
 
 ### Template: `tasks/T###.md`
@@ -210,7 +189,7 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 Personal notes and overrides not committed to the repo.
 ```
 
-### Template: `.gitignore` (used only when archetype is `none`)
+### Template: `.gitignore`
 
 ```
 node_modules/
@@ -286,8 +265,6 @@ After scaffolding, print:
 ```
 Project created at ~/projects/<name>/
 
-Archetype: <archetype>
-
 Files:
   CLAUDE.md                    — agent context (@imports PRD + TASKS)
   PRD.md                       — problem, requirements, tech stack
@@ -295,13 +272,13 @@ Files:
   tasks/T001.md … T###.md      — per-task detail files
   ADR.md                       — architecture decision log (newest first)
   CLAUDE.local.md              — personal overrides (gitignored)
+  .gitignore                   — default ignores
   .claude/settings.json        — project-local Claude Code settings (extend as needed)
   .claude/README.md            — convention doc for .claude/
   .claude/hooks/               — project-local hook scripts (empty by default)
-  <template files>             — docker-compose.yml, Makefile, README.md, etc.
 
 Next:
   cd ~/projects/<name>
-  make dev                     — start services
+  Describe what you want to build — the agent will scaffold the stack
   /project-resume              — full briefing on demand (default is SessionStart hook)
 ```

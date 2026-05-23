@@ -43,17 +43,17 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [x] [T105] Slim `/project-new`: drop Blocks, drop empty `.claude/` dirs, keep per-task files — `done` → [tasks/T105.md](tasks/T105.md)
 - [x] [T106] Slim `/learn` skill (remove Monzo bits, drop memory step) — `done` → [tasks/T106.md](tasks/T106.md)
 - [x] [T107] Audit skill usage from transcripts; delete unused — `done` → [tasks/T107.md](tasks/T107.md)
-- [ ] [T108] Disable global cloud MCP servers; enable per-project (Gmail draft excepted) — `pending` → [tasks/T108.md](tasks/T108.md)
-- [x] [T109] Templates: add `tests/` to `data` and `agent` archetypes — `done` → [tasks/T109.md](tasks/T109.md)
-- [ ] [T110] Periodic transcript cull (cleanupPeriodDays + cleanup script) — `pending` → [tasks/T110.md](tasks/T110.md)
+- [x] [T109] Templates: add `tests/` to `data` and `agent` archetypes — `done` → [tasks/T109.md](tasks/T109.md) *(work now moot — archetypes retired in T115)*
 - [x] [T111] Tidy small bugs: project-new description, ADR hook MultiEdit, rm -rf deny — `done` → [tasks/T111.md](tasks/T111.md)
 - [x] [T112] Slim global `CLAUDE.md` (target ≤80 lines) — `done` → [tasks/T112.md](tasks/T112.md)
 - [x] [T113] Switch preferred notif channel to `terminal_bell` for Zed alerts — `done` → [tasks/T113.md](tasks/T113.md)
 - [x] [T114] `/project-new`: seed `.claude/` (settings.json stub + README + hooks dir) — `done` → [tasks/T114.md](tasks/T114.md)
+- [x] [T115] Retire `templates/` archetypes entirely; `/project-new` becomes docs-only scaffolder — `done` → [tasks/T115.md](tasks/T115.md)
 
 ## Changelog
 
 ### 2026-05-23 (session 25)
+- T115 done: deleted all five `templates/` archetypes (`data`, `web`, `api`, `cli`, `agent`); `/project-new` rewritten as docs-only scaffolder (drops archetype menu, template copy, uv-lock step; always writes default `.gitignore`); container infra now built agentically per-project based on real requirements rather than archetype guesswork. Dropped `flyctl` and `gcloud-cli` from Brewfile (added for `/graduate`, already retired in T107). Updated `CLAUDE.md`, `PRD.md`, `README.md`, `config/claude/skills/learn/SKILL.md` to drop templates references. T108 (per-project MCP) and T110 (transcript cull) dropped: task files deleted, lines removed from index. ADR-029 prepended.
 - T114 done: `/project-new` Phase 3 now seeds `.claude/settings.json` (empty stub), `.claude/README.md` (convention doc), `.claude/hooks/.gitkeep` (placeholder dir). Phase 4 summary updated. User confirmed scope: hooks meant Claude Code hooks (not git hooks); settings.json kept as minimal valid stub.
 - T107 done: audited `~/.claude/projects/**/*.jsonl` for slash-command invocations (both `<command-name>` user-typed and `Skill` tool model-triggered). Results: `/ship` 25/30d, `/project-resume` 21/30d, `/learn` 2/30d, `/project-new` 0/30d (kept — scaffold tool, slow cadence), `/explain` 0 all-time, `/graduate` 0 all-time, `/slides` 0 all-time. Retired `/explain`, `/graduate`, `/slides`. Cleaned references in `CLAUDE.md`, `PRD.md`, `README.md`, `config/claude/skills/project-new/SKILL.md`, `templates/api/deploy/fly/fly.toml`. Unblocks T108.
 - T109 done: added `tests/__init__.py` + `tests/test_smoke.py` to `templates/data/` and `templates/agent/`. Both archetypes' Makefile `test` targets already run `pytest` with auto-discovery, so the smoke test is picked up cleanly.

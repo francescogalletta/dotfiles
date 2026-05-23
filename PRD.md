@@ -77,10 +77,6 @@ Managed projects (scaffolded with `/project-new`) use these files:
 
 This dotfiles repo dogfoods the same convention starting with Phase 5 (T101 onward). Earlier phases remain in the legacy flat checklist format.
 
-## Templates
-
-Five archetypes in `templates/`: `data`, `web`, `api`, `cli`, `agent`. Each ships Docker Compose, Makefile, Dockerfile, starter code. Standard targets: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`.
-
 ## Skills & Hooks
 
 Claude Code skills in `config/claude/skills/`: `/project-new`, `/project-resume`, `/ship`, `/learn`. (`/explain`, `/graduate`, `/slides` retired in T107 — see ADR-027.)
