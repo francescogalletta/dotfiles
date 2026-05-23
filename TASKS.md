@@ -49,10 +49,12 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [x] [T111] Tidy small bugs: project-new description, ADR hook MultiEdit, rm -rf deny — `done` → [tasks/T111.md](tasks/T111.md)
 - [x] [T112] Slim global `CLAUDE.md` (target ≤80 lines) — `done` → [tasks/T112.md](tasks/T112.md)
 - [x] [T113] Switch preferred notif channel to `terminal_bell` for Zed alerts — `done` → [tasks/T113.md](tasks/T113.md)
+- [x] [T114] `/project-new`: seed `.claude/` (settings.json stub + README + hooks dir) — `done` → [tasks/T114.md](tasks/T114.md)
 
 ## Changelog
 
 ### 2026-05-23 (session 25)
+- T114 done: `/project-new` Phase 3 now seeds `.claude/settings.json` (empty stub), `.claude/README.md` (convention doc), `.claude/hooks/.gitkeep` (placeholder dir). Phase 4 summary updated. User confirmed scope: hooks meant Claude Code hooks (not git hooks); settings.json kept as minimal valid stub.
 - T107 done: audited `~/.claude/projects/**/*.jsonl` for slash-command invocations (both `<command-name>` user-typed and `Skill` tool model-triggered). Results: `/ship` 25/30d, `/project-resume` 21/30d, `/learn` 2/30d, `/project-new` 0/30d (kept — scaffold tool, slow cadence), `/explain` 0 all-time, `/graduate` 0 all-time, `/slides` 0 all-time. Retired `/explain`, `/graduate`, `/slides`. Cleaned references in `CLAUDE.md`, `PRD.md`, `README.md`, `config/claude/skills/project-new/SKILL.md`, `templates/api/deploy/fly/fly.toml`. Unblocks T108.
 - T109 done: added `tests/__init__.py` + `tests/test_smoke.py` to `templates/data/` and `templates/agent/`. Both archetypes' Makefile `test` targets already run `pytest` with auto-discovery, so the smoke test is picked up cleanly.
 - Gitignore: added `**/.claude/session-current.md` to `config/git/ignore` (was previously missed — session-current is the project-resume handoff convention and should be local-only).

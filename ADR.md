@@ -4,6 +4,12 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-028: `/project-new` seeds project-local `.claude/` convention
+**Date:** 2026-05-23
+**Decision:** Added a Phase 3 step to `/project-new` that scaffolds `.claude/settings.json` (minimal valid stub: empty `permissions.allow` / `permissions.deny` / `hooks`), `.claude/README.md` (one-screen convention doc covering the four file slots: settings.json, hooks/, session-current.md, settings.local.json), and `.claude/hooks/.gitkeep` (so the dir is tracked even when empty). All templates inline in SKILL.md.
+**Reason:** Every new project was inheriting the global Claude Code config wholesale. Tuning permissions or adding a hook required creating the dir + files by hand each time. Seeding empty-but-valid stubs costs nothing at scaffold time and removes that friction. Convention is now: project-local settings *merge* with global, so empty arrays mean "no overrides yet — extend as needed." Unblocks T108 (per-project MCP enablement) which can now drop a `mcpServers` block into the same `.claude/settings.json`.
+**Extends:** ADR-027
+
 ## ADR-027: Retire `/explain`, `/graduate`, `/slides` skills based on transcript audit
 **Date:** 2026-05-23
 **Decision:** Audited `~/.claude/projects/**/*.jsonl` for both user-typed (`<command-name>`) and model-triggered (`Skill` tool) invocations of the seven custom-authored skills. `/explain`, `/graduate`, `/slides` had **zero** invocations all-time; deleted their directories from `config/claude/skills/`. `/project-new` kept despite 0/30d (scaffold tool, slow cadence by design). Cleaned downstream references in `CLAUDE.md`, `PRD.md`, `README.md`, `config/claude/skills/project-new/SKILL.md`, `templates/api/deploy/fly/fly.toml`. Historical entries in `ADR.md`, `TASKS.md` Phase 4 changelog, and `tasks/T106.md` are append-only and left intact. T108 (per-project MCP) is no longer blocked.

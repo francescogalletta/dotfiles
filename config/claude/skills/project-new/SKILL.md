@@ -123,7 +123,8 @@ Create all files in order:
 9. Write `ADR.md` (see template)
 10. Write `CLAUDE.local.md` (see template)
 11. If no `.gitignore` exists yet (i.e. archetype was `none`), write the default `.gitignore`
-12. `git add -A && git commit -m "Initial project scaffold"`
+12. Seed `.claude/`: write `.claude/settings.json`, `.claude/README.md`, `.claude/hooks/.gitkeep` (see templates)
+13. `git add -A && git commit -m "Initial project scaffold"`
 
 After scaffolding, ask: "Want me to run `make dev` to verify it starts?" If yes, run `cd ~/projects/<name> && make dev` and confirm it comes up.
 
@@ -228,6 +229,56 @@ CLAUDE.local.md
 .platform
 ```
 
+### Template: `.claude/settings.json`
+
+Minimal valid stub. Project-local settings merge with `~/.claude/settings.json`; empty arrays here mean "no project-specific additions yet — extend as needed."
+
+```json
+{
+  "permissions": {
+    "allow": [],
+    "deny": []
+  },
+  "hooks": {}
+}
+```
+
+### Template: `.claude/README.md`
+
+```markdown
+# Project-local Claude Code config
+
+Files here merge with or override `~/.claude/`.
+
+- `settings.json` — project-scoped permissions and hooks. Merged with global.
+- `hooks/` — project-local hook scripts referenced from `settings.json`.
+- `session-current.md` — gitignored. Project-resume handoff between sessions.
+- `settings.local.json` — gitignored. Personal overrides not shared with the team.
+
+## Adding a hook
+
+Drop a script in `hooks/`, then reference it in `settings.json`:
+
+\```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": "bash .claude/hooks/lint.sh" }
+        ]
+      }
+    ]
+  }
+}
+\```
+```
+
+### Template: `.claude/hooks/.gitkeep`
+
+Empty file so the directory is tracked.
+
 ## Phase 4 — Summary
 
 After scaffolding, print:
@@ -244,6 +295,9 @@ Files:
   tasks/T001.md … T###.md      — per-task detail files
   ADR.md                       — architecture decision log (newest first)
   CLAUDE.local.md              — personal overrides (gitignored)
+  .claude/settings.json        — project-local Claude Code settings (extend as needed)
+  .claude/README.md            — convention doc for .claude/
+  .claude/hooks/               — project-local hook scripts (empty by default)
   <template files>             — docker-compose.yml, Makefile, README.md, etc.
 
 Next:

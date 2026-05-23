@@ -86,3 +86,5 @@ Five archetypes in `templates/`: `data`, `web`, `api`, `cli`, `agent`. Each ship
 Claude Code skills in `config/claude/skills/`: `/project-new`, `/project-resume`, `/ship`, `/learn`. (`/explain`, `/graduate`, `/slides` retired in T107 — see ADR-027.)
 
 `config/claude/hooks/session-start.sh` runs as the `SessionStart` hook for every Claude Code session. In a managed project (TASKS.md present) it prints a one-paragraph briefing: project name, branch and sync state, last 3 commits, next 3 pending `[T###]` tasks. The `/project-resume` skill remains available for the full briefing (ADR, open questions, session note) on demand.
+
+New projects scaffolded via `/project-new` get a project-local `.claude/` seeded with: `settings.json` (empty stub — merges with global), `README.md` (convention doc), and `hooks/.gitkeep` (placeholder dir). See ADR-028.
