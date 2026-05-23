@@ -14,3 +14,4 @@
 
 # Claude Code
 **/.claude/settings.local.json
+**/.claude/session-current.md

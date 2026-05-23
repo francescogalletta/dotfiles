@@ -4,6 +4,12 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-027: Retire `/explain`, `/graduate`, `/slides` skills based on transcript audit
+**Date:** 2026-05-23
+**Decision:** Audited `~/.claude/projects/**/*.jsonl` for both user-typed (`<command-name>`) and model-triggered (`Skill` tool) invocations of the seven custom-authored skills. `/explain`, `/graduate`, `/slides` had **zero** invocations all-time; deleted their directories from `config/claude/skills/`. `/project-new` kept despite 0/30d (scaffold tool, slow cadence by design). Cleaned downstream references in `CLAUDE.md`, `PRD.md`, `README.md`, `config/claude/skills/project-new/SKILL.md`, `templates/api/deploy/fly/fly.toml`. Historical entries in `ADR.md`, `TASKS.md` Phase 4 changelog, and `tasks/T106.md` are append-only and left intact. T108 (per-project MCP) is no longer blocked.
+**Reason:** T107 grounded the keep/cut decisions in evidence rather than guesswork. Dead skill descriptions in the agent prompt cost context and create confusion (the model occasionally suggested `/graduate` in flows that didn't need it). Audit method is now reproducible: `find ~/.claude/projects -name "*.jsonl" -exec grep -hoE '<command-name>/[a-z-]+' {} \;` for user-typed; `grep -hoE '"name":"Skill"[^}]*"skill":"[a-z-]+'` for model-triggered.
+**Extends:** ADR-026
+
 ## ADR-026: Phase 5 — Agent config sanity pass + per-task file convention for dotfiles
 **Date:** 2026-05-21
 **Decision:** Open a sanity-pass phase (T101 through T111) on the global Claude config and skills. Eleven discrete tasks tracked in `tasks/T###.md` files (new convention for the dotfiles project, mirroring `/project-new` template). `TASKS.md` becomes a scannable index (one line per task with status + link); `tasks/T###.md` carries the full goal / acceptance criteria / context / decisions log. Per-task frontmatter drops `Blocks:` (keep only `BlockedBy:`) since the relationship is redundant.

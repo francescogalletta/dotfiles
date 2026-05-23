@@ -127,10 +127,7 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │       ├── project-new/    #   /project-new — scaffold a new project from a template
     │       ├── project-resume/ #   /project-resume — full briefing on demand
     │       ├── ship/           #   /ship — commit and push
-    │       ├── graduate/       #   /graduate — deploy a prototype to Fly.io or GCP
-    │       ├── learn/          #   /learn — end-of-session review and improvement loop
-    │       ├── explain/        #   /explain — explain a file, diff, or concept
-    │       └── slides/         #   /slides — generate PPTX presentations
+    │       └── learn/          #   /learn — end-of-session review and improvement loop
     ├── codex/
     │   └── config.toml         # Codex config → ~/.codex/config.toml (Ollama provider + gemma4 default)
     ├── zed/
@@ -210,7 +207,7 @@ All Claude Code config lives in this repo and is symlinked to its expected locat
 | `config/claude/settings.json` | `~/.claude/settings.json` | Permissions, statusline command |
 | `config/claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (directory, git branch, git status) |
 | `config/claude/hooks/` | `~/.claude/hooks/` | Hook scripts (SessionStart briefing for managed projects) |
-| `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`, `/ship`, `/graduate`, `/learn`, `/explain`) |
+| `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`, `/ship`, `/learn`) |
 
 Edits flow both ways -- change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
 

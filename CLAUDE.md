@@ -79,6 +79,5 @@ Never ask the user to run tests, copy-paste errors, or diagnose failures.
 New projects live at `~/projects/<name>/` (each its own git repo). Templates at `~/dotfiles/templates/<archetype>/`. Standard Makefile targets: `make dev`, `make build`, `make test`, `make shell`, `make logs`, `make stop`. Python deps via `pyproject.toml` + `uv.lock` inside Docker, never `requirements.txt` or `pip install`.
 
 - `/project-new` — scaffold a new project from a template archetype
-- `/graduate` — deploy a prototype to Fly.io or GCP Cloud Run
 - `/learn` — end-of-session review; propose improvements
-- `/explain` — explain a file, diff, or concept with trade-offs
+- `/ship` — stage, propose commit message, push

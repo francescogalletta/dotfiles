@@ -250,5 +250,4 @@ Next:
   cd ~/projects/<name>
   make dev                     — start services
   /project-resume              — full briefing on demand (default is SessionStart hook)
-  /graduate                    — when ready to deploy
 ```
