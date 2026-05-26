@@ -195,3 +195,8 @@ add-zsh-hook precmd _bell_precmd
 # Starship prompt (must be last — overrides $PROMPT set by OMZ)
 # ---------------------
 eval "$(starship init zsh)"
+
+# ---------------------
+# Machine-local overrides (not tracked in dotfiles)
+# ---------------------
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
