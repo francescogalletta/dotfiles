@@ -65,11 +65,11 @@
     "frontend-design@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
-  "advisorModel": "opus",
   "theme": "auto",
   "preferredNotifChannel": "terminal_bell",
+  "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "notifications": true,
-  "skipAutoPermissionPrompt": true
+  "notifications": true
 }
