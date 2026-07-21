@@ -25,12 +25,12 @@
     "dock": "left",
   },
   "theme": {
-    "mode": "system",
+    "mode": "dark",
     "dark": "Catppuccin Frappé",
     "light": "Catppuccin Latte",
   },
   "icon_theme": {
-    "mode": "system",
+    "mode": "dark",
     "light": "Catppuccin Latte",
     "dark": "Catppuccin Frappé",
   },

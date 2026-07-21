@@ -2,7 +2,7 @@ font-family = JetBrainsMono NFM
 font-size = 14
 
 theme = Catppuccin Mocha
-background-opacity = 0.80
+background-opacity = 0.90
 background-blur = true
 
 window-padding-x = 12
