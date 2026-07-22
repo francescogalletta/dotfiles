@@ -76,6 +76,8 @@ When discussing architecture or stack choices, present 2–3 concrete options as
 
 Never ask the user to run tests, copy-paste errors, or diagnose failures.
 
+**Evidence must be loud.** Never pipe a gate command (tests, lint, build) into `tail`/`grep`/anything — the pipe replaces its exit code; redirect output to a file, check `$?`, then inspect the file. Never rely on implicitly shared runtime state between concurrent sessions (compose project names, published ports, tagged images) — check for a live stack before booting one.
+
 # Prototyping
 
 New projects live at `~/projects/<name>/` (each its own git repo). `/project-new` scaffolds the docs + `.claude/` skeleton; container infra (Dockerfile, compose, Makefile) gets built agentically when you actually need it. Python deps via `pyproject.toml` + `uv.lock` inside Docker, never `requirements.txt` or `pip install`.

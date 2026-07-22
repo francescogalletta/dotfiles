@@ -30,6 +30,7 @@
       "Bash(rm -rf $HOME*)"
     ]
   },
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -67,6 +68,8 @@
     "notion@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
   "theme": "auto",
   "preferredNotifChannel": "terminal_bell",
   "inputNeededNotifEnabled": true,
