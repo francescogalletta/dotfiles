@@ -38,6 +38,3 @@ if [ -n "$next" ]; then
   echo "Next tasks:"
   printf '%s\n' "$next" | sed -E 's/^- \[ \] /  /; s/ — `[^`]*`.*$//'
 fi
-
-echo
-echo "Run /project-resume for the full briefing (ADR, open questions, session note)."

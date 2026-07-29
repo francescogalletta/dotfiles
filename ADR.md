@@ -4,6 +4,14 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-030: Retire `/project-new` and `/project-resume`; prune unused Claude Code plugins
+**Date:** 2026-07-29
+**Decision:** Deleted `config/claude/skills/project-new/` and `config/claude/skills/project-resume/`, leaving `/ship` and `/learn` as the only custom skills. Dropped the `/project-resume` pointer from `config/claude/hooks/session-start.sh` and the `/project-new` reference plus the redundant slash-command bullet list from `CLAUDE.md`. Removed the now-moot `skillOverrides.project-resume: "off"` entry from `config/claude/settings.json`. Uninstalled four unused Claude Code plugins (`skill-creator`, `frontend-design`, `notion`, `discord`), leaving `linear` as the only installed plugin. Synced `PRD.md` and `README.md`; `ADR.md`, `TASKS.md` changelog, and `tasks/T###.md` are append-only and left intact.
+**Reason:** A `/doctor` audit over 50 sessions across 15 projects (2026-07-14 → 2026-07-29) found `/project-new` last invoked 2026-03-24 and `/project-resume` last invoked 2026-05-23 — the latter already disabled via `skillOverrides` since, with the SessionStart hook covering orientation in practice (the outcome T104 anticipated). The four plugins had zero lifetime invocations; three were already disabled in settings and `discord` had not been enabled since March. Removing them shrinks the always-resident skill listing and cuts four connections that had to be kept authenticated and updated. Scaffolding a new project is now fully agentic, consistent with the direction ADR-029 set when it stripped `/project-new` down to docs-only.
+**Extends:** ADR-029, ADR-027, ADR-024 (which introduced `/project-resume`), ADR-016
+
+---
+
 ## ADR-029: Retire `templates/` archetypes; `/project-new` becomes docs-only scaffolder
 **Date:** 2026-05-23
 **Decision:** Deleted all five archetype directories (`templates/data`, `templates/web`, `templates/api`, `templates/cli`, `templates/agent`) and the `templates/` parent. Rewrote `/project-new` to skip archetype selection, template copy, and uv-lock generation; the skill now scaffolds only docs (`CLAUDE.md`, `PRD.md`, `TASKS.md`, `tasks/T###.md`, `ADR.md`, `CLAUDE.local.md`, `.gitignore`) and project-local `.claude/` (per ADR-028). Container infra (Dockerfile, docker-compose, Makefile, app code) is built agentically *after* scaffolding, based on what the user actually wants. Dropped `flyctl` and `gcloud-cli` from `Brewfile` (added for the now-retired `/graduate` skill). Dropped two pending tasks: T108 (per-project MCP enablement) and T110 (transcript cull); both task files deleted, both lines removed from TASKS.md index. T109 (added `tests/` to data + agent archetypes, shipped same day in T107 bundle) is now moot; left in index with a note rather than removed since the work landed in git history.

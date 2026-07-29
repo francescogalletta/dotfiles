@@ -28,9 +28,10 @@
       "Bash(rm -rf /*)",
       "Bash(rm -rf ~*)",
       "Bash(rm -rf $HOME*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
-  "model": "claude-fable-5[1m]",
+  "model": "opus[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -62,10 +63,7 @@
     "command": "/bin/bash $HOME/.claude/statusline.sh"
   },
   "enabledPlugins": {
-    "skill-creator@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "linear@claude-plugins-official": true,
-    "notion@claude-plugins-official": true
+    "linear@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {},
   "tui": "fullscreen",

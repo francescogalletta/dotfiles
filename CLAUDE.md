@@ -80,8 +80,4 @@ Never ask the user to run tests, copy-paste errors, or diagnose failures.
 
 # Prototyping
 
-New projects live at `~/projects/<name>/` (each its own git repo). `/project-new` scaffolds the docs + `.claude/` skeleton; container infra (Dockerfile, compose, Makefile) gets built agentically when you actually need it. Python deps via `pyproject.toml` + `uv.lock` inside Docker, never `requirements.txt` or `pip install`.
-
-- `/project-new` — scaffold a new project's docs + `.claude/`
-- `/learn` — end-of-session review; propose improvements
-- `/ship` — stage, propose commit message, push
+New projects live at `~/projects/<name>/` (each its own git repo), scaffolded with the docs + `.claude/` skeleton; container infra (Dockerfile, compose, Makefile) gets built agentically when you actually need it. Python deps via `pyproject.toml` + `uv.lock` inside Docker, never `requirements.txt` or `pip install`.

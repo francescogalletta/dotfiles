@@ -52,6 +52,9 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 
 ## Changelog
 
+### 2026-07-29
+- `/doctor` audit (50 sessions, 15 projects, 2026-07-14 → 2026-07-29): retired `/project-new` (last used 2026-03-24) and `/project-resume` (last used 2026-05-23, already disabled via `skillOverrides`); `/ship` and `/learn` remain. Dropped the `/project-resume` pointer from `session-start.sh`, the `/project-new` reference and redundant slash-command bullets from `CLAUDE.md`, and the stale `skillOverrides` entry from `settings.json`. Uninstalled 4 zero-use plugins (`skill-creator`, `frontend-design`, `notion`, `discord`); `linear` kept (331 uses). Synced `PRD.md` and `README.md`. ADR-030 prepended. Install, hooks, and version all healthy; `permissions.defaultMode` already `auto`.
+
 ### 2026-05-23 (session 25)
 - T115 done: deleted all five `templates/` archetypes (`data`, `web`, `api`, `cli`, `agent`); `/project-new` rewritten as docs-only scaffolder (drops archetype menu, template copy, uv-lock step; always writes default `.gitignore`); container infra now built agentically per-project based on real requirements rather than archetype guesswork. Dropped `flyctl` and `gcloud-cli` from Brewfile (added for `/graduate`, already retired in T107). Updated `CLAUDE.md`, `PRD.md`, `README.md`, `config/claude/skills/learn/SKILL.md` to drop templates references. T108 (per-project MCP) and T110 (transcript cull) dropped: task files deleted, lines removed from index. ADR-029 prepended.
 - T114 done: `/project-new` Phase 3 now seeds `.claude/settings.json` (empty stub), `.claude/README.md` (convention doc), `.claude/hooks/.gitkeep` (placeholder dir). Phase 4 summary updated. User confirmed scope: hooks meant Claude Code hooks (not git hooks); settings.json kept as minimal valid stub.

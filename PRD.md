@@ -69,7 +69,7 @@ Defined in `CLAUDE.md`. Three non-negotiable sections:
 
 ## Project Documentation Convention
 
-Managed projects (scaffolded with `/project-new`) use these files:
+Managed projects use these files:
 - `ADR.md` — reverse-chronological decision log (newest first). Prepend new entries.
 - `PRD.md` — living document reflecting current project state. Must stay in sync with ADR.md.
 - `TASKS.md` — scannable task index (one line per task with ID, status, link to detail file) plus changelog. `TASKS.md` presence signals a managed project to AI agents.
@@ -79,8 +79,8 @@ This dotfiles repo dogfoods the same convention starting with Phase 5 (T101 onwa
 
 ## Skills & Hooks
 
-Claude Code skills in `config/claude/skills/`: `/project-new`, `/project-resume`, `/ship`, `/learn`. (`/explain`, `/graduate`, `/slides` retired in T107 — see ADR-027.)
+Claude Code skills in `config/claude/skills/`: `/ship`, `/learn`. (`/explain`, `/graduate`, `/slides` retired in T107 — see ADR-027. `/project-new`, `/project-resume` retired in ADR-030.)
 
-`config/claude/hooks/session-start.sh` runs as the `SessionStart` hook for every Claude Code session. In a managed project (TASKS.md present) it prints a one-paragraph briefing: project name, branch and sync state, last 3 commits, next 3 pending `[T###]` tasks. The `/project-resume` skill remains available for the full briefing (ADR, open questions, session note) on demand.
+`config/claude/hooks/session-start.sh` runs as the `SessionStart` hook for every Claude Code session. In a managed project (TASKS.md present) it prints a one-paragraph briefing: project name, branch and sync state, last 3 commits, next 3 pending `[T###]` tasks. Deeper orientation (ADR, open questions) is read on demand from the docs themselves.
 
-New projects scaffolded via `/project-new` get a project-local `.claude/` seeded with: `settings.json` (empty stub — merges with global), `README.md` (convention doc), and `hooks/.gitkeep` (placeholder dir). See ADR-028.
+New projects get a project-local `.claude/` seeded with: `settings.json` (empty stub — merges with global), `README.md` (convention doc), and `hooks/.gitkeep` (placeholder dir), scaffolded agentically. See ADR-028.

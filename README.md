@@ -118,8 +118,6 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │   ├── hooks/              # Claude Code hooks → ~/.claude/hooks/
     │   │   └── session-start.sh #  SessionStart briefing for managed projects (TASKS.md)
     │   └── skills/             # Claude Code skills → ~/.claude/skills/
-    │       ├── project-new/    #   /project-new — scaffold a new project from a template
-    │       ├── project-resume/ #   /project-resume — full briefing on demand
     │       ├── ship/           #   /ship — commit and push
     │       └── learn/          #   /learn — end-of-session review and improvement loop
     ├── codex/
@@ -201,7 +199,7 @@ All Claude Code config lives in this repo and is symlinked to its expected locat
 | `config/claude/settings.json` | `~/.claude/settings.json` | Permissions, statusline command |
 | `config/claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (directory, git branch, git status) |
 | `config/claude/hooks/` | `~/.claude/hooks/` | Hook scripts (SessionStart briefing for managed projects) |
-| `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/project-new`, `/project-resume`, `/ship`, `/learn`) |
+| `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/ship`, `/learn`) |
 
 Edits flow both ways -- change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
 
