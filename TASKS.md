@@ -50,7 +50,15 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [x] [T114] `/project-new`: seed `.claude/` (settings.json stub + README + hooks dir) — `done` → [tasks/T114.md](tasks/T114.md)
 - [x] [T115] Retire `templates/` archetypes entirely; `/project-new` becomes docs-only scaffolder — `done` → [tasks/T115.md](tasks/T115.md)
 
+### Phase 6: Windows machine port
+- [ ] [T116] Voyager Windows readiness: layout versioning, Kontroll, WIN layer spec — `in progress` → [tasks/T116.md](tasks/T116.md)
+- [x] [T117] Extract symlink map to OS-neutral `links.map` — `done` (Windows column + ps1 driver pending on the Windows machine) → [tasks/T117.md](tasks/T117.md)
+
 ## Changelog
+
+### 2026-07-31
+- T117 done: symlink definitions extracted from `links.sh` bash arrays into `links.map` (pipe-delimited: source | label | guard | mac dest | win dest); `links.sh` is now the macOS driver parsing the map into the unchanged `LINKS` array — output verified byte-identical, `install.sh`/`sync.sh` untouched. Rejected a bash→PowerShell converter (semantic, not syntactic differences — ADR-032); `windows/install.ps1` will be thin and hand-written, reading the same map. `test.sh` +2 checks (22 total).
+- T116 started: added `config/voyager/` (`pull-layout.sh` Oryx GraphQL snapshot + first `layout.json` commit + README with WIN layer spec), `cask "keymapp"` in Brewfile, Kontroll install step in `install.sh`. Auto-mode classifier blocked agent-side installs (correctly, per host safety); Keymapp install + Kontroll binary placement left as user-run steps. WIN layer: 7 key changes (Cmd thumb → Ctrl, W/Z/X/C/V holds → Ctrl, Esc hold = Win); Hyper + home-row mods port untouched. `install.sh` also prints a post-install notice when keymapp.app is present: enable the Keymapp API + launch at login, verify with `kontroll status`. `test.sh` 20/20 green. ADR-031 prepended.
 
 ### 2026-07-29
 - `/doctor` audit (50 sessions, 15 projects, 2026-07-14 → 2026-07-29): retired `/project-new` (last used 2026-03-24) and `/project-resume` (last used 2026-05-23, already disabled via `skillOverrides`); `/ship` and `/learn` remain. Dropped the `/project-resume` pointer from `session-start.sh`, the `/project-new` reference and redundant slash-command bullets from `CLAUDE.md`, and the stale `skillOverrides` entry from `settings.json`. Uninstalled 4 zero-use plugins (`skill-creator`, `frontend-design`, `notion`, `discord`); `linear` kept (331 uses). Synced `PRD.md` and `README.md`. ADR-030 prepended. Install, hooks, and version all healthy; `permissions.defaultMode` already `auto`.

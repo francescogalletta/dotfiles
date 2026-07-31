@@ -1,0 +1,27 @@
+# Managed symlinks — one row per config, OS-neutral data.
+# Parsed by links.sh (macOS driver); windows/links.ps1 will read the same file.
+# Columns: source | label | guard | macOS destination | Windows destination
+#   guard  "-" = always link; "codex"/"zed" = only when that tool is installed
+#          (each OS driver evaluates guards natively)
+#   destination "-" = not managed on that OS. Windows column gets filled in when
+#          the windows/ overlay lands; "~" expands per-OS (macOS $HOME, Windows %USERPROFILE%).
+zshrc                           | zshrc                | -     | ~/.zshrc                                             | -
+zprofile                        | zprofile             | -     | ~/.zprofile                                          | -
+gitconfig                       | gitconfig            | -     | ~/.gitconfig                                         | -
+config/git/ignore               | git/ignore           | -     | ~/.config/git/ignore                                 | -
+config/ghostty/config           | ghostty              | -     | ~/.config/ghostty/config                             | -
+config/warp/themes              | warp/themes          | -     | ~/.warp/themes                                       | -
+config/warp/keybindings.yaml    | warp/keybindings     | -     | ~/.warp/keybindings.yaml                             | -
+CLAUDE.md                       | CLAUDE.md            | -     | ~/CLAUDE.md                                          | -
+config/claude/skills            | claude/skills        | -     | ~/.claude/skills                                     | -
+config/claude/settings.json     | claude/settings      | -     | ~/.claude/settings.json                              | -
+config/claude/statusline.sh     | claude/statusline    | -     | ~/.claude/statusline.sh                              | -
+config/claude/hooks             | claude/hooks         | -     | ~/.claude/hooks                                      | -
+config/obsidian/obsidian.json   | obsidian/settings    | -     | ~/Library/Application Support/obsidian/obsidian.json | -
+config/starship/starship.toml   | starship             | -     | ~/.config/starship.toml                              | -
+config/tmux/tmux.conf           | tmux                 | -     | ~/.config/tmux/tmux.conf                             | -
+config/codex/config.toml        | codex/config         | codex | ~/.codex/config.toml                                 | -
+config/codex/model_catalog.json | codex/model_catalog  | codex | ~/.codex/model_catalog.json                          | -
+config/zed/settings.json        | zed/settings         | zed   | ~/.config/zed/settings.json                          | -
+config/zed/keymap.json          | zed/keymap           | zed   | ~/.config/zed/keymap.json                            | -
+config/zed/tasks.json           | zed/tasks            | zed   | ~/.config/zed/tasks.json                             | -

@@ -92,9 +92,9 @@ cd ~/dotfiles
 
 Output shows which links are OK (✓) and which were fixed or created (🔗). Existing files are backed up to `*.bak` before relinking.
 
-### `links.sh` — Symlink definitions
+### `links.map` + `links.sh` — Symlink definitions
 
-Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the mapping of repo files to their target locations. Not meant to be run directly — edit this file to add or remove symlinks.
+The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. Guards (`codex`, `zed`) skip rows when the tool isn't installed; Obsidian vault links are discovered at runtime in `links.sh` rather than listed in the map.
 
 ## File structure
 
@@ -139,6 +139,10 @@ Shared configuration sourced by both `install.sh` and `sync.sh`. Defines the map
     │       ├── core-plugins.json   # Core plugin toggles
     │       ├── community-plugins.json  # Community plugin list
     │       └── hotkeys.json        # Keyboard shortcuts
+    ├── voyager/
+    │   ├── pull-layout.sh      # Snapshot ZSA Voyager layout from Oryx into git
+    │   ├── layout.json         # Versioned layout snapshot (edit in Oryx, then re-pull)
+    │   └── README.md           # Kontroll usage + WIN layer spec for the Windows machine
     └── warp/
         ├── keybindings.yaml    # Warp keybindings → ~/.warp/keybindings.yaml
         └── themes/             # Custom themes → ~/.warp/themes/

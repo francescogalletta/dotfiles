@@ -4,6 +4,22 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-032: No bash→PowerShell converter; symlink map extracted to OS-neutral `links.map`
+**Date:** 2026-07-31
+**Decision:** The Windows port will get a thin, hand-written `windows/install.ps1` rather than any script that converts `install.sh` to PowerShell. The only knowledge promoted to shared data now is the symlink map: new `links.map` (pipe-delimited, one row per managed config: source | label | guard | macOS destination | Windows destination). `links.sh` becomes the macOS driver that parses the map into the existing `LINKS` array — same interface, byte-identical output, so `install.sh` and `sync.sh` are untouched. Guards (`codex`, `zed`) are named in the map but evaluated natively by each OS driver. Windows destinations start as `-` placeholders, to be filled when the `windows/` overlay lands. Obsidian vault linking stays programmatic in `links.sh` (runtime discovery from `obsidian.json`, not static data). `test.sh` gains two checks: LINKS non-empty from the map, and every map row has 5 columns.
+**Reason:** Mac and Windows installers differ semantically, not syntactically — brew vs winget IDs, `defaults write` vs `powercfg`, symlink permissions — so a converter would be a second program to maintain whose output still needs per-OS testing. The genuinely shared, churn-prone knowledge is *what is managed and where it lives*, which is data. Extracting it once eliminates the most drift-prone duplication; further sharing (e.g. a package manifest) is deliberately deferred until duplication is felt rather than predicted, since Windows is a second-class citizen with one machine.
+**Extends:** ADR-031
+
+---
+
+## ADR-031: Voyager layout versioned in-repo; Keymapp + Kontroll enter the managed install flow
+**Date:** 2026-07-31
+**Decision:** Added `config/voyager/`: `pull-layout.sh` snapshots the Oryx layout (id `ZlBeJ`) via Oryx's GraphQL API into a git-versioned `layout.json`, and `README.md` documents the planned "WIN" layer for the new Windows machine (Cmd-position thumb key and the five hold-Cmd shortcut keys switch to Ctrl; Esc gains hold=Win; Hyper and home-row mods unchanged) plus the known residue (Nav-layer Cmd+Tab and screenshot chords). Added `cask "keymapp"` to `Brewfile` and a Kontroll step to `install.sh` (downloads the latest release binary from zsa/kontroll into `~/.local/bin`). Layer activation strategy: `kontroll set-layer` at login on the Windows machine plus manual TO toggles as fallback, since the Voyager resets to base layer on unplug.
+**Reason:** The Windows-port strategy (this session) put the Mac→Windows keyboard translation in Voyager firmware rather than host remappers: the board travels between machines, and the Hyper key plus home-row mods already port cleanly. Versioning the layout in-repo (rather than only Oryx's server-side history) makes keyboard config reviewable alongside the rest of the dotfiles; the GraphQL snapshot is the lightest way to own that history, with ZSA's oryx-with-custom-qmk flow as the documented graduation path if key overrides or os_detection become necessary. Keymapp/Kontroll go through Brewfile/install.sh per the host-safety rule (installs only via the managed flow, on explicit request — the auto-mode classifier blocked direct install this session, correctly, so the binaries land via the sanctioned scripts).
+**Extends:** ADR-025 (host safety flow)
+
+---
+
 ## ADR-030: Retire `/project-new` and `/project-resume`; prune unused Claude Code plugins
 **Date:** 2026-07-29
 **Decision:** Deleted `config/claude/skills/project-new/` and `config/claude/skills/project-resume/`, leaving `/ship` and `/learn` as the only custom skills. Dropped the `/project-resume` pointer from `config/claude/hooks/session-start.sh` and the `/project-new` reference plus the redundant slash-command bullet list from `CLAUDE.md`. Removed the now-moot `skillOverrides.project-resume: "off"` entry from `config/claude/settings.json`. Uninstalled four unused Claude Code plugins (`skill-creator`, `frontend-design`, `notion`, `discord`), leaving `linear` as the only installed plugin. Synced `PRD.md` and `README.md`; `ADR.md`, `TASKS.md` changelog, and `tasks/T###.md` are append-only and left intact.

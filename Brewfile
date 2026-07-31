@@ -31,3 +31,6 @@ cask "ollama"
 # Notes
 cask "obsidian"
 cask "tolaria"
+
+# Keyboard (ZSA Voyager)
+cask "keymapp"

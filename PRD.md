@@ -6,10 +6,11 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 
 - **Bootstrap:** `install.sh` orchestrates the full setup — Homebrew, Brewfile packages, Node.js, symlinks, git identity, SSH, GitHub auth, optional tools, IDE setup
 - **IDE management:** `ide.sh` (called by install.sh, also standalone) — installs Zed, writes `~/.editor_env` and `~/.gitconfig.local`
-- **Symlinks:** All config files live in `~/dotfiles/` and are symlinked into place. Editor symlinks are conditional (only created if the app is installed). Definitions in `links.sh`, shared by `install.sh` and `sync.sh`
+- **Symlinks:** All config files live in `~/dotfiles/` and are symlinked into place. Editor symlinks are conditional (only created if the app is installed). The map is OS-neutral data in `links.map` (source | label | guard | macOS dest | Windows dest); `links.sh` is the macOS driver parsing it into the `LINKS` array shared by `install.sh` and `sync.sh`. The Windows port reads the same map from a thin hand-written driver — no bash→PowerShell conversion (ADR-032)
 - **Sync:** `sync.sh` detects and repairs broken symlinks anytime
 - **Packages:** Declarative `Brewfile` for CLI tools, terminals, fonts. Editors excluded (managed by `ide.sh`)
 - **Machine-agnostic:** Checked-in configs contain no machine-specific values. `~/.gitconfig.local` (git identity + editor) and `~/.editor_env` (EDITOR/VISUAL) are generated per-machine
+- **Keyboard:** ZSA Voyager layout is edited in Oryx and snapshotted into git by `config/voyager/pull-layout.sh`. `config/voyager/README.md` holds the WIN layer spec for the upcoming Windows machine (Cmd→Ctrl translation in firmware; Hyper and home-row mods port as-is)
 
 ## Tools
 
@@ -23,7 +24,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | Python | Docker-only, uv package manager (never on host) |
 | AI agents | Claude Code (optional), Codex (optional, uses Ollama) |
 | Notes | Obsidian (Minimal theme, shared config across vaults via symlinks), Tolaria |
-| Deploy | flyctl, gcloud-cli |
+| Keyboard | ZSA Voyager — layout versioned in `config/voyager/` (Oryx GraphQL snapshot), Keymapp (Brewfile) + Kontroll (install.sh → `~/.local/bin`) |
 | Theme | Catppuccin Mocha across all tools |
 
 ## Keybinding Scheme

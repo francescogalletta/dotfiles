@@ -38,6 +38,13 @@ check "bash -n ide.sh"     bash -n "$DOTFILES/ide.sh"
 check "bash -n sync.sh"    bash -n "$DOTFILES/sync.sh"
 check "bash -n links.sh"   bash -n "$DOTFILES/links.sh"
 
+# ─── links.map → LINKS array ────────────────────────────
+# The map has 15 unguarded rows; the driver must yield at least those.
+check "links.sh builds LINKS from links.map" bash -c \
+  "DOTFILES='$DOTFILES' source '$DOTFILES/links.sh' && [ \${#LINKS[@]} -ge 15 ]"
+check "links.map rows have 5 columns" bash -c \
+  "[ \$(grep -vE '^[[:space:]]*(#|\$)' '$DOTFILES/links.map' | awk -F'|' 'NF != 5' | wc -l) -eq 0 ]"
+
 # ─── JSON ───────────────────────────────────────────────
 check "claude/settings.json" jq empty "$DOTFILES/config/claude/settings.json"
 

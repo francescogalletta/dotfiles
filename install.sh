@@ -113,6 +113,7 @@ count  # SSH key
 count  # GitHub CLI auth
 count  # macOS defaults
 count  # Ollama models
+count  # Kontroll
 
 # ─── 1. 🍺 Homebrew ────────────────────────────────────
 advance "🍺 Installing Homebrew..."
@@ -293,7 +294,32 @@ else
   fail "🦙 Ollama models" "ollama not found — check Brewfile step"
 fi
 
-# ─── 11. Optional extras prompt ────────────────────────
+# ─── 11. ⌨️ Kontroll (ZSA keyboard CLI) ────────────────
+advance "⌨️  Installing Kontroll..."
+if ! command -v kontroll &>/dev/null; then
+  _kontroll_url=$(curl -fsSL https://api.github.com/repos/zsa/kontroll/releases/latest \
+    | jq -r '[.assets[] | select(.name | test("macos"))][0].browser_download_url')
+  if [ -n "$_kontroll_url" ] && run_logged "Kontroll" bash -c \
+      "mkdir -p '$HOME/.local/bin' && curl -fsSL -o /tmp/kontroll.zip '$_kontroll_url' \
+       && unzip -o /tmp/kontroll.zip kontroll -d '$HOME/.local/bin' \
+       && chmod +x '$HOME/.local/bin/kontroll' && rm -f /tmp/kontroll.zip"; then
+    pass "⌨️  Kontroll"
+  else
+    fail "⌨️  Kontroll" "$LAST_ERROR"
+  fi
+else
+  skip "⌨️  Kontroll"
+fi
+
+# Keymapp API notice — kontroll is useless until the API is switched on
+if [ -d "/Applications/keymapp.app" ] || [ -d "/Applications/Keymapp.app" ]; then
+  printf "\r${clear_line}"
+  echo -e "\n  ${cyan}⌨️  Keymapp detected${reset} — one-time setup so ${bold}kontroll${reset} can talk to the keyboard:"
+  echo -e "     open Keymapp → settings → ${bold}enable the API${reset}, and set Keymapp to launch at login."
+  echo -e "     Verify with: ${bold}kontroll status${reset}\n"
+fi
+
+# ─── 12. Optional extras prompt ────────────────────────
 printf "\r${clear_line}\n"
 echo -e "  ${bold}Optional extras:${reset}\n"
 
