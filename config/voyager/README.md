@@ -14,6 +14,8 @@ If the layout ever needs custom QMK (key overrides, `os_detection`), graduate to
 
 CLI control of the keyboard via Keymapp's API. Installed by `install.sh` (binary from [zsa/kontroll](https://github.com/zsa/kontroll) releases into `~/.local/bin`); Keymapp itself comes from the Brewfile.
 
+**Known issue (macOS, Keymapp ≤1.3.7):** the API silently fails to start on this machine. Keymapp binds a unix socket at `~/Library/Containers/io.zsa.keymapp/Data/Library/Application Support/.keymapp/keymapp.sock`, which is 105 chars for user `francesco` — over macOS's 104-char socket path limit — so bind fails with `invalid argument` (visible in Keymapp's log view). No client-side workaround: the app has no socket-path or TCP option on macOS (config keys are only `api_enabled`/`api_port`; the port is Windows/Linux-only). Also tried and abandoned (2026-07-31): HOME-override via short symlink (sandbox rederives the container path) and re-signing the app without the sandbox entitlement (codesign chokes on the nested libusb dylib; deemed too fragile since auto-update reverts it anyway — don't retry). Reported to ZSA; wait for a Keymapp release that fixes it, then just enable the API and `kontroll status`. Windows is unaffected (TCP :50051), so the WIN-layer login task still works; on the Mac use the Oryx layer toggles until ZSA ships a fix.
+
 One-time setup: open Keymapp → settings → enable the API, and set Keymapp to launch at login. Then:
 
 ```bash
