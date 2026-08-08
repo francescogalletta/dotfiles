@@ -14,21 +14,24 @@ If the layout ever needs custom QMK (key overrides, `os_detection`), graduate to
 
 CLI control of the keyboard via Keymapp's API. Installed by `install.sh` (binary from [zsa/kontroll](https://github.com/zsa/kontroll) releases into `~/.local/bin`); Keymapp itself comes from the Brewfile.
 
-**Known issue (macOS, Keymapp ≤1.3.7):** the API silently fails to start on this machine. Keymapp binds a unix socket at `~/Library/Containers/io.zsa.keymapp/Data/Library/Application Support/.keymapp/keymapp.sock`, which is 105 chars for user `francesco` — over macOS's 104-char socket path limit — so bind fails with `invalid argument` (visible in Keymapp's log view). No client-side workaround: the app has no socket-path or TCP option on macOS (config keys are only `api_enabled`/`api_port`; the port is Windows/Linux-only). Also tried and abandoned (2026-07-31): HOME-override via short symlink (sandbox rederives the container path) and re-signing the app without the sandbox entitlement (codesign chokes on the nested libusb dylib; deemed too fragile since auto-update reverts it anyway — don't retry). Reported to ZSA; wait for a Keymapp release that fixes it, then just enable the API and `kontroll status`. Windows is unaffected (TCP :50051), so the WIN-layer login task still works; on the Mac use the Oryx layer toggles until ZSA ships a fix.
+**Resolved (2026-08-08): macOS socket-path bug.** The sandboxed Keymapp build bound its unix socket at `~/Library/Containers/io.zsa.keymapp/.../keymapp.sock` — 105 chars for user `francesco`, over macOS's 104-char socket path limit, so bind failed with `invalid argument` (Keymapp ≤1.3.7 sandboxed; HOME-symlink and de-sandboxing workarounds tried and abandoned 2026-07-31). Fix, per ZSA support (email, 2026-08): install Keymapp directly from [zsa.io/flash](https://www.zsa.io/flash) — that build ships without the sandbox entitlement, so the socket lands at `~/Library/Application Support/.keymapp/keymapp.sock` (63 chars) and the API binds fine. Verified: `kontroll status` reports Keymapp 1.3.7.
 
-One-time setup: open Keymapp → settings → enable the API, and set Keymapp to launch at login. Then:
+Note on brew: the manual install replaced the brew-managed copy, so `brew list --cask keymapp` now says not installed. The cask fetches ZSA's official artifact, so the Brewfile entry stays correct for fresh machines; on this one, `brew install --cask --adopt keymapp` re-adopts the existing app if drift ever bothers `brew bundle`.
+
+One-time setup: open Keymapp → settings → enable the API, turn on auto-connect, and set Keymapp to launch at login. Without auto-connect the API answers but reports no keyboard; `kontroll connect -i <n>` (index from `kontroll list`) attaches manually. Then:
 
 ```bash
-kontroll status            # connected keyboard info
-kontroll list              # available layers
-kontroll set-layer -i 7    # activate WIN layer
+kontroll status            # connected keyboard + current layer
+kontroll list              # known keyboards
+kontroll set-layer -i 7    # activate PC layer
+kontroll set-layer -i 0    # back to Mac base
 ```
 
-## WIN layer (Windows machine)
+## PC layer (Windows/Linux machines)
 
-Base layer assumes macOS. For the Windows machine, add layer 7 "WIN" in Oryx: every key transparent except the overrides below. The board resets to base on unplug, so on Windows a login task runs `kontroll set-layer -i 7` (see `windows/install.ps1` when it lands); manual toggles TO(7)/TO(0) on two free Media-layer keys as fallback.
+Built 2026-08-08 as layer 7 "PC" (firmware revision `XbQP69`). Base layer assumes macOS; layer 7 overrides the keys below and leaves everything else transparent, so Hyper, home-row mods, and layer access fall through. It serves both Windows and Linux (GUI = Win key or Super). The board resets to base on unplug, so each PC machine runs `kontroll set-layer -i 7` at login (`windows/install.ps1` when it lands; on Linux a udev rule can do it per-plug); fallback without kontroll: double-tap toggles on the two top-left Media-layer keys (double-tap second key → PC, double-tap first key → Main).
 
-| Key (current Main assignment) | Mac sends | WIN layer sends |
+| Key (current Main assignment) | Mac sends | PC layer sends |
 |---|---|---|
 | Left thumb Cmd key | LGUI tap/hold | **LCtrl tap/hold** |
 | `W` hold | Cmd+W | **Ctrl+W** |
@@ -40,8 +43,8 @@ Base layer assumes macOS. For the Windows machine, add layer 7 "WIN" in Oryx: ev
 
 Already portable, no changes needed: home-row Hyper on `A`/`;` (Ctrl+Alt+Shift+Win is collision-free on Windows; re-register the same Raycast hotkeys), home-row Ctrl/Alt/Shift on `S`/`D`/`F`/`J`/`K`/`L`, Nav layer arrows + Home/End/PgUp/PgDn, Nav layer Ctrl+Tab / Ctrl+Shift+Tab tab switching.
 
-Known residue (fix in a v2 "WIN Nav" layer only if it hurts after a week):
+Known residue (fix in a v2 "PC Nav" layer only if it hurts after a week):
 
 - Nav `Cmd+Tab` / `Cmd+Shift+Tab` (app switcher) arrive as Win+Tab / Win+Shift+Tab on Windows — Task View, usable but not Alt+Tab.
 - Nav screenshot keys `Cmd+Shift+3/4/5` arrive as Win+Shift+3/4/5, which launches taskbar apps. Windows wants Win+Shift+S.
-- v2 approach: clone Nav as layer 8 with Alt+Tab and Win+Shift+S at those positions, and on the WIN layer redefine `N` as tap N / hold MO(8) so the WIN base reaches the corrected Nav. Same pattern for Nav Mous (`B` hold) if needed.
+- v2 approach: clone Nav as layer 8 with Alt+Tab and Win+Shift+S at those positions, and on the PC layer redefine `N` as tap N / hold MO(8) so the PC base reaches the corrected Nav. Same pattern for Nav Mous (`B` hold) if needed.

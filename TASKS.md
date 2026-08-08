@@ -51,10 +51,14 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [x] [T115] Retire `templates/` archetypes entirely; `/project-new` becomes docs-only scaffolder — `done` → [tasks/T115.md](tasks/T115.md)
 
 ### Phase 6: Windows machine port
-- [ ] [T116] Voyager Windows readiness: layout versioning, Kontroll, WIN layer spec — `in progress` → [tasks/T116.md](tasks/T116.md)
+- [x] [T116] Voyager Windows readiness: layout versioning, Kontroll, PC layer — `done` → [tasks/T116.md](tasks/T116.md)
 - [x] [T117] Extract symlink map to OS-neutral `links.map` — `done` (Windows column + ps1 driver pending on the Windows machine) → [tasks/T117.md](tasks/T117.md)
 
 ## Changelog
+
+### 2026-08-08
+- T116 done: PC layer (renamed from WIN — it serves Linux too) built in Oryx as layer 7 and flashed (revision `XbQP69`): thumb Cmd → LCtrl, W/Z/X/C/V holds → Ctrl+letter, Esc hold = LGUI, all else transparent; Media gains double-tap TO(7)/TO(0) fallback toggles. Snapshot re-pulled into `layout.json`. Verified end-to-end with Kontroll: `connect -i 3`, `set-layer -i 7` / `-i 0` round-trip against firmware `ZlBeJ/XbQP69`. Voyager README updated (PC-layer section, auto-connect note in one-time setup). Remaining Windows work (login task in `windows/install.ps1`) tracked under T117's pending Windows column.
+- T116 unblocked: Keymapp API now works on macOS. Root cause confirmed as the sandboxed build's 105-char socket path; ZSA support (email) advised installing directly from zsa.io/flash — that build is unsandboxed, socket binds at `~/Library/Application Support/.keymapp/keymapp.sock`. Verified with `kontroll status` (Keymapp 1.3.7). Voyager README known-issue section rewritten as resolved; brew cask entry kept (fetches the same official artifact), `--adopt` noted for re-adoption. Remaining: WIN layer 7 in Oryx + snapshot re-pull.
 
 ### 2026-07-31
 - T117 done: symlink definitions extracted from `links.sh` bash arrays into `links.map` (pipe-delimited: source | label | guard | mac dest | win dest); `links.sh` is now the macOS driver parsing the map into the unchanged `LINKS` array — output verified byte-identical, `install.sh`/`sync.sh` untouched. Rejected a bash→PowerShell converter (semantic, not syntactic differences — ADR-032); `windows/install.ps1` will be thin and hand-written, reading the same map. `test.sh` +2 checks (22 total).
