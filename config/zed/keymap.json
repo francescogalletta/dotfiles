@@ -28,8 +28,10 @@
   }},
 
   // ----- Agent panel context -----
+  // cmd-alt-m stays "maximize/zoom" here too; overrides Zed's default agent menu on this key.
   { "context": "AgentPanel", "bindings": {
-      "cmd-n":     "agent::NewThread"
+      "cmd-n":     "agent::NewThread",
+      "cmd-alt-m": "workspace::ToggleZoom"
   }},
 
   // ----- Splits & zoom (cmd-opt) -----
@@ -82,7 +84,8 @@
   {
     "context": "AcpThread > Editor",
     "bindings": {
-      "alt-cmd-d": "agent::OpenAgentDiff"
+      "alt-cmd-d": "agent::OpenAgentDiff",
+      "cmd-alt-m": "workspace::ToggleZoom"
     }
   },
   {
