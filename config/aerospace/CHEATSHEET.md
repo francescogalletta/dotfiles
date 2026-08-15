@@ -30,16 +30,8 @@ Source of truth is `aerospace.toml`. Update this file when bindings change.
 | `⌥⇧F`       | Float / un-float window |
 | `⌥I` / `⌥O` | Shrink / grow window by 50px |
 | `⌥-` / `⌥=` | Same, alias for standard keyboards |
+| `⌥B`        | Balance all splits evenly |
 | `⌥↩`        | New Ghostty window, from anywhere |
-
-## Resize mode (`⌥R` to enter)
-
-| Keys        | Action |
-|-------------|--------|
-| `H` / `L`   | Narrower / wider |
-| `K` / `J`   | Shorter / taller |
-| `B`         | Balance all splits evenly |
-| `↩` / `esc` | Back to normal |
 
 ## Service mode (`⌥⇧;` to enter)
 
