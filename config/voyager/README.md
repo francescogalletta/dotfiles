@@ -18,7 +18,9 @@ CLI control of the keyboard via Keymapp's API. Installed by `install.sh` (binary
 
 Note on brew: the manual install replaced the brew-managed copy, so `brew list --cask keymapp` now says not installed. The cask fetches ZSA's official artifact, so the Brewfile entry stays correct for fresh machines; on this one, `brew install --cask --adopt keymapp` re-adopts the existing app if drift ever bothers `brew bundle`. That adopt needs `sudo` (it chmods the already-installed bundle), so it has to be run by hand; verified 2026-08-15 that the cask URL is ZSA's own CDN (`oryx.nyc3.cdn.digitaloceanspaces.com/keymapp/keymapp-latest.dmg`), i.e. the same artifact zsa.io/flash serves, so a fresh machine gets the working non-sandboxed build straight from `brew bundle`.
 
-One-time setup: open Keymapp → settings → enable the API, turn on auto-connect, and set Keymapp to launch at login. Without auto-connect the API answers but reports no keyboard; `kontroll connect -i <n>` (index from `kontroll list`) attaches manually. Then:
+One-time setup: open Keymapp → settings → enable the API, turn on auto-connect, and set Keymapp to launch at login. Verified 2026-08-15: both are already on in this machine's Keymapp config (`api_enabled=1`, `startup_autoconnect=1` in `~/Library/Application Support/.keymapp/keymapp.sqlite3`), and Keymapp was added as a hidden login item so it starts each boot.
+
+**Auto-connect only fires when Keymapp launches**, not on hotplug. Plug the board into an already-running Keymapp and the API answers but reports no keyboard. Use the `kb` shell function (defined in `zshrc`) — it attaches to the first detected board and prints status, and is a no-op when already connected. Manual equivalent: `kontroll connect -i <n>` with the index from `kontroll list`. Then:
 
 ```bash
 kontroll status            # connected keyboard + current layer

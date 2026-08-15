@@ -148,6 +148,19 @@ gitid() {
 # fzf directory jumper
 fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" || return; }
 
+# ZSA keyboard — attach Keymapp to the board. Keymapp's startup_autoconnect only
+# fires when Keymapp itself launches, so a board plugged in mid-session needs this.
+kb() {
+  command -v kontroll &>/dev/null || { echo "kontroll not installed"; return 1; }
+  if ! kontroll status 2>/dev/null | grep -q '^Connected keyboard:'; then
+    local idx
+    idx=$(kontroll list 2>/dev/null | head -1 | cut -d: -f1)
+    [ -n "$idx" ] || { echo "no ZSA keyboard detected — is it plugged in?"; return 1; }
+    kontroll connect -i "$idx" >/dev/null || return 1
+  fi
+  kontroll status
+}
+
 # Open a file in the default IDE (derived from $EDITOR)
 e() {
   ${EDITOR%% *} "${1:?Usage: e <file>}"
