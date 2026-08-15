@@ -60,10 +60,38 @@ for rc_script in "$DOTFILES"/config/raycast/scripts/*.sh; do
 done
 
 # Tables must reach fullOutput as aligned columns; fullOutput renders ANSI but
-# not markdown, so a leaked pipe or backtick means the formatter regressed.
-if [ -x "$DOTFILES/config/raycast/scripts/show-shortcuts.sh" ]; then
+# not markdown, so a leaked pipe, backtick or asterisk means the formatter
+# regressed. The alignment check earns its keep because macOS awk measures in
+# bytes: add a modifier glyph the renderer's dwidth() doesn't know and every
+# column below it silently shifts left.
+SHOW_SHORTCUTS="$DOTFILES/config/raycast/scripts/show-shortcuts.sh"
+if [ -x "$SHOW_SHORTCUTS" ]; then
   check "raycast/show-shortcuts renders without markdown syntax" bash -c \
-    "! '$DOTFILES/config/raycast/scripts/show-shortcuts.sh' aerospace | grep -qE '\||\`'"
+    "! '$SHOW_SHORTCUTS' aerospace | grep -qE '\||\`|\*\*'"
+  # Kept as a function so the perl stays in one pair of single quotes; nesting it
+  # inside check's bash -c means escaping every $ and getting a false failure.
+  aligned_columns() {
+    "$SHOW_SHORTCUTS" aerospace | perl -CSD -e '
+      my ($min, $max, $bad);
+      sub close_block {
+        $bad++ if defined $min && $min != $max;
+        undef $min; undef $max;
+      }
+      while (my $line = <STDIN>) {
+        $line =~ s/\e\[[0-9;]*m//g;
+        if ($line =~ /^  (\S.*?)(\s{2,})\S/) {
+          my $col = length($1) + length($2);
+          $min = $col if !defined $min || $col < $min;
+          $max = $col if !defined $max || $col > $max;
+        } elsif ($line =~ /^\s*$/) {
+          close_block();
+        }
+      }
+      close_block();
+      exit($bad ? 1 : 0);
+    '
+  }
+  check "raycast/show-shortcuts aligns each table's key column" aligned_columns
 fi
 
 # ─── JSON ───────────────────────────────────────────────
