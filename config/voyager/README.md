@@ -1,6 +1,6 @@
 # ZSA Voyager
 
-Layout lives in Oryx (id `ZlBeJ`): https://configure.zsa.io/voyager/layouts/ZlBeJ/latest/0
+Layout lives in Oryx (id `JmV6W`): https://configure.zsa.io/voyager/layouts/JmV6W/latest/0
 
 Oryx is the editor; this directory versions the layout and documents OS-portability decisions.
 

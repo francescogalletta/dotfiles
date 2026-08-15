@@ -25,6 +25,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | AI agents | Claude Code (optional), Codex (optional, uses Ollama) |
 | Window mgmt | AeroSpace (tiling WM) + JankyBorders (focus highlight), config in `config/aerospace/` (ADR-033) |
 | Local AI | Ollama via `cask "ollama-app"` only — the formula is a redundant second copy (ADR-035) |
+| Launcher | Raycast — installed but deliberately unmanaged (cask blocks `brew bundle`, ADR-019); Script Commands in `config/raycast/scripts/` surface per-tool cheatsheets (ADR-038) |
 | Notes | Obsidian (Minimal theme, shared config across vaults via symlinks), Tolaria |
 | Keyboard | ZSA Voyager — layout versioned in `config/voyager/` (Oryx GraphQL snapshot), Keymapp (Brewfile) + Kontroll (install.sh → `~/.local/bin`) |
 | Theme | Catppuccin Mocha across all tools |
@@ -87,3 +88,5 @@ Claude Code skills in `config/claude/skills/`: `/ship`, `/learn`. (`/explain`, `
 `config/claude/hooks/session-start.sh` runs as the `SessionStart` hook for every Claude Code session. In a managed project (TASKS.md present) it prints a one-paragraph briefing: project name, branch and sync state, last 3 commits, next 3 pending `[T###]` tasks. Deeper orientation (ADR, open questions) is read on demand from the docs themselves.
 
 New projects get a project-local `.claude/` seeded with: `settings.json` (empty stub — merges with global), `README.md` (convention doc), and `hooks/.gitkeep` (placeholder dir), scaffolded agentically. See ADR-028.
+
+Permissions are split by scope. `config/claude/settings.json` (symlinked to `~/.claude/settings.json`) holds global defaults and stays deliberately narrow. Repo-root `.claude/settings.json` holds the dotfiles-only grants: `Edit(...)` for every destination in `links.map` plus the generated per-machine files, `additionalDirectories` for the five out-of-repo config roots, and `worktree.bgIsolation: "none"` so background sessions edit this checkout in place. Working in this repo therefore does not prompt, while no other project inherits write access to the shell rc or editor config (ADR-037).

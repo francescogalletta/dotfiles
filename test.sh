@@ -45,6 +45,27 @@ check "links.sh builds LINKS from links.map" bash -c \
 check "links.map rows have 5 columns" bash -c \
   "[ \$(grep -vE '^[[:space:]]*(#|\$)' '$DOTFILES/links.map' | awk -F'|' 'NF != 5' | wc -l) -eq 0 ]"
 
+# ─── Raycast script commands ────────────────────────────
+# Raycast silently ignores a script missing its required metadata or the
+# executable bit, so both are worth asserting rather than discovering in the UI.
+for rc_script in "$DOTFILES"/config/raycast/scripts/*.sh; do
+  [ -f "$rc_script" ] || continue
+  rc_name=$(basename "$rc_script")
+  check "raycast/$rc_name (syntax)" bash -n "$rc_script"
+  check "raycast/$rc_name (executable)" test -x "$rc_script"
+  check "raycast/$rc_name (metadata)" bash -c "
+    for key in schemaVersion title mode; do
+      grep -q \"@raycast.\$key\" '$rc_script' || { echo \"missing @raycast.\$key\"; exit 1; }
+    done"
+done
+
+# Tables must reach fullOutput as aligned columns; fullOutput renders ANSI but
+# not markdown, so a leaked pipe or backtick means the formatter regressed.
+if [ -x "$DOTFILES/config/raycast/scripts/show-shortcuts.sh" ]; then
+  check "raycast/show-shortcuts renders without markdown syntax" bash -c \
+    "! '$DOTFILES/config/raycast/scripts/show-shortcuts.sh' aerospace | grep -qE '\||\`'"
+fi
+
 # ─── JSON ───────────────────────────────────────────────
 check "claude/settings.json" jq empty "$DOTFILES/config/claude/settings.json"
 

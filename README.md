@@ -144,6 +144,11 @@ The mapping of repo files to their target locations lives in `links.map`: OS-neu
     │       ├── core-plugins.json   # Core plugin toggles
     │       ├── community-plugins.json  # Community plugin list
     │       └── hotkeys.json        # Keyboard shortcuts
+    ├── raycast/
+    │   └── scripts/            # Raycast Script Commands (directory registered in Raycast, not symlinked)
+    │       ├── show-shortcuts.sh      # Cheatsheet for the frontmost app, or for an app / term you type
+    │       ├── aerospace-shortcuts.sh #   Titled wrapper so root search matches "aerospace"
+    │       └── cca.sh                 # Claude agent view in a new Ghostty window (calls `cca` from zshrc)
     ├── voyager/
     │   ├── pull-layout.sh      # Snapshot ZSA Voyager layout from Oryx into git
     │   ├── layout.json         # Versioned layout snapshot (edit in Oryx, then re-pull)
@@ -193,6 +198,29 @@ Keybindings are aligned across all tools where the action exists. The scheme is 
 \** Obsidian left sidebar uses `Cmd+Shift+E`; right sidebar uses `Ctrl+Shift+R`.
 
 Warp doesn't support split panes, so those bindings are terminal-only (Ghostty) and editor-only (Zed). Obsidian has no tab/pane model, so `Ctrl+Shift+D` and `Ctrl+Shift+R` are reused for Obsidian-specific actions (daily note and right sidebar).
+
+### Raycast cheatsheets
+
+Two Script Commands surface keybindings without leaving Raycast:
+
+| Command | Argument | Shows |
+|---|---|---|
+| `AeroSpace Shortcuts` | — | The AeroSpace cheatsheet. Worth a global hotkey. |
+| `Show Shortcuts` | none | Cheatsheet for the frontmost app |
+| `Show Shortcuts` | `aerospace`, `aero` | That sheet, by name or unique prefix |
+| `Show Shortcuts` | `workspace`, `resize` | Matching lines from every sheet, grouped |
+| `CCA` | none | Claude Code agent view in a new Ghostty window, opened at `$HOME` |
+| `CCA` | `save-the-date`, `dotfiles` | Same, opened in that project (path or zoxide query) |
+
+`CCA` calls the `cca` shell function from `zshrc`, so the permission mode and the zoxide lookup are defined in one place. `DEFAULT_DIR` at the top of `cca.sh` sets where it lands with no argument.
+
+Sheets are discovered, not registered: any `config/<tool>/CHEATSHEET.md`, plus anything in `config/raycast/shortcuts/*.md` for tools with no config directory of their own. Drop a file in either place and it shows up. AeroSpace's sheet is read in place from `config/aerospace/CHEATSHEET.md`, so `aerospace.toml` stays the source of truth with one file in between.
+
+Raycast renders Script Command output as plain text with ANSI colour and no markdown, so the script flattens the tables into aligned columns itself.
+
+**One-time setup, and it cannot be scripted:** Raycast, Settings, Extensions, Script Commands, Add Directories, point it at `~/dotfiles/config/raycast/scripts`. Raycast holds that path in its own settings store, so there is no file for `install.sh` to write. Assign the hotkey there too.
+
+Raycast itself is installed but deliberately **not** in the Brewfile: its cask times out on Cloudflare R2 and blocks `brew bundle` (ADR-019). Same treatment as `gcloud-cli`. The scripts are inert without it.
 
 ### Warp settings
 

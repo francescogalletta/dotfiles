@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "permissions": {
+    "additionalDirectories": [
+      "/Users/francesco/.config",
+      "/Users/francesco/.claude",
+      "/Users/francesco/.warp",
+      "/Users/francesco/.codex",
+      "/Users/francesco/Library/Application Support/obsidian"
+    ],
+    "allow": [
+      "Edit(~/.zshrc)",
+      "Edit(~/.zshrc.local)",
+      "Edit(~/.zprofile)",
+      "Edit(~/.gitconfig)",
+      "Edit(~/.gitconfig.local)",
+      "Edit(~/.editor_env)",
+      "Edit(~/.aerospace.toml)",
+      "Edit(~/CLAUDE.md)",
+      "Edit(~/.config/git/ignore)",
+      "Edit(~/.config/ghostty/config)",
+      "Edit(~/.config/starship.toml)",
+      "Edit(~/.config/zed/**)",
+      "Edit(~/.codex/**)",
+      "Edit(~/.warp/**)",
+      "Edit(~/.claude/settings.json)",
+      "Edit(~/.claude/statusline.sh)",
+      "Edit(~/.claude/hooks)",
+      "Edit(~/.claude/hooks/**)",
+      "Edit(~/.claude/skills)",
+      "Edit(~/.claude/skills/**)",
+      "Edit(~/Library/Application Support/obsidian/obsidian.json)",
+      "Read(~/Library/Application Support/obsidian/**)",
+      "Bash(./install.sh)",
+      "Bash(./links.sh)",
+      "Bash(./sync.sh:*)",
+      "Bash(./test.sh:*)",
+      "Bash(bash install.sh)",
+      "Bash(bash test.sh)",
+      "Bash(defaults read:*)",
+      "Bash(defaults export:*)",
+      "Bash(readlink:*)",
+      "Bash(stat:*)",
+      "Bash(brew bundle check:*)",
+      "Bash(brew list:*)",
+      "Bash(brew info:*)"
+    ]
+  },
+  "worktree": {
+    "bgIsolation": "none"
+  }
+}

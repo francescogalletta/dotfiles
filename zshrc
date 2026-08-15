@@ -128,6 +128,23 @@ alias finder="open ."
 # Claude Code
 alias cc="claude --permission-mode auto"
 
+# Agent view (FleetView) in one go. Optional arg is a path or a zoxide query:
+# the view and every session it dispatches inherit that cwd, which is what
+# resolves CLAUDE.md, .claude/ settings, hooks and skills. Subshell keeps $PWD.
+cca() {
+  local dir="$PWD"
+  if (( $# )); then
+    if [[ -d "$1" ]]; then
+      dir="$1"
+    else
+      dir="$(zoxide query -- "$@" 2>/dev/null)" || {
+        print -u2 "cca: no directory matching '$*'"; return 1
+      }
+    fi
+  fi
+  ( builtin cd -- "$dir" && claude agents --permission-mode auto )
+}
+
 # Zed (z is reserved for zoxide)
 alias ze="zed"
 
