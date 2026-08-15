@@ -212,6 +212,14 @@ All Claude Code config lives in this repo and is symlinked to its expected locat
 
 Edits flow both ways -- change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
 
+**Model choice is deliberately not in `settings.json`.** Because the file is symlinked into the repo, a `/model` change would write through and dirty the working tree every time. The default lives in `~/.zshrc.local` (machine-local, sourced by `zshrc`, never committed):
+
+```bash
+export ANTHROPIC_MODEL="opus[1m]"   # opus[1m] | claude-fable-5[1m] | sonnet | haiku
+```
+
+Environment beats settings files, so this wins. For one session only, use `/model` and press `s` instead of Enter.
+
 ### Obsidian config
 
 Shared config files in `config/obsidian/shared/` are symlinked into each vault's `.obsidian/` directory. Vault paths are discovered dynamically from `obsidian.json` via `jq`, so adding a new vault just means registering it in Obsidian.

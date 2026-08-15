@@ -4,6 +4,14 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-036: Claude Code model unpinned from tracked settings; Voyager snapshot repointed to the flashed layout
+**Date:** 2026-08-15
+**Decision:** The `"model"` key is removed from `config/claude/settings.json`. Because that file is symlinked to `~/.claude/settings.json`, every `/model` change wrote through the symlink and dirtied the repo, producing a recurring merge-ish conflict over a preference that isn't a project decision. The default now lives in `~/.zshrc.local` as `export ANTHROPIC_MODEL="opus[1m]"` — machine-local, already sourced by the tracked `zshrc`, never committed. Precedence is env var > settings files, so the env var wins and the tracked file stays clean; per-session switching uses `/model` then `s` (session-only, no persist). Separately, `config/voyager/pull-layout.sh` was pinned to layout `ZlBeJ` while the board actually runs `JmV6W` (`kontroll status` reports firmware as `<layoutId>/<revisionId>`): a fork made in Oryx and flashed, with the same 8 layers and PC still at 7. Script repointed to `JmV6W` and `layout.json` re-snapshotted at revision `nlyLVb`, matching the live firmware.
+**Reason:** Version control should hold decisions, not preferences that change weekly; the model pin was pure churn. The Voyager snapshot had silently stopped tracking the physical keyboard, so the versioned layout was a record of a layout no longer in use — the exact failure the snapshot exists to prevent.
+**Extends:** ADR-031 (Voyager layout versioning)
+
+---
+
 ## ADR-035: Brew drift resolved — Ollama de-duplicated, unused tools removed, gcloud left unmanaged
 **Date:** 2026-08-15
 **Decision:** Ollama was installed twice: the `ollama` formula (CLI, stale at 0.22.1, with a launchd service stuck in `error 1`) alongside the `ollama-app` cask (0.32.13, auto-updating, ships its own CLI). Formula uninstalled and its LaunchAgent removed via `brew services stop`; Brewfile now names `cask "ollama-app"` explicitly rather than the `cask "ollama"` alias. `docker-compose` added to the Brewfile (used by every containerised project, previously unmanaged). `duti`, `poppler`, `micro`, and `comfy-cli` (uv tool, ADR-033's predecessor, never used) uninstalled. `gcloud-cli` stays installed but deliberately unmanaged: it's needed only inside specific projects, not on every machine. Keymapp stays a Brewfile cask — verified its cask URL is ZSA's own CDN artifact, identical to the zsa.io/flash download, so fresh machines get the working non-sandboxed build; only this machine's manual install is unregistered with brew, and `--adopt` requires sudo so it's a by-hand step.

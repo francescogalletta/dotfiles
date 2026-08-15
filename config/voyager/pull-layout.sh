@@ -3,7 +3,9 @@
 # Run after saving changes in Oryx, then commit the diff.
 set -euo pipefail
 
-LAYOUT_ID="ZlBeJ"
+# Must match the layout actually flashed to the board — check with
+# `kontroll status`, which prints firmware as <layoutId>/<revisionId>.
+LAYOUT_ID="JmV6W"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
 curl -fsS -X POST https://oryx.zsa.io/graphql \
