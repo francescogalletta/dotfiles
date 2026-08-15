@@ -15,6 +15,9 @@ _guard_ok() {
     -)     return 0 ;;
     codex) command -v codex &>/dev/null ;;
     zed)   [ -d "/Applications/Zed.app" ] ;;
+    # obsidian.json is gitignored (machine-specific vault registry), so a fresh
+    # clone has no source file to link. Skip rather than create a dead symlink.
+    local) [ -e "$DOTFILES/$2" ] ;;
     *)     return 1 ;;  # unknown guard: skip rather than link blindly
   esac
 }
@@ -23,7 +26,7 @@ while IFS='|' read -r _src _label _guard _mac _win; do
   [[ "$_src" =~ ^[[:space:]]*(#|$) ]] && continue
   _src=$(_trim "$_src"); _label=$(_trim "$_label"); _guard=$(_trim "$_guard"); _mac=$(_trim "$_mac")
   [ "$_mac" = "-" ] && continue
-  _guard_ok "$_guard" || continue
+  _guard_ok "$_guard" "$_src" || continue
   LINKS+=("$_src:${_mac/#\~/$HOME}:$_label")
 done < "$DOTFILES/links.map"
 

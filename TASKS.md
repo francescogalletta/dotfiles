@@ -57,6 +57,8 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 ## Changelog
 
 ### 2026-08-15
+- Repo tidy-up + machine drift audit (ADR-034): tmux fully removed (Brewfile, `config/tmux/`, links.map row, dangling `~/.config/tmux` symlink); `local` link guard added to `links.sh` so gitignored sources (Obsidian vault registry) skip instead of producing dead symlinks on a fresh clone; README corrected (install step 3 listed flyctl/gcloud-cli which aren't in the Brewfile, AeroSpace/JankyBorders missing from the tool table and file tree, guard docs). Audit found unmanaged brew installs (docker-compose, duti, flyctl, micro, poppler, ollama formula, cmux, gcloud-cli) and an ollama formula/cask duplicate — left undecided pending user call. 22 tests green, `sync.sh` 30/30 links OK.
+- Resize bindings `alt-i`/`alt-o` (in/out) added for the Voyager's awkward `-`/`=` placement; minus/equal kept as aliases.
 - AeroSpace + JankyBorders brought under dotfiles management (ADR-033): Brewfile gains `nikitabobko/tap`, `felixkratz/formulae`, `cask "aerospace"` (codifies pre-existing unmanaged install), `brew "borders"`; config at `config/aerospace/aerospace.toml` → `~/.aerospace.toml` via links.map; borders launched from AeroSpace after-startup-command. Config customized (resize mode, float toggle, gaps, trimmed workspaces, Ghostty launcher, Catppuccin border colors — final color still being auditioned). README gains dated "Pending decisions" section (floating rules, app-to-workspace pinning). Cheatsheet at `config/aerospace/CHEATSHEET.md`. ADR-033 prepended; PRD synced.
 
 ### 2026-08-08

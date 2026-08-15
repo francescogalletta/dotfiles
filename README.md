@@ -8,6 +8,8 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 |------|---------|
 | [Homebrew](https://brew.sh) | macOS package manager |
 | [Ghostty](https://ghostty.org) | GPU-accelerated terminal emulator |
+| [AeroSpace](https://nikitabobko.github.io/AeroSpace/) | i3-like tiling window manager (config + cheatsheet in `config/aerospace/`) |
+| [JankyBorders](https://github.com/FelixKratz/JankyBorders) | Highlights the focused window; launched by AeroSpace |
 | [Warp](https://www.warp.dev) | AI-powered terminal with IDE features |
 | [Oh My Zsh](https://ohmyz.sh) | Zsh framework with plugins (`git`, `brew`, autosuggestions, syntax highlighting) |
 | [eza](https://eza.rocks) | Modern replacement for `ls` with icons and colors |
@@ -52,7 +54,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 
 1. Listing all install steps
 2. Installs Homebrew
-3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + flyctl + gcloud-cli + Ollama + Obsidian + Tolaria)
+3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + AeroSpace + JankyBorders + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
 5. Installs Oh My Zsh, symlinks Homebrew plugins into `$ZSH_CUSTOM/plugins/`
 6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, obsidian, codex, CLAUDE.md, Claude skills/settings/statusline)
@@ -94,7 +96,7 @@ Output shows which links are OK (✓) and which were fixed or created (🔗). Ex
 
 ### `links.map` + `links.sh` — Symlink definitions
 
-The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. Guards (`codex`, `zed`) skip rows when the tool isn't installed; Obsidian vault links are discovered at runtime in `links.sh` rather than listed in the map.
+The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. Guards (`codex`, `zed`) skip rows when the tool isn't installed, and `local` skips a row whose source file is gitignored and therefore absent on a fresh clone (Obsidian's machine-specific vault registry); Obsidian vault links are discovered at runtime in `links.sh` rather than listed in the map.
 
 ## File structure
 
@@ -112,6 +114,9 @@ The mapping of repo files to their target locations lives in `links.map`: OS-neu
 ├── zprofile                    # Zsh profile → ~/.zprofile
 ├── gitconfig                   # Git config → ~/.gitconfig
 └── config/                     # Configs for each tooling
+    ├── aerospace/
+    │   ├── aerospace.toml      # AeroSpace config → ~/.aerospace.toml
+    │   └── CHEATSHEET.md       # Keybinding reference
     ├── claude/
     │   ├── settings.json       # Claude Code settings → ~/.claude/settings.json
     │   ├── statusline.sh       # Claude Code statusline → ~/.claude/statusline.sh

@@ -130,6 +130,10 @@ gaps.outer.right =      8
     alt-shift-l = 'move right'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#resize
+    # i = in (shrink), o = out (grow) — top row above hjkl, kind to the Voyager.
+    # minus/equal kept as aliases for standard keyboards.
+    alt-i = 'resize smart -50'
+    alt-o = 'resize smart +50'
     alt-minus = 'resize smart -50'
     alt-equal = 'resize smart +50'
 

@@ -4,6 +4,14 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-034: tmux dropped from managed config; `local` link guard for gitignored sources
+**Date:** 2026-08-15
+**Decision:** tmux leaves the managed environment entirely — `brew "tmux"` removed from the Brewfile, `config/tmux/` (conf + README) deleted, links.map row dropped, dangling `~/.config/tmux` symlink cleaned up. It had already been uninstalled from this machine; the repo was the last thing still claiming it. Separately, `links.sh` gains a `local` guard: skip a map row when its source file doesn't exist in the repo. Applied to `config/obsidian/obsidian.json`, which is gitignored as a machine-specific vault registry — previously a fresh clone would create a dead symlink into `~/Library/Application Support/obsidian/` and Obsidian vault discovery would silently find nothing.
+**Reason:** Managed config that describes tools you don't have is drift that misleads the next fresh install. The guard closes a real fresh-machine bug that only reproduces on a clone, which is exactly the path least often tested.
+**Extends:** ADR-032 (links.map guards)
+
+---
+
 ## ADR-033: AeroSpace + JankyBorders adopted as managed window management
 **Date:** 2026-08-15
 **Decision:** AeroSpace (tiling WM, `cask "aerospace"`) and JankyBorders (focused-window highlight, `felixkratz/formulae` tap + `brew "borders"`) join the Brewfile; AeroSpace was already installed but unmanaged (drift, now codified). Config lives at `config/aerospace/aerospace.toml`, linked to `~/.aerospace.toml` via `links.map`. Borders is launched from AeroSpace's `after-startup-command` (`exec-and-forget`), not `brew services` — no launchctl involvement, and its lifecycle follows AeroSpace's. Stock config customized: start-at-login, 8px gaps, persistent workspaces trimmed to 1–5, resize binding mode (`alt-r`), float toggle (`alt-shift-f`), Ghostty launcher (`alt-enter`), Catppuccin-toned border colors. Deferred choices (floating rules for badly-tiling apps, pinning apps to workspaces) are logged in a new dated "Pending decisions" README section rather than decided prematurely. Shortcut reference at `config/aerospace/CHEATSHEET.md`.

@@ -26,7 +26,8 @@ Source of truth: `aerospace.toml`. Update this file when bindings change.
 | `alt comma` | Accordion layout (windows overlap with peek edges) |
 | `alt f` | Fullscreen |
 | `alt shift f` | Float / un-float window |
-| `alt minus` / `alt equal` | Shrink / grow window by 50px |
+| `alt i` / `alt o` | Shrink / grow window by 50px (in / out) |
+| `alt minus` / `alt equal` | Same, alias for standard keyboards |
 | `alt enter` | New Ghostty window (from anywhere) |
 
 ## Resize mode — `alt r` to enter
