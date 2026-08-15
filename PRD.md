@@ -23,6 +23,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | Node.js | nvm (lazy-loaded) |
 | Python | Docker-only, uv package manager (never on host) |
 | AI agents | Claude Code (optional), Codex (optional, uses Ollama) |
+| Window mgmt | AeroSpace (tiling WM) + JankyBorders (focus highlight), config in `config/aerospace/` (ADR-033) |
 | Notes | Obsidian (Minimal theme, shared config across vaults via symlinks), Tolaria |
 | Keyboard | ZSA Voyager — layout versioned in `config/voyager/` (Oryx GraphQL snapshot), Keymapp (Brewfile) + Kontroll (install.sh → `~/.local/bin`) |
 | Theme | Catppuccin Mocha across all tools |

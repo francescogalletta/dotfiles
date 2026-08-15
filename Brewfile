@@ -1,3 +1,7 @@
+# Taps
+tap "nikitabobko/tap"
+tap "felixkratz/formulae"
+
 # CLI tools
 brew "atuin"
 brew "bat"
@@ -10,6 +14,7 @@ brew "nvm"
 brew "ripgrep"
 brew "starship"
 brew "tmux"
+brew "uv"
 brew "yq"
 brew "zoxide"
 brew "zsh-autosuggestions"
@@ -24,6 +29,10 @@ cask "font-jetbrains-mono-nerd-font"
 # Terminal
 cask "ghostty"
 cask "warp"
+
+# Window management
+cask "aerospace"
+brew "borders"
 
 # Local AI
 cask "ollama"

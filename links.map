@@ -10,6 +10,7 @@ zprofile                        | zprofile             | -     | ~/.zprofile    
 gitconfig                       | gitconfig            | -     | ~/.gitconfig                                         | -
 config/git/ignore               | git/ignore           | -     | ~/.config/git/ignore                                 | -
 config/ghostty/config           | ghostty              | -     | ~/.config/ghostty/config                             | -
+config/aerospace/aerospace.toml | aerospace            | -     | ~/.aerospace.toml                                    | -
 config/warp/themes              | warp/themes          | -     | ~/.warp/themes                                       | -
 config/warp/keybindings.yaml    | warp/keybindings     | -     | ~/.warp/keybindings.yaml                             | -
 CLAUDE.md                       | CLAUDE.md            | -     | ~/CLAUDE.md                                          | -

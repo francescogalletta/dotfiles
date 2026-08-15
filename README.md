@@ -230,3 +230,35 @@ Shared config files in `config/obsidian/shared/` are symlinked into each vault's
 
 **First run per vault:** Open Settings > Appearance > install Minimal theme (the Monzo vault currently has AnuPpuccin). Then install the community plugins listed above. Run `./sync.sh` to propagate themes and plugins to all vaults.
 
+## Pending decisions
+
+Ideas discussed but deliberately not adopted yet. Revisit when the itch returns; delete the entry when decided either way.
+
+### AeroSpace: float windows that tile badly (2026-08-15)
+
+Utility windows (System Settings, Finder popups, Keymapp) get squashed into tiny tiles when tiled. Per-app rules would make them float by default:
+
+```toml
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+```
+
+- **Doing it:** those windows open at their natural size and stop disrupting the layout. Cost: per-app rule list to maintain, and behavior becomes app-dependent.
+- **Not doing it:** everything behaves uniformly; the escape hatch is manual — `alt-shift-semicolon` then `f` floats the focused window on demand.
+- **Status:** holding off until tiled utility windows actually annoy in practice.
+
+### AeroSpace: pin apps to workspaces (2026-08-15)
+
+`on-window-detected` rules can auto-move apps to fixed workspaces (Chrome → 1, Zed → 2, Ghostty → 3), turning numbered workspaces into named places:
+
+```toml
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 1'
+```
+
+- **Doing it:** `alt-1..5` becomes reflexive because each number always means the same thing; the biggest single boost to workspace muscle memory.
+- **Not doing it:** full freedom to compose ad-hoc per-workflow workspaces (e.g. browser + terminal together for one task) without fighting auto-placement rules.
+- **Status:** deferred — want to keep mixing windows freely per workflow while learning; reconsider once usage patterns settle.
+

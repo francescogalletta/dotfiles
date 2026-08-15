@@ -4,6 +4,14 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-033: AeroSpace + JankyBorders adopted as managed window management
+**Date:** 2026-08-15
+**Decision:** AeroSpace (tiling WM, `cask "aerospace"`) and JankyBorders (focused-window highlight, `felixkratz/formulae` tap + `brew "borders"`) join the Brewfile; AeroSpace was already installed but unmanaged (drift, now codified). Config lives at `config/aerospace/aerospace.toml`, linked to `~/.aerospace.toml` via `links.map`. Borders is launched from AeroSpace's `after-startup-command` (`exec-and-forget`), not `brew services` — no launchctl involvement, and its lifecycle follows AeroSpace's. Stock config customized: start-at-login, 8px gaps, persistent workspaces trimmed to 1–5, resize binding mode (`alt-r`), float toggle (`alt-shift-f`), Ghostty launcher (`alt-enter`), Catppuccin-toned border colors. Deferred choices (floating rules for badly-tiling apps, pinning apps to workspaces) are logged in a new dated "Pending decisions" README section rather than decided prematurely. Shortcut reference at `config/aerospace/CHEATSHEET.md`.
+**Reason:** Window management is part of the reproducible environment; an unmanaged cask and an untracked config were drift. Borders-over-services keeps host daemons out of launchctl per the host-safety rules.
+**Extends:** ADR-031 (host tools in the sanctioned dotfiles flow)
+
+---
+
 ## ADR-032: No bash→PowerShell converter; symlink map extracted to OS-neutral `links.map`
 **Date:** 2026-07-31
 **Decision:** The Windows port will get a thin, hand-written `windows/install.ps1` rather than any script that converts `install.sh` to PowerShell. The only knowledge promoted to shared data now is the symlink map: new `links.map` (pipe-delimited, one row per managed config: source | label | guard | macOS destination | Windows destination). `links.sh` becomes the macOS driver that parses the map into the existing `LINKS` array — same interface, byte-identical output, so `install.sh` and `sync.sh` are untouched. Guards (`codex`, `zed`) are named in the map but evaluated natively by each OS driver. Windows destinations start as `-` placeholders, to be filled when the `windows/` overlay lands. Obsidian vault linking stays programmatic in `links.sh` (runtime discovery from `obsidian.json`, not static data). `test.sh` gains two checks: LINKS non-empty from the map, and every map row has 5 columns.

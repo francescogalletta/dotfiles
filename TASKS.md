@@ -56,6 +56,9 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 
 ## Changelog
 
+### 2026-08-15
+- AeroSpace + JankyBorders brought under dotfiles management (ADR-033): Brewfile gains `nikitabobko/tap`, `felixkratz/formulae`, `cask "aerospace"` (codifies pre-existing unmanaged install), `brew "borders"`; config at `config/aerospace/aerospace.toml` → `~/.aerospace.toml` via links.map; borders launched from AeroSpace after-startup-command. Config customized (resize mode, float toggle, gaps, trimmed workspaces, Ghostty launcher, Catppuccin border colors — final color still being auditioned). README gains dated "Pending decisions" section (floating rules, app-to-workspace pinning). Cheatsheet at `config/aerospace/CHEATSHEET.md`. ADR-033 prepended; PRD synced.
+
 ### 2026-08-08
 - T116 done: PC layer (renamed from WIN — it serves Linux too) built in Oryx as layer 7 and flashed (revision `XbQP69`): thumb Cmd → LCtrl, W/Z/X/C/V holds → Ctrl+letter, Esc hold = LGUI, all else transparent; Media gains double-tap TO(7)/TO(0) fallback toggles. Snapshot re-pulled into `layout.json`. Verified end-to-end with Kontroll: `connect -i 3`, `set-layer -i 7` / `-i 0` round-trip against firmware `ZlBeJ/XbQP69`. Voyager README updated (PC-layer section, auto-connect note in one-time setup). Remaining Windows work (login task in `windows/install.ps1`) tracked under T117's pending Windows column.
 - T116 unblocked: Keymapp API now works on macOS. Root cause confirmed as the sandboxed build's 105-char socket path; ZSA support (email) advised installing directly from zsa.io/flash — that build is unsandboxed, socket binds at `~/Library/Application Support/.keymapp/keymapp.sock`. Verified with `kontroll status` (Keymapp 1.3.7). Voyager README known-issue section rewritten as resolved; brew cask entry kept (fetches the same official artifact), `--adopt` noted for re-adoption. Remaining: WIN layer 7 in Oryx + snapshot re-pull.
