@@ -4,6 +4,14 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-035: Brew drift resolved — Ollama de-duplicated, unused tools removed, gcloud left unmanaged
+**Date:** 2026-08-15
+**Decision:** Ollama was installed twice: the `ollama` formula (CLI, stale at 0.22.1, with a launchd service stuck in `error 1`) alongside the `ollama-app` cask (0.32.13, auto-updating, ships its own CLI). Formula uninstalled and its LaunchAgent removed via `brew services stop`; Brewfile now names `cask "ollama-app"` explicitly rather than the `cask "ollama"` alias. `docker-compose` added to the Brewfile (used by every containerised project, previously unmanaged). `duti`, `poppler`, `micro`, and `comfy-cli` (uv tool, ADR-033's predecessor, never used) uninstalled. `gcloud-cli` stays installed but deliberately unmanaged: it's needed only inside specific projects, not on every machine. Keymapp stays a Brewfile cask — verified its cask URL is ZSA's own CDN artifact, identical to the zsa.io/flash download, so fresh machines get the working non-sandboxed build; only this machine's manual install is unregistered with brew, and `--adopt` requires sudo so it's a by-hand step.
+**Reason:** Two Ollama copies meant `which ollama` resolved to the stale one and a dead launchd service retried forever. The rest is the standing rule that the Brewfile should describe the machine: tools you use get declared, tools you don't get removed, and per-project tools stay out on purpose.
+**Extends:** ADR-034
+
+---
+
 ## ADR-034: tmux dropped from managed config; `local` link guard for gitignored sources
 **Date:** 2026-08-15
 **Decision:** tmux leaves the managed environment entirely — `brew "tmux"` removed from the Brewfile, `config/tmux/` (conf + README) deleted, links.map row dropped, dangling `~/.config/tmux` symlink cleaned up. It had already been uninstalled from this machine; the repo was the last thing still claiming it. Separately, `links.sh` gains a `local` guard: skip a map row when its source file doesn't exist in the repo. Applied to `config/obsidian/obsidian.json`, which is gitignored as a machine-specific vault registry — previously a fresh clone would create a dead symlink into `~/Library/Application Support/obsidian/` and Obsidian vault discovery would silently find nothing.

@@ -20,6 +20,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # Docker
+brew "docker-compose"
 cask "docker-desktop"
 
 # Fonts
@@ -34,7 +35,9 @@ cask "aerospace"
 brew "borders"
 
 # Local AI
-cask "ollama"
+# The cask ships its own CLI; the `ollama` formula is a redundant second copy
+# (and its launchd service conflicts with the app's). Cask only — ADR-035.
+cask "ollama-app"
 
 # Notes
 cask "obsidian"
