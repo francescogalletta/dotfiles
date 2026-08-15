@@ -1,2 +1,9 @@
 .install.log
 obsidian.json
+
+# Claude Code — repo-level backstop. The same rules live in config/git/ignore
+# (the managed global ignore), but that is only active once install.sh has
+# symlinked it, which is not true on a fresh clone. Keep both in sync.
+.claude/settings.local.json
+.claude/session-current.md
+.claude/worktrees/
