@@ -16,7 +16,14 @@
 
 set -uo pipefail
 
-DOTFILES="${HOME}/dotfiles"
+# Resolve the repo from this script's own location (config/raycast/scripts/ →
+# three levels up) rather than hard-coding ~/dotfiles. Raycast always invokes
+# the symlinked copy so the result is identical in normal use, but a worktree
+# or a clone elsewhere would otherwise render ~/dotfiles' sheets instead of its
+# own — which silently pointed test.sh at the wrong file (ADR-041).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+DOTFILES="$(cd "${SCRIPT_DIR}/../../.." && pwd -P)"
+[ -d "${DOTFILES}/config" ] || DOTFILES="${HOME}/dotfiles"
 CONFIG="${DOTFILES}/config"
 QUERY="${1:-}"
 

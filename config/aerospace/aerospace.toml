@@ -117,6 +117,13 @@ gaps.outer.right =      6
     # Toggle floating for the focused window (also in service mode as 'f')
     alt-shift-f = 'layout floating tiling'
 
+    # One-way escape back to tiling. alt-shift-f sits one Shift away from
+    # alt-f, so a slipped modifier silently floats a window, and a floating
+    # window ignores focus and move commands — it reads as AeroSpace having
+    # stopped working. Unlike the toggle above this is idempotent, so it is
+    # safe to mash when a window will not tile and the cause is unclear.
+    alt-t = 'layout tiling'
+
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
     alt-comma = 'layout accordion horizontal vertical'

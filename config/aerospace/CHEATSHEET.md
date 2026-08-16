@@ -28,6 +28,7 @@ Source of truth is `aerospace.toml`. Update this file when bindings change.
 | `⌥,`        | Accordion, windows overlap with peek edges |
 | `⌥F`        | Fullscreen |
 | `⌥⇧F`       | Float / un-float window |
+| `⌥T`        | Force back to tiling, fixes an accidental float |
 | `⌥I` / `⌥O` | Shrink / grow window by 50px |
 | `⌥-` / `⌥=` | Same, alias for standard keyboards |
 | `⌥B`        | Balance all splits evenly |

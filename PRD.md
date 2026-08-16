@@ -23,7 +23,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | Node.js | nvm (lazy-loaded) |
 | Python | Docker-only, uv package manager (never on host) |
 | AI agents | Claude Code (optional), Codex (optional, uses Ollama) |
-| Window mgmt | AeroSpace (tiling WM) + JankyBorders (focus highlight, vivid green `#00e676` at 8px, unfocused windows draw no border at all, 6px gaps — ADR-040), config in `config/aerospace/` (ADR-033); resize is modeless, only `service` remains a binding mode (ADR-039) |
+| Window mgmt | AeroSpace (tiling WM) + JankyBorders (focus highlight, vivid green `#00e676` at 8px, unfocused windows draw no border at all, 6px gaps — ADR-040), config in `config/aerospace/` (ADR-033) and covered by `test.sh` (ADR-041); resize is modeless, only `service` remains a binding mode (ADR-039); `⌥T` forces a floated window back to tiling |
 | Local AI | Ollama via `cask "ollama-app"` only — the formula is a redundant second copy (ADR-035) |
 | Launcher | Raycast — installed but deliberately unmanaged (cask blocks `brew bundle`, ADR-019); Script Commands in `config/raycast/scripts/` surface per-tool cheatsheets (ADR-038) |
 | Notes | Obsidian (Minimal theme, shared config across vaults via symlinks), Tolaria |

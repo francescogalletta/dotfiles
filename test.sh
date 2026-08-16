@@ -120,6 +120,76 @@ if [ -f "$DOTFILES/config/zed/keymap.json" ]; then
     "! grep -qE '$DEPRECATED_ACTIONS' '$DOTFILES/config/zed/keymap.json'"
 fi
 
+# ─── AeroSpace config ───────────────────────────────────
+# Nothing covered aerospace.toml until T122 removed a binding mode and the only
+# validator was AeroSpace itself. That is a bad place to find out: the config
+# sets auto-reload-config, so a broken file reaches the running window manager
+# the moment it is written, and reload-config only reads ~/.aerospace.toml, not
+# this repo copy. These run off the tracked file instead.
+AEROSPACE_TOML="$DOTFILES/config/aerospace/aerospace.toml"
+if [ -f "$AEROSPACE_TOML" ] && command -v python3 &>/dev/null; then
+  # Kept as functions for the same reason as aligned_columns above: the python
+  # stays inside one quoted heredoc instead of being escaped through bash -c.
+  aerospace_toml_parses() {
+    python3 - "$AEROSPACE_TOML" <<'PY'
+import sys, tomllib
+tomllib.load(open(sys.argv[1], "rb"))
+PY
+  }
+  check "aerospace.toml (syntax)" aerospace_toml_parses
+
+  # A binding pointing at a mode that no longer exists parses fine and fails
+  # only at runtime, as a keypress that silently does nothing. Removing a mode
+  # while leaving its entry binding behind is exactly the T122 failure mode.
+  aerospace_modes_resolve() {
+    python3 - "$AEROSPACE_TOML" <<'PY'
+import sys, tomllib
+d = tomllib.load(open(sys.argv[1], "rb"))
+modes = set(d.get("mode", {}))
+bad = []
+for name, body in d.get("mode", {}).items():
+    for key, cmd in (body.get("binding") or {}).items():
+        for one in (cmd if isinstance(cmd, list) else [cmd]):
+            if isinstance(one, str) and one.startswith("mode "):
+                target = one.split(None, 1)[1].strip()
+                if target not in modes:
+                    bad.append("%s.%s -> mode %s" % (name, key, target))
+if bad:
+    print("dangling mode references: " + ", ".join(bad))
+    sys.exit(1)
+PY
+  }
+  check "aerospace.toml (mode references resolve)" aerospace_modes_resolve
+
+  # borders is launched from after-startup-command, so a malformed colour or
+  # width is not a parse error — it is a focus highlight that silently fails to
+  # appear, and only on the next AeroSpace start, long after the edit.
+  aerospace_borders_args() {
+    python3 - "$AEROSPACE_TOML" <<'PY'
+import re, sys, tomllib
+d = tomllib.load(open(sys.argv[1], "rb"))
+cmds = [c for c in d.get("after-startup-command", []) if "borders" in c]
+if not cmds:
+    print("no borders invocation in after-startup-command")
+    sys.exit(1)
+cmd = cmds[0]
+for key in ("active_color", "inactive_color"):
+    m = re.search(key + r"=(\S+)", cmd)
+    got = m.group(1) if m else "<absent>"
+    if not m or not re.fullmatch(r"0x[0-9a-fA-F]{8}", got):
+        print("%s must be 0xAARRGGBB, got %s" % (key, got))
+        sys.exit(1)
+m = re.search(r"width=(\S+)", cmd)
+if not m or not re.fullmatch(r"\d+(\.\d+)?", m.group(1)):
+    print("width missing or not numeric: " + (m.group(1) if m else "<absent>"))
+    sys.exit(1)
+PY
+  }
+  check "aerospace.toml (borders startup args)" aerospace_borders_args
+else
+  echo -e "  ${dim}⏭️   aerospace.toml  (python3 not found)${reset}"
+fi
+
 # ─── Ghostty config ─────────────────────────────────────
 if command -v ghostty &>/dev/null; then
   check "ghostty config" ghostty +validate-config
