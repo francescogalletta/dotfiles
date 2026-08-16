@@ -8,9 +8,12 @@ config-version = 2
 
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-# JankyBorders highlights the focused window (installed via dotfiles Brewfile)
+# JankyBorders highlights the focused window (installed via dotfiles Brewfile).
+# Sage active against a near-black inactive: the previous pair were both
+# neutral greys, so the focused window was told apart on luminance alone.
+# Hue is what makes it obvious; contrast was never the problem (ADR-040).
 after-startup-command = [
-  'exec-and-forget borders active_color=0xffa6adc8 inactive_color=0xff313244 width=8.0'
+  'exec-and-forget borders active_color=0xffa3b18a inactive_color=0xff11111b width=4.0'
 ]
 
 # Start AeroSpace at login
@@ -74,12 +77,12 @@ key-mapping.preset = 'qwerty'
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
-gaps.inner.horizontal = 8
-gaps.inner.vertical =   8
-gaps.outer.left =       8
-gaps.outer.bottom =     8
-gaps.outer.top =        8
-gaps.outer.right =      8
+gaps.inner.horizontal = 6
+gaps.inner.vertical =   6
+gaps.outer.left =       6
+gaps.outer.bottom =     6
+gaps.outer.top =        6
+gaps.outer.right =      6
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes

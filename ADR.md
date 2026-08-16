@@ -4,6 +4,17 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-040: Border colour audition closed on sage; gaps and border width tightened
+**Date:** 2026-08-16
+**Decision:** the open audition from ADR-033 is settled. `after-startup-command` now launches `borders` with `active_color=0xffa3b18a` (sage), `inactive_color=0xff11111b` (Mocha crust) and `width=4.0`, replacing the tracked `0xffa6adc8`/`0xff313244` at `8.0`. All six `gaps.inner`/`gaps.outer` values drop from 8 to 6.
+**Reason:** the reported symptom was that the focused and unfocused borders were "hard to tell apart". Measured, that was not a contrast problem: the live pair (`0xffe1e3e4` on `0xff494d64`) sat at 6.45:1, comfortably legible. Both were neutral greys, so the only signal distinguishing focus was luminance, competing against every grey titlebar and window chrome on screen. Adding hue is the actual fix, and it is why a *less* luminous colour reads as more obvious here: sage measures 7.20:1 against the `#1e1e2e` base while carrying a hue nothing else on the desktop uses. Dropping inactive to crust (1.14:1 against base, essentially invisible) does the other half, so unfocused windows stop advertising themselves at all. Width 8.0 was cut to 4.0 because a fat border reads as inter-window separation just as gaps do, so it fought the same complaint.
+**Rejected:** Catppuccin Mocha green `#a6e3a1` at 11.03:1, which is mint rather than sage and bright enough to pull the eye off window content; mauve `#cba6f7`, blue `#89b4fa`, teal `#94e2d5` and peach `#fab387` were offered and passed over. Sage is deliberately not a Catppuccin palette entry: no Mocha swatch is a muted grey-green, and matching the palette mattered less here than being unlike every other colour on the screen.
+**Note:** this is the first time the tracked `after-startup-command` values and the running process agree since ADR-033. The divergence ADR-039 documented and preserved (a live instance on Macchiato `0xffe1e3e4`/`0xff494d64` at `6.0`) is now resolved rather than merely tolerated. `after-startup-command` only fires when AeroSpace starts, so `reload-config` does **not** repaint borders: the running instance must be updated by re-invoking `borders` with the same arguments, which is how this change was previewed before it was committed.
+**Closes:** the border-colour audition recorded in ADR-033's decision text and flagged "final color still being auditioned" in the T-entry for it. It was never a README "Pending decisions" entry, that section carries only the float-rules and workspace-pinning items, both still open.
+**Extends:** ADR-039 (same config, same reporting session)
+
+---
+
 ## ADR-039: AeroSpace resize goes modeless; the `⌥R` binding mode is removed
 **Date:** 2026-08-16
 **Decision:** `alt-r = 'mode resize'` and the whole `[mode.resize.binding]` block are deleted. Resizing keeps the modeless bindings that already existed alongside the mode (`alt-i`/`alt-o`, aliased `alt-minus`/`alt-equal`, all `resize smart ±50`), and the mode's one binding without a modeless equivalent, `b = 'balance-sizes'`, is promoted to the main mode as `alt-b`. `[mode.service.binding]` is untouched. The cheatsheet loses its "Resize mode" section and gains a `⌥B` row under Layout.
