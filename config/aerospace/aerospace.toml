@@ -9,11 +9,12 @@ config-version = 2
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 # JankyBorders highlights the focused window (installed via dotfiles Brewfile).
-# Sage active against a near-black inactive: the previous pair were both
-# neutral greys, so the focused window was told apart on luminance alone.
-# Hue is what makes it obvious; contrast was never the problem (ADR-040).
+# Unfocused windows draw nothing at all (alpha 00), so exactly one border
+# exists on screen at any time — that, not the colour, is what makes focus
+# readable at a glance. Saturation matters more than contrast for this:
+# sage at 20% saturation failed twice despite a healthy 7.20:1 (ADR-040).
 after-startup-command = [
-  'exec-and-forget borders active_color=0xffa3b18a inactive_color=0xff11111b width=4.0'
+  'exec-and-forget borders active_color=0xff00e676 inactive_color=0x00000000 width=8.0'
 ]
 
 # Start AeroSpace at login
