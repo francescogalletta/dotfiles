@@ -100,5 +100,6 @@
     ]
   },
   "voiceEnabled": true,
-  "notifications": true
+  "notifications": true,
+  "model": "claude-fable-5[1m]"
 }

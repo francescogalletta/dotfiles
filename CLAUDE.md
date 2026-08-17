@@ -76,7 +76,9 @@ When discussing architecture or stack choices, present 2–3 concrete options as
 
 Never ask the user to run tests, copy-paste errors, or diagnose failures.
 
-**Evidence must be loud.** Never pipe a gate command (tests, lint, build) into `tail`/`grep`/anything — the pipe replaces its exit code; redirect output to a file, check `$?`, then inspect the file. Never rely on implicitly shared runtime state between concurrent sessions (compose project names, published ports, tagged images) — check for a live stack before booting one.
+**Evidence must be loud.** Never pipe a gate command (tests, lint, build) into `tail`/`grep`/anything — the pipe replaces its exit code; redirect output to a file, check `$?`, then inspect the file. Never rely on implicitly shared runtime state between concurrent sessions (compose project names, published ports, tagged images) — check for a live stack before booting one. **A CI run's conclusion is not proof its gates ran**: a job blocked before it starts (billing/spending limit, concurrency, cancellation) reports with **zero steps and no logs**, and the reason lives only in the check-run annotation, not the run log. Before merging on green, assert the legs you depend on have a non-zero step count.
+
+**Merged is not shipped.** Never report work as shipped, live, delivered, or fixed-for-the-user on the strength of a merge. Either verify the running artifact — the revision, digest, or version actually serving — or say plainly "merged, awaiting deploy". Where the deploy is manual, say so and name the command. A user reading "shipped" will go and use the thing; if main is ahead of production they will hit the bug you just told them was fixed.
 
 # Prototyping
 
