@@ -45,6 +45,27 @@ check "links.sh builds LINKS from links.map" bash -c \
 check "links.map rows have 5 columns" bash -c \
   "[ \$(grep -vE '^[[:space:]]*(#|\$)' '$DOTFILES/links.map' | awk -F'|' 'NF != 5' | wc -l) -eq 0 ]"
 
+# No broken symlink should point into the repo. One that does is a fossil of a
+# retired links.map row (tmux, ADR-034) that sync.sh's prune pass exists to
+# remove — so a survivor means either a retired config left an orphan or sync
+# hasn't run. Empty in CI (no managed symlinks under $HOME there) and on any
+# synced machine, so it never false-fails; it catches drift on this one.
+no_orphan_links() {
+  local link found=0
+  while IFS= read -r link; do
+    [ -e "$link" ] && continue
+    case "$(readlink "$link")" in
+      "$DOTFILES"/*) echo "orphan: ${link/#$HOME/~}" >&2; found=1;;
+    esac
+  done < <(
+    find "$HOME" -maxdepth 1 -type l 2>/dev/null
+    find "$HOME/.config" "$HOME/.warp" "$HOME/.codex" "$HOME/.claude" \
+      -maxdepth 4 -type l 2>/dev/null
+  )
+  return "$found"
+}
+check "no orphaned dotfiles symlinks" no_orphan_links
+
 # ─── Raycast script commands ────────────────────────────
 # Raycast silently ignores a script missing its required metadata or the
 # executable bit, so both are worth asserting rather than discovering in the UI.

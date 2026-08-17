@@ -133,6 +133,14 @@ fi
 advance "📦 Installing Brewfile packages..."
 printf "\n\n"
 echo "=== [Brewfile] $(date) ===" >> "$LOGFILE"
+# Newer Homebrew refuses formulae from untrusted third-party taps, and
+# `brew bundle` does not auto-trust them, so `felixkratz/formulae` → `borders`
+# aborts on a fresh machine. Pre-trust every tap the Brewfile declares, read
+# from the Brewfile itself so the two never drift. `|| true`: `brew trust` is
+# absent on older Homebrew, where third-party taps load without a gate.
+while read -r _tap; do
+  brew trust "$_tap" >/dev/null 2>&1 || true
+done < <(grep -E '^tap "' "$DOTFILES/Brewfile" | sed -E 's/^tap "([^"]+)".*/\1/')
 _brew_tmp=$(mktemp)
 set +o pipefail
 brew bundle install --file="$DOTFILES/Brewfile" 2>&1 \
