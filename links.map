@@ -18,7 +18,6 @@ config/claude/skills            | claude/skills        | -     | ~/.claude/skill
 config/claude/settings.json     | claude/settings      | -     | ~/.claude/settings.json                              | -
 config/claude/statusline.sh     | claude/statusline    | -     | ~/.claude/statusline.sh                              | -
 config/claude/hooks             | claude/hooks         | -     | ~/.claude/hooks                                      | -
-config/obsidian/obsidian.json   | obsidian/settings    | local | ~/Library/Application Support/obsidian/obsidian.json | -
 config/starship/starship.toml   | starship             | -     | ~/.config/starship.toml                              | -
 config/codex/config.toml        | codex/config         | codex | ~/.codex/config.toml                                 | -
 config/codex/model_catalog.json | codex/model_catalog  | codex | ~/.codex/model_catalog.json                          | -

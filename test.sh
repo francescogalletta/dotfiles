@@ -31,17 +31,41 @@ echo -e "  ${dim}─────────────────────
 echo ""
 
 # ─── Shell syntax ───────────────────────────────────────
+# Every tracked script, discovered rather than listed, so a new one is covered
+# the moment it is committed. The shebang picks the parser.
 check "zsh -n zshrc"       zsh -n "$DOTFILES/zshrc"
 check "zsh -n zprofile"    zsh -n "$DOTFILES/zprofile"
-check "bash -n install.sh" bash -n "$DOTFILES/install.sh"
-check "bash -n ide.sh"     bash -n "$DOTFILES/ide.sh"
-check "bash -n sync.sh"    bash -n "$DOTFILES/sync.sh"
-check "bash -n links.sh"   bash -n "$DOTFILES/links.sh"
+while IFS= read -r sh_file; do
+  case "$(head -1 "$DOTFILES/$sh_file")" in
+    *zsh*) check "zsh -n $sh_file"  zsh -n "$DOTFILES/$sh_file" ;;
+    *)     check "bash -n $sh_file" bash -n "$DOTFILES/$sh_file" ;;
+  esac
+done < <(git -C "$DOTFILES" ls-files '*.sh')
 
 # ─── links.map → LINKS array ────────────────────────────
-# The map has 15 unguarded rows; the driver must yield at least those.
-check "links.sh builds LINKS from links.map" bash -c \
-  "DOTFILES='$DOTFILES' source '$DOTFILES/links.sh' && [ \${#LINKS[@]} -ge 15 ]"
+# Asserted row by row against the map, never against a count: a literal "at
+# least 15" went stale when tmux was retired (ADR-034) and failed only in CI,
+# where no guarded row (zed, codex) padded the total. Every unguarded macOS row
+# must reach LINKS with its exact destination, and every row's source must exist
+# in the repo.
+links_match_map() {
+  local src label guard mac win bad=0
+  DOTFILES="$DOTFILES" source "$DOTFILES/links.sh"
+  local have=" ${LINKS[*]} "
+  while IFS='|' read -r src label guard mac win; do
+    src=$(_trim "$src"); label=$(_trim "$label"); guard=$(_trim "$guard"); mac=$(_trim "$mac")
+    if [ ! -e "$DOTFILES/$src" ]; then
+      echo "missing source: $src"; bad=1
+    fi
+    [ "$guard" = "-" ] && [ "$mac" != "-" ] || continue
+    case "$have" in
+      *" $src:${mac/#\~/$HOME}:$label "*) ;;
+      *) echo "not in LINKS: $src"; bad=1 ;;
+    esac
+  done < <(grep -vE '^[[:space:]]*(#|$)' "$DOTFILES/links.map")
+  return "$bad"
+}
+check "links.sh builds LINKS from links.map" links_match_map
 check "links.map rows have 5 columns" bash -c \
   "[ \$(grep -vE '^[[:space:]]*(#|\$)' '$DOTFILES/links.map' | awk -F'|' 'NF != 5' | wc -l) -eq 0 ]"
 
@@ -72,7 +96,6 @@ check "no orphaned dotfiles symlinks" no_orphan_links
 for rc_script in "$DOTFILES"/config/raycast/scripts/*.sh; do
   [ -f "$rc_script" ] || continue
   rc_name=$(basename "$rc_script")
-  check "raycast/$rc_name (syntax)" bash -n "$rc_script"
   check "raycast/$rc_name (executable)" test -x "$rc_script"
   check "raycast/$rc_name (metadata)" bash -c "
     for key in schemaVersion title mode; do
@@ -119,17 +142,10 @@ fi
 check "claude/settings.json" jq empty "$DOTFILES/config/claude/settings.json"
 
 # ─── Zed JSONC ──────────────────────────────────────────
-for zed_file in settings.json keymap.json tasks.json; do
-  if [ -f "$DOTFILES/config/zed/$zed_file" ]; then
-    check "zed/$zed_file" bash -c "perl -0pe 's|//[^\n]*||g; s/,(\s*[}\]])/\$1/g' \"$DOTFILES/config/zed/$zed_file\" | jq empty"
-  fi
-done
-
-# ─── Obsidian shared JSON ──────────────────────────────
-for obs_file in appearance.json app.json core-plugins.json community-plugins.json hotkeys.json; do
-  if [ -f "$DOTFILES/config/obsidian/shared/$obs_file" ]; then
-    check "obsidian/shared/$obs_file" jq empty "$DOTFILES/config/obsidian/shared/$obs_file"
-  fi
+for zed_path in "$DOTFILES"/config/zed/*.json; do
+  [ -f "$zed_path" ] || continue
+  zed_file=$(basename "$zed_path")
+  check "zed/$zed_file" bash -c "perl -0pe 's|//[^\n]*||g; s/,(\s*[}\]])/\$1/g' \"$zed_path\" | jq empty"
 done
 
 # ─── Zed file-association helper ────────────────────────
@@ -216,6 +232,65 @@ if not m or not re.fullmatch(r"\d+(\.\d+)?", m.group(1)):
 PY
   }
   check "aerospace.toml (borders startup args)" aerospace_borders_args
+
+  # The Raycast cheatsheet renders CHEATSHEET.md, a hand-written copy of the
+  # bindings, and "update this file when bindings change" was the only thing
+  # keeping them in step. Compare the two key sets per mode instead, so a
+  # binding added, removed or moved between modes fails here, not in the UI.
+  # Tables under a "Service mode" heading are the service mode; the rest main.
+  # A key in a heading itself, like service mode's entry chord, is main mode.
+  aerospace_cheatsheet_in_sync() {
+    python3 - "$AEROSPACE_TOML" "$DOTFILES/config/aerospace/CHEATSHEET.md" <<'PY'
+import re, sys, tomllib
+MODS = {"ctrl": "⌃", "alt": "⌥", "shift": "⇧", "cmd": "⌘"}
+ORDER = "⌃⌥⇧⌘"
+NAMES = {"minus": "-", "equal": "=", "slash": "/", "comma": ",", "period": ".",
+         "semicolon": ";", "quote": "'", "backslash": "\\", "enter": "↩",
+         "tab": "⇥", "backspace": "⌫", "esc": "esc", "space": "space"}
+
+def from_toml(key):
+    *mods, k = key.split("-")
+    return "".join(sorted((MODS[m] for m in mods), key=ORDER.index)) + NAMES.get(k, k.upper())
+
+def from_sheet(spec):
+    spec = spec.replace(" ", "")
+    i = 0
+    while i < len(spec) and spec[i] in ORDER:
+        i += 1
+    mods, rest = "".join(sorted(spec[:i], key=ORDER.index)), spec[i:]
+    m = re.fullmatch(r"(\d)–(\d)", rest)
+    if m:
+        parts = [str(n) for n in range(int(m[1]), int(m[2]) + 1)]
+    elif "/" in rest and len(rest) > 1:
+        parts = rest.split("/")
+    else:
+        parts = [rest]
+    return {mods + (p if p == "esc" else p.upper()) for p in parts}
+
+conf = tomllib.load(open(sys.argv[1], "rb"))
+want = {mode: {from_toml(k) for k in body.get("binding", {})}
+        for mode, body in conf.get("mode", {}).items()}
+got, mode = {}, "main"
+for line in open(sys.argv[2], encoding="utf-8"):
+    if line.startswith("#"):
+        mode = "service" if "service mode" in line.lower() else "main"
+        for spec in re.findall(r"`([^`]+)`", line):
+            got.setdefault("main", set()).update(from_sheet(spec))
+    elif line.lstrip().startswith("|"):
+        cell = line.split("|")[1]
+        for spec in re.findall(r"`([^`]+)`", cell):
+            got.setdefault(mode, set()).update(from_sheet(spec))
+
+bad = []
+for mode in sorted(set(want) | set(got)):
+    w, g = want.get(mode, set()), got.get(mode, set())
+    if w - g: bad.append("%s: in toml, not on sheet: %s" % (mode, " ".join(sorted(w - g))))
+    if g - w: bad.append("%s: on sheet, not in toml: %s" % (mode, " ".join(sorted(g - w))))
+if bad:
+    print("; ".join(bad)); sys.exit(1)
+PY
+  }
+  check "aerospace CHEATSHEET.md matches aerospace.toml" aerospace_cheatsheet_in_sync
 else
   echo -e "  ${dim}⏭️   aerospace.toml  (python3 not found)${reset}"
 fi

@@ -4,6 +4,24 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-045: Obsidian config leaves the repo; vaults keep their settings locally
+**Date:** 2026-09-28
+**Decision:** everything that managed Obsidian config is removed: `config/obsidian/` (the five shared vault settings files and the gitignored vault registry), the `links.map` row, the runtime vault discovery in `links.sh`, the `local` guard that existed only for that row, `sync.sh`'s vault-to-vault themes/plugins sync, the `test.sh` JSON checks, the `.gitignore` entry, and the Obsidian entries in `.claude/settings.json`. Before removal, all eleven live symlinks (5 files × 2 vaults, plus `~/Library/Application Support/obsidian/obsidian.json`) were replaced with byte-identical real files, so both vaults keep today's settings. The `cask "obsidian"` Brewfile line stays: the app is still wanted, only its config goes unmanaged.
+**Reason:** the user has not settled how they want to use Obsidian across vaults, and managed config is the wrong default while that is open. Shared settings made every hotkey or appearance tweak a repo change in both vaults at once, and the vault-sync code was the repo's riskiest path (ADR-042 records it eating a vault's themes twice).
+**Vault-to-vault links undone too:** `sync.sh` had pointed the Monzo vault's `.obsidian/themes` and `.obsidian/plugins` at the personal vault's, keeping the originals as `themes.bak`/`plugins.bak`. Each link was replaced by its `.bak` restored in place, plus a verified copy (`diff -rq`) of whatever the link had been supplying that the backup lacked (`themes/Catppuccin`, `plugins/obsidian-style-settings`), so the Monzo vault keeps the theme its `appearance.json` names. Neither vault's `.obsidian` now contains a symlink.
+**Supersedes:** ADR-018 (Obsidian part), the vault-sync half of ADR-042, the `local` guard from ADR-034
+
+---
+
+## ADR-044: Tests assert against the repo, never a hand-kept count or list; accordion moves to service mode
+**Date:** 2026-09-28
+**Decision:** every check in `test.sh` that depended on a number or file list maintained by hand now derives it. `links.sh builds LINKS from links.map` checks each unguarded row's exact `source:dest:label` is in `LINKS` and each row's source exists (bar `local`). Shell syntax covers `git ls-files '*.sh'`, Zed and Obsidian JSON *validation* globs their directories. A new check parses `aerospace.toml` and `CHEATSHEET.md` into per-mode key sets and requires them equal; heading keys (service mode's entry chord) count as main mode. Separately `alt-comma` (accordion) leaves the main mode for service mode `,`.
+**Reason:** the hard-coded "at least 15 links" went stale when ADR-034 retired tmux and kept CI red for six weeks, masked locally by guarded Zed rows. A count can only say "enough", never "the right ones". The same staleness applied to the cheatsheet Raycast renders, which drifted from the toml whenever a binding changed. Accordion on a single chord caused the "Screen 1 windows are always maximised and stacked" report: one slip of `⌥,` flipped persistent workspace 1 to `h_accordion`, and persistence meant it never reset.
+**Rejected:** generating CHEATSHEET.md from the toml, since the descriptions and grouping are the valuable part and the toml has neither. Removing accordion entirely; it has uses, just not on a one-chord key. Globbing `obsidian/shared/*.json` in `links.sh`: tests may discover files, but what gets *linked into every vault* stays an explicit allowlist, because sharing a config across vaults is a per-file decision, not a side effect of a file landing in a folder. Kept as schema, not lists: the 5-column map rule, Raycast metadata keys, Warp theme keys, Zed's deprecated-action denylist.
+**Extends:** ADR-041, ADR-034, ADR-038
+
+---
+
 ## ADR-043: Zed owns Finder/`open` defaults and the `code` command, not just `$EDITOR`
 **Date:** 2026-09-28
 **Decision:** `ide.sh` now sets Zed as the LaunchServices default for a fixed list of source extensions (py, ts, json, md, toml, yaml, go, rs, ...), through a small Swift script (`config/zed/set-default-app.swift`) calling `NSWorkspace.setDefaultApplication(at:toOpen:)`. `zshrc` gains `alias code="zed"`. `test.sh` gains a `swiftc -parse` check on the helper.

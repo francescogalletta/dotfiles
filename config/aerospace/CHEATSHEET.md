@@ -2,7 +2,7 @@
 
 ⌥ option · ⇧ shift · ⇥ tab · ↩ return · ⌫ delete
 
-Source of truth is `aerospace.toml`. Update this file when bindings change.
+Source of truth is `aerospace.toml`. `test.sh` fails if the keys here and there diverge.
 
 ## Focus & move (vim: H← J↓ K↑ L→)
 
@@ -24,8 +24,7 @@ Source of truth is `aerospace.toml`. Update this file when bindings change.
 
 | Keys        | Action |
 |-------------|--------|
-| `⌥/`        | Flip split, horizontal ↔ vertical |
-| `⌥,`        | Accordion, windows overlap with peek edges |
+| `⌥/`        | Tile, press again to flip horizontal ↔ vertical; exits accordion |
 | `⌥F`        | Fullscreen |
 | `⌥⇧F`       | Float / un-float window |
 | `⌥T`        | Force back to tiling, fixes an accidental float |
@@ -40,6 +39,7 @@ Source of truth is `aerospace.toml`. Update this file when bindings change.
 |---------------|--------|
 | `R`           | Flatten layout tree, fixes a tangled mess |
 | `F`           | Float / un-float, same as `⌥⇧F` |
+| `,`           | Accordion, windows stack with peek edges; `⌥/` to undo |
 | `⌫`           | Close all windows except focused |
 | `⌥⇧ H/J/K/L`  | Join with window in that direction, nests it |
 | `esc`         | Reload config, back to normal |
@@ -49,3 +49,4 @@ Source of truth is `aerospace.toml`. Update this file when bindings change.
 Every workspace is a **tree** of splits, not a grid. `⌥/` flips a split,
 `⌥⇧ H/J/K/L` moves a leaf through the tree, join-with wraps two windows
 into a sub-container. Lost? Flatten (`⌥⇧;` then `R`) and rebuild.
+Every window full-size and stacked? That is accordion, `⌥/` tiles it again.

@@ -125,8 +125,11 @@ gaps.outer.right =      6
     alt-t = 'layout tiling'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
+    # Also the way back out of accordion. Accordion itself lives in service
+    # mode: as alt-comma it was one slipped chord from typing a comma, and on a
+    # persistent workspace the layout sticks until someone notices every window
+    # stacked full-size behind the others.
     alt-slash = 'layout tiles horizontal vertical'
-    alt-comma = 'layout accordion horizontal vertical'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#focus
     alt-h = 'focus left'
@@ -190,6 +193,7 @@ gaps.outer.right =      6
     esc = ['reload-config', 'mode main']
     r = ['flatten-workspace-tree', 'mode main'] # reset layout
     f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+    comma = ['layout accordion horizontal vertical', 'mode main'] # Deliberate only; alt-slash undoes it
     backspace = ['close-all-windows-but-current', 'mode main']
 
     # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2

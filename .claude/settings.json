@@ -5,8 +5,7 @@
       "/Users/francesco/.config",
       "/Users/francesco/.claude",
       "/Users/francesco/.warp",
-      "/Users/francesco/.codex",
-      "/Users/francesco/Library/Application Support/obsidian"
+      "/Users/francesco/.codex"
     ],
     "allow": [
       "Edit(~/.zshrc)",
@@ -29,8 +28,6 @@
       "Edit(~/.claude/hooks/**)",
       "Edit(~/.claude/skills)",
       "Edit(~/.claude/skills/**)",
-      "Edit(~/Library/Application Support/obsidian/obsidian.json)",
-      "Read(~/Library/Application Support/obsidian/**)",
       "Bash(./install.sh)",
       "Bash(./links.sh)",
       "Bash(./sync.sh:*)",

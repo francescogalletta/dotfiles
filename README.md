@@ -20,7 +20,7 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | [yq](https://github.com/mikefarah/yq) | Command-line YAML processor |
 | [gh](https://cli.github.com) | GitHub CLI — PRs, issues, auth from the terminal |
 | [nvm](https://github.com/nvm-sh/nvm) | Node.js version manager |
-| [Obsidian](https://obsidian.md) | Markdown-based note-taking (Minimal theme, shared config across vaults) |
+| [Obsidian](https://obsidian.md) | Markdown-based note-taking (app only; its config stays local to each vault) |
 | [Tolaria](https://tolaria.md) | Markdown knowledgebase manager |
 
 ### Optional (prompted during install)
@@ -57,7 +57,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + AeroSpace + JankyBorders + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
 5. Installs Oh My Zsh, symlinks Homebrew plugins into `$ZSH_CUSTOM/plugins/`
-6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, obsidian, codex, CLAUDE.md, Claude skills/settings/statusline)
+6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, codex, CLAUDE.md, Claude skills/settings/statusline)
 7. Prompts for git name/email
 8. Generates an ed25519 SSH key
 9. Authenticates with GitHub via `gh auth login`
@@ -96,7 +96,7 @@ Output shows which links are OK (✓) and which were fixed or created (🔗). Ex
 
 ### `links.map` + `links.sh` — Symlink definitions
 
-The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. Guards (`codex`, `zed`) skip rows when the tool isn't installed, and `local` skips a row whose source file is gitignored and therefore absent on a fresh clone (Obsidian's machine-specific vault registry); Obsidian vault links are discovered at runtime in `links.sh` rather than listed in the map.
+The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. Guards (`codex`, `zed`) skip rows when the tool isn't installed.
 
 ## File structure
 
@@ -136,14 +136,6 @@ The mapping of repo files to their target locations lives in `links.map`: OS-neu
     │   └── themes/             # Custom themes → ~/.config/ghostty/themes/
     ├── git/
     │   └── ignore              # Global gitignore → ~/.config/git/ignore
-    ├── obsidian/
-    │   ├── obsidian.json       # Vault registry → ~/Library/.../obsidian/obsidian.json
-    │   └── shared/             # Config symlinked into each vault's .obsidian/
-    │       ├── appearance.json     # Theme: Minimal
-    │       ├── app.json            # App settings
-    │       ├── core-plugins.json   # Core plugin toggles
-    │       ├── community-plugins.json  # Community plugin list
-    │       └── hotkeys.json        # Keyboard shortcuts
     ├── raycast/
     │   └── scripts/            # Raycast Script Commands (directory registered in Raycast, not symlinked)
     │       ├── show-shortcuts.sh      # Cheatsheet for the frontmost app, or for an app / term you type
@@ -163,41 +155,25 @@ The mapping of repo files to their target locations lives in `links.map`: OS-neu
 
 Keybindings are aligned across all tools where the action exists. The scheme is defined once, implemented per-tool:
 
-| Action | Shortcut | Ghostty | Warp | Zed | Obsidian |
-|--------|----------|---------|------|-----|----------|
-| Command palette | `Cmd+Shift+P` / `Cmd+P` | yes | yes | yes | yes* |
-| Previous tab | `Alt+Shift+Left` | yes | yes | yes | -- |
-| Next tab | `Alt+Shift+Right` | yes | yes | yes | -- |
-| Split right | `Ctrl+Shift+R` | yes | -- | yes | -- |
-| Split down | `Ctrl+Shift+D` | yes | -- | yes | -- |
-| Close pane | `Ctrl+Shift+W` | yes | -- | yes | -- |
-| Focus left pane | `Ctrl+Alt+Left` | yes | -- | yes | -- |
-| Focus right pane | `Ctrl+Alt+Right` | yes | -- | yes | -- |
-| Focus up pane | `Ctrl+Alt+Up` | yes | -- | yes | -- |
-| Focus down pane | `Ctrl+Alt+Down` | yes | -- | yes | -- |
-| Toggle sidebar | `Alt+Cmd+S` / `Cmd+Shift+E` | -- | -- | yes | yes** |
-| AI agent | `Cmd+I` | -- | -- | yes | -- |
-| Duplicate line | `Cmd+Shift+D` | -- | -- | yes | -- |
-| Build | `Cmd+Shift+B` | -- | -- | yes | -- |
-| Test | `Cmd+Shift+T` | -- | -- | yes | -- |
+| Action | Shortcut | Ghostty | Warp | Zed |
+|--------|----------|---------|------|-----|
+| Command palette | `Cmd+Shift+P` | yes | yes | yes |
+| Previous tab | `Alt+Shift+Left` | yes | yes | yes |
+| Next tab | `Alt+Shift+Right` | yes | yes | yes |
+| Split right | `Ctrl+Shift+R` | yes | -- | yes |
+| Split down | `Ctrl+Shift+D` | yes | -- | yes |
+| Close pane | `Ctrl+Shift+W` | yes | -- | yes |
+| Focus left pane | `Ctrl+Alt+Left` | yes | -- | yes |
+| Focus right pane | `Ctrl+Alt+Right` | yes | -- | yes |
+| Focus up pane | `Ctrl+Alt+Up` | yes | -- | yes |
+| Focus down pane | `Ctrl+Alt+Down` | yes | -- | yes |
+| Toggle sidebar | `Alt+Cmd+S` | -- | -- | yes |
+| AI agent | `Cmd+I` | -- | -- | yes |
+| Duplicate line | `Cmd+Shift+D` | -- | -- | yes |
+| Build | `Cmd+Shift+B` | -- | -- | yes |
+| Test | `Cmd+Shift+T` | -- | -- | yes |
 
-**Obsidian-only shortcuts:**
-
-| Action | Shortcut |
-|--------|----------|
-| Daily note | `Ctrl+Shift+D` |
-| Toggle right sidebar | `Ctrl+Shift+R` |
-| Graph view | `Ctrl+Shift+G` |
-| Split vertical | `Cmd+\` |
-| Move line up | `Ctrl+Cmd+Up` |
-| Move line down | `Ctrl+Cmd+Down` |
-| Templater insert | `Ctrl+Shift+T` |
-| Toggle fold | `Ctrl+Cmd+.` |
-
-\* Obsidian uses `Cmd+P` for its command palette.
-\** Obsidian left sidebar uses `Cmd+Shift+E`; right sidebar uses `Ctrl+Shift+R`.
-
-Warp doesn't support split panes, so those bindings are terminal-only (Ghostty) and editor-only (Zed). Obsidian has no tab/pane model, so `Ctrl+Shift+D` and `Ctrl+Shift+R` are reused for Obsidian-specific actions (daily note and right sidebar).
+Warp doesn't support split panes, so those bindings are terminal-only (Ghostty) and editor-only (Zed).
 
 ### Raycast cheatsheets
 
@@ -247,29 +223,6 @@ export ANTHROPIC_MODEL="opus[1m]"   # opus[1m] | claude-fable-5[1m] | sonnet | h
 ```
 
 Environment beats settings files, so this wins. For one session only, use `/model` and press `s` instead of Enter.
-
-### Obsidian config
-
-Shared config files in `config/obsidian/shared/` are symlinked into each vault's `.obsidian/` directory. Vault paths are discovered dynamically from `obsidian.json` via `jq`, so adding a new vault just means registering it in Obsidian.
-
-| Repo path | Symlinked to | Purpose |
-|-----------|-------------|---------|
-| `config/obsidian/obsidian.json` | `~/Library/Application Support/obsidian/obsidian.json` | Vault registry |
-| `config/obsidian/shared/appearance.json` | `<vault>/.obsidian/appearance.json` | Theme: Minimal |
-| `config/obsidian/shared/app.json` | `<vault>/.obsidian/app.json` | App settings |
-| `config/obsidian/shared/core-plugins.json` | `<vault>/.obsidian/core-plugins.json` | Core plugin toggles |
-| `config/obsidian/shared/community-plugins.json` | `<vault>/.obsidian/community-plugins.json` | Community plugin list |
-| `config/obsidian/shared/hotkeys.json` | `<vault>/.obsidian/hotkeys.json` | Keyboard shortcuts |
-
-**Community plugins** (must be installed manually via Settings > Community plugins > Browse on first run):
-- `obsidian-minimal-settings` -- companion settings panel for the Minimal theme
-- `templater-obsidian` -- smart templates for daily notes and other recurring structures
-- `dataview` -- query notes like a database
-- `obsidian-excalidraw-plugin` -- inline sketches and diagrams
-
-**Themes and plugins** are shared across vaults by `sync.sh`. It discovers all registered vaults, asks you to pick a primary, then symlinks `themes/` and `plugins/` from every other vault to the primary. Run `./sync.sh` after installing a new theme or plugin in any vault.
-
-**First run per vault:** Open Settings > Appearance > install Minimal theme (the Monzo vault currently has AnuPpuccin). Then install the community plugins listed above. Run `./sync.sh` to propagate themes and plugins to all vaults.
 
 ## Pending decisions
 
