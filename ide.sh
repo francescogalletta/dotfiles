@@ -33,6 +33,23 @@ EOF
 
 git config --file "$HOME/.gitconfig.local" core.editor "zed --wait"
 
+# ─── Default app for source files ───────────────────────
+# $EDITOR only covers the shell. Double-click and `open` go through
+# LaunchServices, where any editor installed since (Cursor did this) can
+# claim these types. Re-running ide.sh reclaims them.
+DOTFILES="${DOTFILES:-$(cd "$(dirname "$0")" && pwd)}"
+ZED_EXTS=(py pyi ipynb js mjs cjs jsx ts tsx json jsonc md markdown toml yaml yml
+  go rs sql css scss lua rb swift c h cpp hpp java kt ini conf cfg lock log txt)
+if [ -d "/Applications/Zed.app" ] && command -v swift &>/dev/null; then
+  if swift "$DOTFILES/config/zed/set-default-app.swift" "${ZED_EXTS[@]}"; then
+    echo -e "  ✅ Zed opens ${#ZED_EXTS[@]} source file types"
+  else
+    echo -e "  ${red}❌ Some file types could not be assigned to Zed${reset}"
+  fi
+else
+  echo -e "  ⏭️  File associations ${dim}(needs Zed.app and swift)${reset}"
+fi
+
 echo ""
 echo -e "  ${green}Default editor: ${bold}Zed${reset}"
 echo -e "  Written: ${dim}~/.editor_env${reset}, ${dim}~/.gitconfig.local${reset}"

@@ -4,6 +4,15 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-043: Zed owns Finder/`open` defaults and the `code` command, not just `$EDITOR`
+**Date:** 2026-09-28
+**Decision:** `ide.sh` now sets Zed as the LaunchServices default for a fixed list of source extensions (py, ts, json, md, toml, yaml, go, rs, ...), through a small Swift script (`config/zed/set-default-app.swift`) calling `NSWorkspace.setDefaultApplication(at:toOpen:)`. `zshrc` gains `alias code="zed"`. `test.sh` gains a `swiftc -parse` check on the helper.
+**Reason:** ADR-019 made Zed the only managed editor, but that only reached `$EDITOR` and git. Cursor.app was still installed and still held LaunchServices for most source types, and its installer had left a root-owned `/usr/local/bin/code` symlink into Cursor.app, so double-click, `open file.py` and `code .` all still landed in Cursor.
+**Rejected:** `duti` (a Brewfile install for one job the OS APIs already do). JXA calling `LSSetDefaultRoleHandlerForContentType` returned `paramErr` (-50) for every role value tried, so the Swift route is the one that works. Replacing `/usr/local/bin/code` would need sudo; the alias takes precedence in interactive shells instead. `.txt` moves from TextEdit to Zed too; `.sh` stays with Ghostty and `.html` with the browser on purpose.
+**Extends:** ADR-019, ADR-017
+
+---
+
 ## ADR-042: The reconcile path learns to remove — `sync.sh` prunes orphaned links, can no longer clobber a cloud vault; `install.sh` pre-trusts Brewfile taps
 **Date:** 2026-08-17
 **Decision:** three changes to the parity path. (1) `sync.sh` gains a prune pass after the reconcile loop: it removes any *broken* symlink that points *into `$DOTFILES`*, scanning `$HOME` at depth 1 and `~/.config`, `~/.warp`, `~/.codex`, `~/.claude` at depth 4, then deletes any directory left empty under `~/.config`. (2) The Obsidian vault-to-vault theme/plugin sync switches from trust-the-precheck to attempt-verify-rollback: it makes the symlink, checks that it resolves, and if it does not, removes it and moves the target's real directory back from `.bak`. The old `mkdir -p "$_src"` is gone. (3) `install.sh` trusts every `tap` declared in the Brewfile — parsed from the Brewfile itself, so the two never drift — before `brew bundle` runs. `test.sh` gains a `no orphaned dotfiles symlinks` check (36 → 37).

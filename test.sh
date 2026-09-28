@@ -132,6 +132,15 @@ for obs_file in appearance.json app.json core-plugins.json community-plugins.jso
   fi
 done
 
+# ─── Zed file-association helper ────────────────────────
+# ide.sh only reaches this on a machine with Zed.app, so a syntax error would
+# otherwise surface as a failed install step rather than a failed test.
+if command -v swiftc &>/dev/null; then
+  check "zed/set-default-app.swift (syntax)" swiftc -parse "$DOTFILES/config/zed/set-default-app.swift"
+else
+  echo -e "  ${dim}⏭️   zed/set-default-app.swift  (swiftc not found)${reset}"
+fi
+
 # ─── Zed deprecated actions ─────────────────────────────
 # Zed auto-migrates deprecated actions by writing through symlinks,
 # causing uncommitted changes in the repo. Catch them here.

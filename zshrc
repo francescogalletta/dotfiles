@@ -147,6 +147,9 @@ cca() {
 
 # Zed (z is reserved for zoxide)
 alias ze="zed"
+# `code` is muscle memory from VS Code/Cursor, whose installers leave a root-owned
+# /usr/local/bin/code behind; the alias wins over it without needing sudo.
+alias code="zed"
 
 # Git identity — view or change ~/.gitconfig.local identity
 gitid() {
