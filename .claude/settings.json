@@ -4,8 +4,7 @@
     "additionalDirectories": [
       "/Users/francesco/.config",
       "/Users/francesco/.claude",
-      "/Users/francesco/.warp",
-      "/Users/francesco/.codex"
+      "/Users/francesco/.warp"
     ],
     "allow": [
       "Edit(~/.zshrc)",
@@ -20,9 +19,7 @@
       "Edit(~/.config/ghostty/config)",
       "Edit(~/.config/starship.toml)",
       "Edit(~/.config/zed/**)",
-      "Edit(~/.codex/**)",
       "Edit(~/.warp/**)",
-      "Edit(~/.claude/settings.json)",
       "Edit(~/.claude/statusline.sh)",
       "Edit(~/.claude/hooks)",
       "Edit(~/.claude/hooks/**)",

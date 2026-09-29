@@ -28,7 +28,6 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | Tool | Purpose |
 |------|---------|
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | Anthropic's AI coding agent |
-| [Codex](https://github.com/openai/codex) | OpenAI's coding agent (configured to use local Ollama models) |
 | [Google Drive](https://www.google.com/drive/download/) | Desktop sync client |
 
 ### Editor
@@ -57,7 +56,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + AeroSpace + JankyBorders + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
 5. Installs Oh My Zsh, symlinks Homebrew plugins into `$ZSH_CUSTOM/plugins/`
-6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, codex, CLAUDE.md, Claude skills/settings/statusline)
+6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, CLAUDE.md, Claude skills/hooks/statusline)
 7. Prompts for git name/email
 8. Generates an ed25519 SSH key
 9. Authenticates with GitHub via `gh auth login`
@@ -96,7 +95,7 @@ Output shows which links are OK (✓) and which were fixed or created (🔗). Ex
 
 ### `links.map` + `links.sh` — Symlink definitions
 
-The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. Guards (`codex`, `zed`) skip rows when the tool isn't installed.
+The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. The `zed` guard skips rows when Zed isn't installed.
 
 ## File structure
 
@@ -118,15 +117,12 @@ The mapping of repo files to their target locations lives in `links.map`: OS-neu
     │   ├── aerospace.toml      # AeroSpace config → ~/.aerospace.toml
     │   └── CHEATSHEET.md       # Keybinding reference
     ├── claude/
-    │   ├── settings.json       # Claude Code settings → ~/.claude/settings.json
     │   ├── statusline.sh       # Claude Code statusline → ~/.claude/statusline.sh
     │   ├── hooks/              # Claude Code hooks → ~/.claude/hooks/
     │   │   └── session-start.sh #  SessionStart briefing for managed projects (TASKS.md)
     │   └── skills/             # Claude Code skills → ~/.claude/skills/
     │       ├── ship/           #   /ship — commit and push
     │       └── learn/          #   /learn — end-of-session review and improvement loop
-    ├── codex/
-    │   └── config.toml         # Codex config → ~/.codex/config.toml (Ollama provider + gemma4 default)
     ├── zed/
     │   ├── settings.json       # Zed settings → ~/.config/zed/settings.json
     │   ├── keymap.json         # Zed keybindings → ~/.config/zed/keymap.json
@@ -204,19 +200,20 @@ Warp settings (font, opacity, theme selection) sync via your Warp account. Log i
 
 ### AI agent config
 
-All Claude Code config lives in this repo and is symlinked to its expected location:
+Claude Code's instructions, scripts and skills live in this repo and are symlinked to their expected location:
 
 | Repo path | Symlink target | Purpose |
 |-----------|---------------|---------|
 | `CLAUDE.md` | `~/CLAUDE.md` | Global instructions (tone, tools, conventions) |
-| `config/claude/settings.json` | `~/.claude/settings.json` | Permissions, statusline command |
 | `config/claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (directory, git branch, git status) |
 | `config/claude/hooks/` | `~/.claude/hooks/` | Hook scripts (SessionStart briefing for managed projects) |
 | `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/ship`, `/learn`) |
 
-Edits flow both ways -- change the live file or the repo file, same result. Adding support for another AI agent means adding another config file and symlink.
+Edits flow both ways -- change the live file or the repo file, same result.
 
-**Model choice is deliberately not in `settings.json`.** Because the file is symlinked into the repo, a `/model` change would write through and dirty the working tree every time. The default lives in `~/.zshrc.local` (machine-local, sourced by `zshrc`, never committed):
+**`~/.claude/settings.json` is not in the repo.** Claude Code, `/config`, plugin installs and org tooling all rewrite it, which kept breaking the symlink and writing machine-specific values back into git (ADR-046). Each machine owns its file: set it up with `/config` and `/permissions` in Claude Code, or edit it directly. The hooks and statusline above only run once that file points at them.
+
+**Model choice is deliberately not in `settings.json`.** A `/model` change writes to it, and the model differs per machine anyway. The default lives in `~/.zshrc.local` (machine-local, sourced by `zshrc`, never committed):
 
 ```bash
 export ANTHROPIC_MODEL="opus[1m]"   # opus[1m] | claude-fable-5[1m] | sonnet | haiku

@@ -23,7 +23,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | CLI | eza, bat, fd, fzf, ripgrep, jq, yq, gh |
 | Node.js | nvm (lazy-loaded) |
 | Python | Docker-only, uv package manager (never on host) |
-| AI agents | Claude Code (optional), Codex (optional, uses Ollama) |
+| AI agents | Claude Code (optional; instructions, hooks, statusline and skills managed, `settings.json` per machine — ADR-046) |
 | Window mgmt | AeroSpace (tiling WM) + JankyBorders (focus highlight, vivid green `#00e676` at 8px, unfocused windows draw no border at all, 6px gaps — ADR-040), config in `config/aerospace/` (ADR-033) and covered by `test.sh` (ADR-041); resize is modeless, only `service` remains a binding mode (ADR-039); `⌥T` forces a floated window back to tiling; accordion is service-mode `,` only, `⌥/` tiles again (ADR-044); `CHEATSHEET.md` (rendered by Raycast) is test-enforced to match the toml's bindings |
 | Local AI | Ollama via `cask "ollama-app"` only — the formula is a redundant second copy (ADR-035) |
 | Launcher | Raycast — installed but deliberately unmanaged (cask blocks `brew bundle`, ADR-019); Script Commands in `config/raycast/scripts/` surface per-tool cheatsheets (ADR-038) |
@@ -81,4 +81,4 @@ Claude Code skills in `config/claude/skills/`: `/ship`, `/learn`. (`/explain`, `
 
 New projects get a project-local `.claude/` seeded with: `settings.json` (empty stub — merges with global), `README.md` (convention doc), and `hooks/.gitkeep` (placeholder dir), scaffolded agentically. See ADR-028.
 
-Permissions are split by scope. `config/claude/settings.json` (symlinked to `~/.claude/settings.json`) holds global defaults and stays deliberately narrow. Repo-root `.claude/settings.json` holds the dotfiles-only grants: `Edit(...)` for every destination in `links.map` plus the generated per-machine files, `additionalDirectories` for the five out-of-repo config roots, and `worktree.bgIsolation: "none"` so background sessions edit this checkout in place. Working in this repo therefore does not prompt, while no other project inherits write access to the shell rc or editor config (ADR-037).
+Permissions are split by scope. `~/.claude/settings.json` holds global defaults and stays deliberately narrow; it is a per-machine file, not tracked or symlinked, because Claude Code and org tooling rewrite it (ADR-046). Repo-root `.claude/settings.json` holds the dotfiles-only grants: `Edit(...)` for every destination in `links.map` plus the generated per-machine files, `additionalDirectories` for the five out-of-repo config roots, and `worktree.bgIsolation: "none"` so background sessions edit this checkout in place. Working in this repo therefore does not prompt, while no other project inherits write access to the shell rc or editor config (ADR-037).

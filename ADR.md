@@ -4,6 +4,17 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-046: `~/.claude/settings.json` leaves the repo; Codex leaves the managed setup
+**Date:** 2026-09-29
+**Decision:** `config/claude/settings.json` and its `links.map` row are removed, with no replacement tooling: each machine owns its `~/.claude/settings.json`, configured through Claude Code's own `/config` and `/permissions`. Hooks, statusline and skills stay symlinked, because only this repo writes those files. Separately, Codex is dropped: the optional install step in `install.sh`, `config/codex/` (Ollama provider config + model catalog), both `links.map` rows and the `codex` link guard. `~/.codex` stays in `sync.sh`'s prune roots so the retired links get cleaned up on other machines.
+**Reason:** the file has three owners with different lifetimes: the user's portable preferences, per-machine values (Monzo plugins and marketplace), and tool writes (`/model`, `/config`, an org `aicodemetricsd` hook, managed settings on the work laptop). A symlink assumes one writer. In practice tools replaced it with a real file (2026-09-28 10:18), and writes that did go through landed in git: the tracked copy had `model` pinned despite ADR-036 moving it out, plus an `autoMode.environment` block generated on the other laptop. 32 commits touched the file.
+Codex had no active use: the CLI is not on this machine's `PATH`, and its only repo-dependent file was the model catalog.
+**Rejected:** keeping the symlink with `sync.sh` repair (it moves the per-machine keys to `.bak` on every relink). A tracked shared base plus a merge script re-applied on every sync (more moving parts for preferences that rarely change). A guided `claude-setup.sh` wizard: built, tested, then dropped before shipping as tooling that would not get used; `/config` already is the guided setup.
+**Migration:** on this machine `~/.claude/settings.json` was already a real file, and `~/.codex/model_catalog.json` was replaced by an identical local copy before `config/codex/` went. On a machine that still has the old symlinks, pulling this leaves them dangling and `sync.sh` prunes them. To keep the old settings there, run this before pulling: `f=~/.claude/settings.json; cp "$(readlink "$f")" "$f.tmp" && mv "$f.tmp" "$f"`. After pulling, restore from history instead: `git -C ~/dotfiles show <this-commit>^:config/claude/settings.json > ~/.claude/settings.json`.
+**Supersedes:** ADR-036's premise that the tracked file could be kept clean; the user-scope half of ADR-037's split (the project-scope `.claude/settings.json` only loses its `~/.claude/settings.json` and `~/.codex` grants); ADR-020 (Codex with Ollama provider)
+
+---
+
 ## ADR-045: Obsidian config leaves the repo; vaults keep their settings locally
 **Date:** 2026-09-28
 **Decision:** everything that managed Obsidian config is removed: `config/obsidian/` (the five shared vault settings files and the gitignored vault registry), the `links.map` row, the runtime vault discovery in `links.sh`, the `local` guard that existed only for that row, `sync.sh`'s vault-to-vault themes/plugins sync, the `test.sh` JSON checks, the `.gitignore` entry, and the Obsidian entries in `.claude/settings.json`. Before removal, all eleven live symlinks (5 files × 2 vaults, plus `~/Library/Application Support/obsidian/obsidian.json`) were replaced with byte-identical real files, so both vaults keep today's settings. The `cask "obsidian"` Brewfile line stays: the app is still wanted, only its config goes unmanaged.

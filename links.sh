@@ -13,7 +13,6 @@ _trim() { local s="$1"; s="${s#"${s%%[![:space:]]*}"}"; printf '%s' "${s%"${s##*
 _guard_ok() {
   case "$1" in
     -)     return 0 ;;
-    codex) command -v codex &>/dev/null ;;
     zed)   [ -d "/Applications/Zed.app" ] ;;
     *)     return 1 ;;  # unknown guard: skip rather than link blindly
   esac

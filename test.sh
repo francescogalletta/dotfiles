@@ -45,7 +45,7 @@ done < <(git -C "$DOTFILES" ls-files '*.sh')
 # ─── links.map → LINKS array ────────────────────────────
 # Asserted row by row against the map, never against a count: a literal "at
 # least 15" went stale when tmux was retired (ADR-034) and failed only in CI,
-# where no guarded row (zed, codex) padded the total. Every unguarded macOS row
+# where no guarded row (zed) padded the total. Every unguarded macOS row
 # must reach LINKS with its exact destination, and every row's source must exist
 # in the repo.
 links_match_map() {
@@ -137,9 +137,6 @@ if [ -x "$SHOW_SHORTCUTS" ]; then
   }
   check "raycast/show-shortcuts aligns each table's key column" aligned_columns
 fi
-
-# ─── JSON ───────────────────────────────────────────────
-check "claude/settings.json" jq empty "$DOTFILES/config/claude/settings.json"
 
 # ─── Zed JSONC ──────────────────────────────────────────
 for zed_path in "$DOTFILES"/config/zed/*.json; do
