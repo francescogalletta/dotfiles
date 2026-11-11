@@ -66,6 +66,62 @@ links_match_map() {
   return "$bad"
 }
 check "links.sh builds LINKS from links.map" links_match_map
+# The claude guard: env var wins, then the remembered ~/.gitconfig.local answer,
+# then (interactive sync/install only) a prompt, else link. Everything here runs
+# against a scratch $HOME with stdin from /dev/null, so this machine's own flag
+# can't sway it and nothing can block on a prompt.
+claude_guard() {
+  local tmp n_rows bad=0
+  tmp=$(mktemp -d)
+  n_rows=$(grep -vE '^[[:space:]]*(#|$)' "$DOTFILES/links.map" | awk -F'|' '$3 ~ /^ *claude *$/' | wc -l | tr -d ' ')
+  [ "$n_rows" -gt 0 ] || { echo "no claude-guarded rows in links.map"; return 1; }
+  # $1 = DOTFILES_SKIP_CLAUDE ("" = unset), $2 = dotfiles.skipClaude ("" = unset),
+  # $3 = LINKS_PROMPT; prints how many Claude rows reach LINKS
+  claude_links() (
+    HOME="$tmp"; rm -f "$tmp/.gitconfig.local"
+    [ -n "$2" ] && git config --file "$tmp/.gitconfig.local" dotfiles.skipClaude "$2"
+    if [ -n "$1" ]; then DOTFILES_SKIP_CLAUDE="$1"; else unset DOTFILES_SKIP_CLAUDE; fi
+    LINKS_PROMPT="$3" source "$DOTFILES/links.sh" </dev/null
+    printf '%s\n' "${LINKS[@]}" | grep -cE '^(CLAUDE\.md|config/claude/)'
+  )
+  expect() { local want="$1" why="$2"; shift 2
+    local got; got=$(claude_links "$@")
+    [ "$got" = "$want" ] || { echo "$why: $got of $n_rows linked, want $want"; bad=1; }
+  }
+  expect "$n_rows" "no env, no flag, no TTY"           ""  ""     ""
+  expect "$n_rows" "no env, no flag, LINKS_PROMPT=1 without TTY" "" "" 1
+  expect 0         "DOTFILES_SKIP_CLAUDE=1"            1   ""     1
+  expect "$n_rows" "DOTFILES_SKIP_CLAUDE=0"            0   ""     1
+  expect 0         "flag true"                         ""  true   1
+  expect "$n_rows" "flag false"                        ""  false  1
+  expect 0         "env 1 over flag false"             1   false  1
+  expect "$n_rows" "env 0 over flag true"              0   true   1
+  rm -rf "$tmp"
+  return "$bad"
+}
+check "links.sh claude guard (env > flag > non-TTY default links)" claude_guard
+
+# The prompt itself, driven through stdin: Enter/y link, n skips once, and
+# always/never persist the answer that the guard reads on the next run.
+claude_prompt_answers() {
+  local tmp bad=0
+  tmp=$(mktemp -d)
+  answer() (  # $1 = what the user types; prints rc and the stored flag
+    HOME="$tmp"; rm -f "$tmp/.gitconfig.local"
+    source "$DOTFILES/links.sh" </dev/null
+    printf '%s\n' "$1" | _claude_prompt 2>/dev/null; rc=$?
+    echo "$rc:$(git config --file "$tmp/.gitconfig.local" dotfiles.skipClaude)"
+  )
+  local in want got
+  for in in "|0:" "y|0:" "Y|0:" "n|1:" "always|0:false" "never|1:true" "huh
+y|0:"; do
+    want=${in##*|}; got=$(answer "${in%|*}")
+    [ "$got" = "$want" ] || { echo "answer '${in%|*}': got $got, want $want"; bad=1; }
+  done
+  rm -rf "$tmp"
+  return "$bad"
+}
+check "links.sh claude prompt answers (y/n/always/never)" claude_prompt_answers
 check "links.map rows have 5 columns" bash -c \
   "[ \$(grep -vE '^[[:space:]]*(#|\$)' '$DOTFILES/links.map' | awk -F'|' 'NF != 5' | wc -l) -eq 0 ]"
 

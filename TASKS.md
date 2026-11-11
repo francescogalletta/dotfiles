@@ -68,8 +68,12 @@ Index format: `[T###]` ID, one-line goal, status, link to full task file in `tas
 - [x] [T128] Tests derive from the repo, not hard-coded counts; cheatsheet sync check; accordion off a single chord — `done` → [tasks/T128.md](tasks/T128.md)
 - [x] [T129] Remove Obsidian config management; vaults keep settings locally — `done` → [tasks/T129.md](tasks/T129.md)
 - [x] [T130] Untrack `~/.claude/settings.json` (per machine now); drop Codex — `done` → [tasks/T130.md](tasks/T130.md)
+- [x] [T131] Offer the Claude config links on sync; remembered per machine (work laptop says never) — `done` → [tasks/T131.md](tasks/T131.md)
 
 ## Changelog
+
+### 2026-11-11
+- T131 done (ADR-047): new `claude` guard on the four Claude rows in `links.map`. `sync.sh` and `install.sh` ask once per run `Sync Claude config (...)? [Y/n/always/never]`; Enter links as before, `n` skips this run, `always`/`never` persist `dotfiles.skipClaude` in `~/.gitconfig.local`. `DOTFILES_SKIP_CLAUDE=1/0` overrides everything; with no TTY it links without asking. The TTY is probed before `links.sh`'s parse loop (stdin there is `links.map`) and prompting is opt-in via `LINKS_PROMPT=1`, so `make test` from a terminal never blocks. `test.sh` 37 → 39: precedence table and prompt answers, both against a scratch `$HOME`; mutation-tested (non-TTY default flipped, flag ignored, `never` storing false all fail). Prompt also driven on a real pty with `expect`, and `sync.sh` run end to end against a scratch `$HOME`: one prompt, `n` creates no Claude links, no-TTY links all four. README documents the prompt and the copy-then-`never` migration.
 
 ### 2026-09-29
 - T130 done (ADR-046): `config/claude/settings.json` and its `links.map` row removed; each machine owns `~/.claude/settings.json` via `/config`. A `claude-setup.sh` wizard was built and tested (fresh/update/keep/restore-from-history all verified) but dropped before shipping as unlikely to be used; its `install.sh`/`sync.sh` wiring and tests went with it. Codex dropped in the same pass: optional install step, `config/codex/`, both `links.map` rows, the `codex` guard, and the `~/.codex` grants in `.claude/settings.json`; `~/.codex/model_catalog.json` localized first (identical copy). `test.sh` 38 → 37 (the `claude/settings.json` JSON check goes). Migration for machines with the old symlinks is in ADR-046. Resolves the `~/.claude/settings.json` drift noted under T129.

@@ -105,7 +105,7 @@ count  # Homebrew
 count  # Brewfile
 count  # Oh My Zsh
 count  # Node.js
-source "$DOTFILES/links.sh"
+LINKS_PROMPT=1 source "$DOTFILES/links.sh"  # may ask once about the Claude rows
 for entry in "${LINKS[@]}"; do count; done  # symlinks
 count  # Git identity
 count  # SSH key

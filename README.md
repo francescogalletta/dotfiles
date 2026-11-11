@@ -56,7 +56,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + AeroSpace + JankyBorders + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
 5. Installs Oh My Zsh, symlinks Homebrew plugins into `$ZSH_CUSTOM/plugins/`
-6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, CLAUDE.md, Claude skills/hooks/statusline)
+6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, CLAUDE.md, Claude skills/hooks/statusline; asks first whether to link the Claude ones, see [AI agent config](#ai-agent-config))
 7. Prompts for git name/email
 8. Generates an ed25519 SSH key
 9. Authenticates with GitHub via `gh auth login`
@@ -95,7 +95,7 @@ Output shows which links are OK (✓) and which were fixed or created (🔗). Ex
 
 ### `links.map` + `links.sh` — Symlink definitions
 
-The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. The `zed` guard skips rows when Zed isn't installed.
+The mapping of repo files to their target locations lives in `links.map`: OS-neutral data, one pipe-delimited row per managed config (source | label | guard | macOS destination | Windows destination). Edit this file to add or remove symlinks. `links.sh` is the macOS driver that parses the map into the `LINKS` array consumed by `install.sh` and `sync.sh`; the future `windows/links.ps1` will read the same map. The `zed` guard skips rows when Zed isn't installed; the `claude` guard skips the Claude rows when this machine opted out (see [AI agent config](#ai-agent-config)).
 
 ## File structure
 
@@ -211,19 +211,17 @@ Claude Code's instructions, scripts and skills live in this repo and are symlink
 
 Edits flow both ways -- change the live file or the repo file, same result.
 
-**`~/.claude/settings.json` is not in the repo.** Claude Code, `/config`, plugin installs and org tooling all rewrite it, which kept breaking the symlink and writing machine-specific values back into git (ADR-046). Each machine owns its file: set it up with `/config` and `/permissions` in Claude Code, or edit it directly. The hooks and statusline above only run once that file points at them.
+**Claude config is offered, not forced.** `make sync` (and `install.sh`) ask once per run whether to link these four:
 
-**Model choice is deliberately not in `settings.json`.** A `/model` change writes to it, and the model differs per machine anyway. The default lives in `~/.zshrc.local` (machine-local, sourced by `zshrc`, never committed):
-
-```bash
-export ANTHROPIC_MODEL="opus[1m]"   # opus[1m] | claude-fable-5[1m] | sonnet | haiku
+```
+  Sync Claude config (CLAUDE.md, skills, statusline, hooks)? [Y/n/always/never]
 ```
 
-Environment beats settings files, so this wins. For one session only, use `/model` and press `s` instead of Enter.
+Enter or `y` links them, as before. `n` skips them for this run only, and leaves any existing links untouched. `always` and `never` store the answer in `~/.gitconfig.local` (machine-local, never committed) as `dotfiles.skipClaude=false`/`true`, so later runs don't ask. To change a stored answer, edit or remove it: `git config --file ~/.gitconfig.local --unset dotfiles.skipClaude`.
 
-## Pending decisions
+`DOTFILES_SKIP_CLAUDE=1` (skip) or `=0` (link) overrides both the stored answer and the prompt for one run. With no terminal (CI, `test.sh`, scripts) there is no prompt and the links are made.
 
-Ideas discussed but deliberately not adopted yet. Revisit when the itch returns; delete the entry when decided either way.
+On a machine whose Claude Code config comes from elsewhere (the work laptop: org-managed plugins and statusline), answer `never`. Skipping only stops links being created, so first replace any existing ones with local copies (`l=~/.claude/skills; t=$(readlink "$l"); rm "$l" && cp -R "$t" "$l"`), or the hooks and statusline `settings.json` points at will vanish (ADR-047).
 
 ### AeroSpace: float windows that tile badly (2026-08-15)
 
