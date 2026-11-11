@@ -14,6 +14,13 @@ _guard_ok() {
   case "$1" in
     -)     return 0 ;;
     zed)   [ -d "/Applications/Zed.app" ] ;;
+    # Opt-out, so the default (personal laptop) still links. The env var wins
+    # when set (1 skips, 0 forces); otherwise the machine-local flag decides.
+    claude)
+      case "${DOTFILES_SKIP_CLAUDE:-$(git config --file "$HOME/.gitconfig.local" --bool dotfiles.skipClaude 2>/dev/null)}" in
+        1|true) return 1 ;;
+        *)      return 0 ;;
+      esac ;;
     *)     return 1 ;;  # unknown guard: skip rather than link blindly
   esac
 }

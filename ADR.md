@@ -4,6 +4,16 @@ Reverse-chronological. Newest entry at top. After adding an entry, update PRD.md
 
 ---
 
+## ADR-047: Claude config links become opt-out per machine (`claude` guard)
+**Date:** 2026-11-11
+**Decision:** the four Claude rows in `links.map` (`CLAUDE.md`, `claude/skills`, `claude/statusline`, `claude/hooks`) move from guard `-` to a new `claude` guard. `links.sh` skips them when `DOTFILES_SKIP_CLAUDE=1`, or, with the env var unset, when `~/.gitconfig.local` has `dotfiles.skipClaude=true`. `DOTFILES_SKIP_CLAUDE=0` forces them back on. With neither set (the personal laptop), behaviour is unchanged. `test.sh` gains a check run against a scratch `$HOME`: no flag links every `claude` row, either opt-out links none, `=0` beats the flag.
+**Reason:** the work laptop gets its Claude Code config from org tooling (Monzo plugins, including `monzo-status-line`), so the repo's statusline, hooks, skills and `CLAUDE.md` should stop being linked there, while the personal laptop keeps them. An env var alone does not persist, so a later `make sync` from a shell without it would relink everything and shunt the local copies to `.bak`. `~/.gitconfig.local` is already the generated, never-committed per-machine file that `install.sh` reads with `git config --file`, so the persistent flag lives there instead of in a new marker file.
+**Rejected:** a separate work-profile branch (drifts from `main`). A marker file such as `~/.dotfiles-no-claude` (a third machine-local file for one boolean). Putting the flag in `~/.editor_env` (`ide.sh` overwrites it on every run).
+**Migration:** the guard only stops links being created; `sync.sh` never removes a live link. On a machine opting out, replace each existing link with a plain copy (`rm` the link, `cp -R` its target) before or after setting the flag, then set the flag. The Claude-side settings (`statusLine`, the `SessionStart` hook path) are per machine already (ADR-046) and are not touched by the repo.
+**Extends:** ADR-034 (guards), ADR-046
+
+---
+
 ## ADR-046: `~/.claude/settings.json` leaves the repo; Codex leaves the managed setup
 **Date:** 2026-09-29
 **Decision:** `config/claude/settings.json` and its `links.map` row are removed, with no replacement tooling: each machine owns its `~/.claude/settings.json`, configured through Claude Code's own `/config` and `/permissions`. Hooks, statusline and skills stay symlinked, because only this repo writes those files. Separately, Codex is dropped: the optional install step in `install.sh`, `config/codex/` (Ollama provider config + model catalog), both `links.map` rows and the `codex` link guard. `~/.codex` stays in `sync.sh`'s prune roots so the retired links get cleaned up on other machines.

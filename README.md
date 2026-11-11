@@ -56,7 +56,7 @@ The script is idempotent — safe to run multiple times. Existing config files a
 3. Installs all packages from `Brewfile` via `brew bundle` (CLI tools + Ghostty + Warp + AeroSpace + JankyBorders + Ollama + Obsidian + Tolaria)
 4. Installs Node.js LTS via nvm
 5. Installs Oh My Zsh, symlinks Homebrew plugins into `$ZSH_CUSTOM/plugins/`
-6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, CLAUDE.md, Claude skills/hooks/statusline)
+6. Symlinks config files (zshrc, zprofile, gitconfig, git/ignore, ghostty, warp/themes, warp/keybindings, zed, CLAUDE.md, Claude skills/hooks/statusline; the Claude ones skippable per machine, see [AI agent config](#ai-agent-config))
 7. Prompts for git name/email
 8. Generates an ed25519 SSH key
 9. Authenticates with GitHub via `gh auth login`
@@ -210,6 +210,14 @@ Claude Code's instructions, scripts and skills live in this repo and are symlink
 | `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/ship`, `/learn`) |
 
 Edits flow both ways -- change the live file or the repo file, same result.
+
+**Opting a machine out (work laptop).** Where Claude Code config comes from elsewhere (org-managed plugins, a company statusline), skip these four links while keeping everything else. Set the flag once, machine-local and never committed:
+
+```bash
+git config --file ~/.gitconfig.local dotfiles.skipClaude true
+```
+
+or pass `DOTFILES_SKIP_CLAUDE=1` to a single `./install.sh` or `make sync` run (`DOTFILES_SKIP_CLAUDE=0` overrides the flag). With neither set, the links are made as before. The flag only stops links being created: on a machine that already has them, replace each with a local copy first (`l=~/.claude/skills; t=$(readlink "$l"); rm "$l" && cp -R "$t" "$l"`), or the hooks and statusline `settings.json` points at will vanish (ADR-047).
 
 **`~/.claude/settings.json` is not in the repo.** Claude Code, `/config`, plugin installs and org tooling all rewrite it, which kept breaking the symlink and writing machine-specific values back into git (ADR-046). Each machine owns its file: set it up with `/config` and `/permissions` in Claude Code, or edit it directly. The hooks and statusline above only run once that file points at them.
 

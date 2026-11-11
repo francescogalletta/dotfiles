@@ -66,6 +66,30 @@ links_match_map() {
   return "$bad"
 }
 check "links.sh builds LINKS from links.map" links_match_map
+# The claude guard is an opt-out: a machine with no flag must keep every Claude
+# row (personal laptop unchanged), and either opt-out must drop all of them.
+# Runs against a scratch $HOME so this machine's own flag can't sway it.
+claude_guard_opt_out() {
+  local tmp n_rows bad=0
+  tmp=$(mktemp -d)
+  n_rows=$(grep -vE '^[[:space:]]*(#|$)' "$DOTFILES/links.map" | awk -F'|' '$3 ~ /^ *claude *$/' | wc -l | tr -d ' ')
+  [ "$n_rows" -gt 0 ] || { echo "no claude-guarded rows in links.map"; return 1; }
+  # $1 = DOTFILES_SKIP_CLAUDE value ("" = unset); prints how many Claude rows reach LINKS
+  claude_links() (
+    HOME="$tmp"
+    if [ -n "$1" ]; then DOTFILES_SKIP_CLAUDE="$1"; else unset DOTFILES_SKIP_CLAUDE; fi
+    source "$DOTFILES/links.sh"
+    printf '%s\n' "${LINKS[@]}" | grep -cE '^(CLAUDE\.md|config/claude/)'
+  )
+  [ "$(claude_links "")" = "$n_rows" ] || { echo "default: not all $n_rows claude rows linked"; bad=1; }
+  [ "$(claude_links 1)" = 0 ]          || { echo "DOTFILES_SKIP_CLAUDE=1 still links"; bad=1; }
+  git config --file "$tmp/.gitconfig.local" dotfiles.skipClaude true
+  [ "$(claude_links "")" = 0 ]         || { echo "dotfiles.skipClaude=true still links"; bad=1; }
+  [ "$(claude_links 0)" = "$n_rows" ]  || { echo "DOTFILES_SKIP_CLAUDE=0 does not override the flag"; bad=1; }
+  rm -rf "$tmp"
+  return "$bad"
+}
+check "links.sh claude guard is opt-out (default links, flag or env skips)" claude_guard_opt_out
 check "links.map rows have 5 columns" bash -c \
   "[ \$(grep -vE '^[[:space:]]*(#|\$)' '$DOTFILES/links.map' | awk -F'|' 'NF != 5' | wc -l) -eq 0 ]"
 

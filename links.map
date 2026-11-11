@@ -1,7 +1,9 @@
 # Managed symlinks — one row per config, OS-neutral data.
 # Parsed by links.sh (macOS driver); windows/links.ps1 will read the same file.
 # Columns: source | label | guard | macOS destination | Windows destination
-#   guard  "-" = always link; "zed" = only when that tool is installed
+#   guard  "-" = always link; "zed" = only when that tool is installed;
+#          "claude" = unless this machine opts out of Claude config (work laptop:
+#          DOTFILES_SKIP_CLAUDE=1, or dotfiles.skipClaude=true in ~/.gitconfig.local)
 #          (each OS driver evaluates guards natively)
 #   destination "-" = not managed on that OS. Windows column gets filled in when
 #          the windows/ overlay lands; "~" expands per-OS (macOS $HOME, Windows %USERPROFILE%).
@@ -13,10 +15,10 @@ config/ghostty/config           | ghostty              | -     | ~/.config/ghost
 config/aerospace/aerospace.toml | aerospace            | -     | ~/.aerospace.toml                                    | -
 config/warp/themes              | warp/themes          | -     | ~/.warp/themes                                       | -
 config/warp/keybindings.yaml    | warp/keybindings     | -     | ~/.warp/keybindings.yaml                             | -
-CLAUDE.md                       | CLAUDE.md            | -     | ~/CLAUDE.md                                          | -
-config/claude/skills            | claude/skills        | -     | ~/.claude/skills                                     | -
-config/claude/statusline.sh     | claude/statusline    | -     | ~/.claude/statusline.sh                              | -
-config/claude/hooks             | claude/hooks         | -     | ~/.claude/hooks                                      | -
+CLAUDE.md                       | CLAUDE.md            | claude | ~/CLAUDE.md                                          | -
+config/claude/skills            | claude/skills        | claude | ~/.claude/skills                                     | -
+config/claude/statusline.sh     | claude/statusline    | claude | ~/.claude/statusline.sh                              | -
+config/claude/hooks             | claude/hooks         | claude | ~/.claude/hooks                                      | -
 config/starship/starship.toml   | starship             | -     | ~/.config/starship.toml                              | -
 config/zed/settings.json        | zed/settings         | zed   | ~/.config/zed/settings.json                          | -
 config/zed/keymap.json          | zed/keymap           | zed   | ~/.config/zed/keymap.json                            | -
