@@ -2,7 +2,7 @@
 set -uo pipefail
 
 DOTFILES="$HOME/dotfiles"
-source "$DOTFILES/links.sh"
+LINKS_PROMPT=1 source "$DOTFILES/links.sh"   # may ask once about the Claude rows
 
 bold="\033[1m"
 dim="\033[2m"
@@ -67,6 +67,10 @@ for _root in .config .warp .codex .claude; do
 done
 # a prune can leave the retired config's own dir empty (~/.config/tmux); drop it
 find "$HOME/.config" -mindepth 1 -type d -empty -delete 2>/dev/null || true
+
+if [ "${_CLAUDE_OK:-1}" = 0 ]; then
+  echo -e "  ⏭  claude config  ${dim}skipped (existing links left as they are)${reset}"
+fi
 
 echo ""
 echo -e "  ${dim}─────────────────────────────────${reset}"
