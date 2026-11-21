@@ -6,3 +6,9 @@
 .claude/settings.local.json
 .claude/session-current.md
 .claude/worktrees/
+
+# Written into config/claude/ by other tools, not by this repo (ADR-048): the
+# Claude app's account skill sync, which arrives through the ~/.claude/skills
+# symlink, and a one-off transcript analysis.
+config/claude/skills/synced/
+config/claude/tools/

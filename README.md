@@ -11,6 +11,7 @@ Portable, reproducible dev environment for macOS. One script sets up everything 
 | [AeroSpace](https://nikitabobko.github.io/AeroSpace/) | i3-like tiling window manager (config + cheatsheet in `config/aerospace/`) |
 | [JankyBorders](https://github.com/FelixKratz/JankyBorders) | Highlights the focused window; launched by AeroSpace |
 | [Warp](https://www.warp.dev) | AI-powered terminal with IDE features |
+| Rex | Terminal with an agent-drivable CLI (`rex`); app installed by hand, its Claude skill lives in `config/claude/skills/rex/` |
 | [Oh My Zsh](https://ohmyz.sh) | Zsh framework with plugins (`git`, `brew`, autosuggestions, syntax highlighting) |
 | [eza](https://eza.rocks) | Modern replacement for `ls` with icons and colors |
 | [bat](https://github.com/sharkdp/bat) | `cat` with syntax highlighting and line numbers |
@@ -122,6 +123,7 @@ The mapping of repo files to their target locations lives in `links.map`: OS-neu
     │   │   └── session-start.sh #  SessionStart briefing for managed projects (TASKS.md)
     │   └── skills/             # Claude Code skills → ~/.claude/skills/
     │       ├── ship/           #   /ship — commit and push
+    │       ├── rex/            #   /rex — drive Rex sessions, tabs and panes (stub written by `rex skill setup`)
     │       └── learn/          #   /learn — end-of-session review and improvement loop
     ├── zed/
     │   ├── settings.json       # Zed settings → ~/.config/zed/settings.json
@@ -207,7 +209,7 @@ Claude Code's instructions, scripts and skills live in this repo and are symlink
 | `CLAUDE.md` | `~/CLAUDE.md` | Global instructions (tone, tools, conventions) |
 | `config/claude/statusline.sh` | `~/.claude/statusline.sh` | Statusline script (directory, git branch, git status) |
 | `config/claude/hooks/` | `~/.claude/hooks/` | Hook scripts (SessionStart briefing for managed projects) |
-| `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/ship`, `/learn`) |
+| `config/claude/skills/` | `~/.claude/skills/` | Slash commands (`/ship`, `/learn`, `/rex`) |
 
 Edits flow both ways -- change the live file or the repo file, same result.
 

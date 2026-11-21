@@ -18,7 +18,7 @@ Portable, reproducible macOS dev environment. One script sets up everything from
 | Category | Tools |
 |----------|-------|
 | Shell | zsh + Oh My Zsh (git, brew plugins), zsh-autosuggestions, zsh-syntax-highlighting, robbyrussell theme |
-| Terminals | Ghostty (primary), Warp (secondary, cloud-synced settings) |
+| Terminals | Ghostty (primary), Warp (secondary, cloud-synced settings), Rex (used alongside Ghostty; app hand-installed, no cask exists, so not in the Brewfile; its Claude skill is tracked, its `SessionStart` hook lives in the per-machine `settings.json` — ADR-048) |
 | Editor | Zed — managed by `ide.sh` |
 | CLI | eza, bat, fd, fzf, ripgrep, jq, yq, gh |
 | Node.js | nvm (lazy-loaded) |
@@ -75,7 +75,7 @@ This dotfiles repo dogfoods the same convention starting with Phase 5 (T101 onwa
 
 ## Skills & Hooks
 
-Claude Code skills in `config/claude/skills/`: `/ship`, `/learn`. (`/explain`, `/graduate`, `/slides` retired in T107 — see ADR-027. `/project-new`, `/project-resume` retired in ADR-030.)
+Claude Code skills in `config/claude/skills/`: `/ship`, `/learn`, `/rex` (a stub written by `rex skill setup` that defers to the installed CLI's own guide — ADR-048). `skills/synced/` (the Claude app's account skill sync) lands in the same directory through the symlink and is gitignored. (`/explain`, `/graduate`, `/slides` retired in T107 — see ADR-027. `/project-new`, `/project-resume` retired in ADR-030.)
 
 `config/claude/hooks/session-start.sh` runs as the `SessionStart` hook for every Claude Code session. In a managed project (TASKS.md present) it prints a one-paragraph briefing: project name, branch and sync state, last 3 commits, next 3 pending `[T###]` tasks. Deeper orientation (ADR, open questions) is read on demand from the docs themselves.
 
